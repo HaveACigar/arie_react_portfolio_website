@@ -16,6 +16,26 @@ export default function Portfolio() {
                     <img src="assets/EMU.png" alt="" />
                     <h3>EMU</h3>
                 </div>
+                <div className="item">
+                    <img src="assets/EMU.png" alt="" />
+                    <h3>EMU</h3>
+                </div>
+                <div className="item">
+                    <img src="assets/EMU.png" alt="" />
+                    <h3>EMU</h3>
+                </div>
+                <div className="item">
+                    <img src="assets/EMU.png" alt="" />
+                    <h3>EMU</h3>
+                </div>
+                <div className="item">
+                    <img src="assets/EMU.png" alt="" />
+                    <h3>EMU</h3>
+                </div>
+                <div className="item">
+                    <img src="assets/EMU.png" alt="" />
+                    <h3>EMU</h3>
+                </div>
             </div>
         </div>
     )
