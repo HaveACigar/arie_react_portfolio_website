@@ -1,15 +1,15 @@
 import "./portfolio.scss"
 
 export default function Portfolio() {
+    
+    const list = [
+        
+    ]
     return (
         <div className="portfolio" id="portfolio">
             <h1>Portfolio</h1>
             <ul>
-                <li>Featured</li>
-                <li>Java from EMU</li>
-                <li>Webdesign from EMU</li>
-                <li>Current projects</li>
-                <li>Ideas</li>
+                
             </ul>
             <div className="container">
                 <div className="item">
