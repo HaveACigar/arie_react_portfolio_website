@@ -1,6 +1,9 @@
 import "./works.scss"
 
 export default function Works() {
+    const data = [
+        
+    ]
     return (
         <div className="works" id="works">
             <div className="slider">
@@ -18,9 +21,12 @@ export default function Works() {
                                 <span>Projects</span>
                             </div>
                         </div>
-                        <div className="right"></div>
                     </div>
                 </div>
+                <div className="right">
+                            <img src="assets/white_downarrow.png" className="arrow left" alt="" />
+                            <img src="assets/white_downarrow.png" className="arrow right" alt="" />
+                        </div>
             </div>
         </div>
     )
