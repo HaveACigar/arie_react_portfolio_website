@@ -9,15 +9,16 @@ import Menu from "./components/menu/Menu";
 
 function App() {
   const [menuOpen,setMenuOpen] = useState(false)
+  const [dark,setDark] = useState(false)
   return (
     <div className="app">
-      <Topbar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
-      <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+      <Topbar setDark={setDark} menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+      <Menu dark={dark} menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
       <div className="sections">
-        <Intro/>
-        <Portfolio/>
-        <Works/>
-        <Contact/>
+        <Intro dark={dark}/>
+        <Portfolio dark={dark}/>
+        <Works dark={dark}/>
+        <Contact dark={dark}/>
       </div>
     </div>
   );

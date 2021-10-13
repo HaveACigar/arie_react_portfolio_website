@@ -10,7 +10,7 @@ export default function Contact() {
     return (
         <div className="contact" id="contact">
             <div className="left">
-                <img src="assets/" alt="" />
+                <img src="assets/contact.png" alt="" />
             </div>
             <div className="right">
                 <h2>Contact</h2>
