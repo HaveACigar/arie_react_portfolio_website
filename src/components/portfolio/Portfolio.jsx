@@ -69,12 +69,12 @@ export default function Portfolio() {
                     <h3>EMU</h3>
                 </div>
                 <div className="item">
-                    <img src="assets/EMU.png" alt="" />
-                    <h3>EMU</h3>
+                    <img src="assets/java.png" alt="" />
+                    <h3>Java</h3>
                 </div>
                 <div className="item">
-                    <img src="assets/EMU.png" alt="" />
-                    <h3>EMU</h3>
+                    <img src="assets/react.png" alt="" />
+                    <h3>React</h3>
                 </div>
                 <div className="item">
                     <img src="assets/EMU.png" alt="" />
