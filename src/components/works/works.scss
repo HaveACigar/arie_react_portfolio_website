@@ -80,10 +80,10 @@
                         }
 
                         .imgContainer{
-                            width: 40px;
-                            height: 40px;
+                            width: 60px;
+                            height: 60px;
                             border-radius: 50%;
-                            background-color: rgb(2, 88, 88);
+                            background-color: darkorchid;
                             display: flex;
                             align-items: center;
                             justify-content: center;
@@ -93,7 +93,7 @@
                             }
 
                             img{
-                                width: 25px;
+                                width: 50px;
                                 @include mobile{
                                     width: 15px;
                                 }
@@ -128,8 +128,7 @@
                     overflow: hidden;
 
                     img{
-                        width: 400px;
-                        transform: rotate(-10deg);
+                        width: 300px;
                     }
                 }
             }

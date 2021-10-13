@@ -6,24 +6,24 @@ export default function Works() {
     const data = [
         {
             id: "1",
-            icon: "./assets",
+            icon: "./assets/website.png",
             title: "Web Works",
             description: "This is where I will post projects involving webdesign and frontend work",
-            image: "./assets"
+            image: "./assets/website.png"
         },
         {
             id: "2",
-            icon: "./assets",
+            icon: "./assets/java.png",
             title: "Java Works",
             description: "This is where I will post projects involving Java, OOP and backend work",
-            image: "./assets"
+            image: "./assets/java.png"
         },
         {
             id: "3",
-            icon: "./assets",
+            icon: "./assets/EMU.png",
             title: "College Works",
             description: "This is where I will post projects from my time at EMU",
-            image: "./assets"
+            image: "./assets/EMU.png"
         },
     ];
 
@@ -51,7 +51,7 @@ export default function Works() {
                             </div>
                         </div>
                         <div className="right">
-                            <img src="" alt="" />
+                            <img src={d.image} alt="" />
                         </div>
                     </div>
                     

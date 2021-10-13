@@ -3,42 +3,30 @@ import { useEffect, useState } from "react"
 import PortfolioList from "../portfolioList/PortfolioList"
 import "./portfolio.scss"
 import {
-    webPortfolio,
-    mobilePortfolio} from "../../data"
+    reactPortfolio,
+    angularPortfolio} from "../../data"
 
 export default function Portfolio() {
-    const [selected,setSelected] = useState("featured")
+    const [selected,setSelected] = useState("react")
     const [data,setData] = useState([])
     const list = [
         {
-            id: "featured",
-            title: "Featured",
+            id: "react",
+            title: "React",
         },
         {
-            id: "web",
-            title: "Web App",
-        },
-        {
-            id: "mobile",
-            title: "Mobile App",
-        },
-        {
-            id: "design",
-            title: "Design",
-        },
-        {
-            id: "content",
-            title: "Content",
+            id: "angular",
+            title: "Angular",
         },
     ];
 
     useEffect(()=>{
         switch(selected){
-            case "web":
-                setData(webPortfolio);
+            case "react":
+                setData(reactPortfolio);
                 break;
-            case "mobile":
-                setData(mobilePortfolio);
+            case "angular":
+                setData(angularPortfolio);
                 break;
         }
     },[selected])
@@ -58,37 +46,13 @@ export default function Portfolio() {
             <div className="container">
                 {data.map((d) =>
                 <div className="item">
-                    <img src="assets/EMU.png" alt="" />
+                    <img src={d.img} alt="" />
                     <h3>
-                        EMU
+                        {d.title}
                     </h3>
                 </div>
                 )}
-                <div className="item">
-                    <img src="assets/EMU.png" alt="" />
-                    <h3>EMU</h3>
                 </div>
-                <div className="item">
-                    <img src="assets/java.png" alt="" />
-                    <h3>Java</h3>
-                </div>
-                <div className="item">
-                    <img src="assets/react.png" alt="" />
-                    <h3>React</h3>
-                </div>
-                <div className="item">
-                    <img src="assets/EMU.png" alt="" />
-                    <h3>EMU</h3>
-                </div>
-                <div className="item">
-                    <img src="assets/EMU.png" alt="" />
-                    <h3>EMU</h3>
-                </div>
-                <div className="item">
-                    <img src="assets/EMU.png" alt="" />
-                    <h3>EMU</h3>
-                </div>
-            </div>
         </div>
     )
 }
