@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./contact.scss"
+import sample from "./contact.mp4"
 
 export default function Contact() {
     const [message,setMessage] = useState(false);
@@ -10,7 +11,11 @@ export default function Contact() {
     return (
         <div className="contact" id="contact">
             <div className="left">
-                <img src="assets/contact.png" alt="" />
+                {/* <img src="assets/contact.png" alt="" /> */}
+                <video className='videoTag' autoPlay loop muted>
+                    <source src={sample} type='video/mp4' />
+                    Video not supported
+                </video>
             </div>
             <div className="right">
                 <h2>Contact</h2>

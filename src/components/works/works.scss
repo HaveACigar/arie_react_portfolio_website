@@ -1,7 +1,7 @@
 @import "../../global.scss";
 
 .works {
-    background-color: black;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,8 +80,8 @@
                         }
 
                         .imgContainer{
-                            width: 60px;
-                            height: 60px;
+                            width: 80px;
+                            height: 80px;
                             border-radius: 50%;
                             background-color: darkorchid;
                             display: flex;
