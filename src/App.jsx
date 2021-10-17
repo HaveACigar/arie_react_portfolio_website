@@ -7,6 +7,7 @@ import "./app.scss";
 import { useContext, useState } from "react";
 import Menu from "./components/menu/Menu";
 import { ThemeContext } from "./context";
+import AboutMe from "./components/aboutme/AboutMe";
 
 function App() {
   const [menuOpen,setMenuOpen] = useState(false)
@@ -21,6 +22,7 @@ function App() {
       <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
       <div className="sections">
         <Intro/>
+        <AboutMe/>
         <Works/>
         <Portfolio/>
         <Contact/>
