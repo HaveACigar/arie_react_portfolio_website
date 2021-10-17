@@ -1,7 +1,15 @@
 import "./topbar.scss"
 import {Person,Mail} from "@material-ui/icons"
+import { useContext } from "react"
+import { ThemeContext } from "../../context"
 
 export default function Topbar({ menuOpen, setMenuOpen }) {
+    const theme = useContext(ThemeContext)
+    const darkMode = theme.state.darkMode
+
+    const handleClick = ()=>{
+        theme.dispatch({type: "TOGGLE"})
+    }
     return (
         <div className={"topbar " + (menuOpen && "active")}>
             <div className="wrapper">
@@ -12,7 +20,7 @@ export default function Topbar({ menuOpen, setMenuOpen }) {
                     <div className="toggle">
                         <img src="assets/sun_icon.png" alt="toggleIcon" />
                         <img src="assets/moon_icon.png" alt="toggleIcon" />
-                        <div className="toggleButton"></div>
+                        <div className="toggleButton" onClick={handleClick} style={{left: darkMode ? 0 : 25}}></div>
                     </div>                   
                     <div className="itemContainer">
                         <Person className="icon"/>

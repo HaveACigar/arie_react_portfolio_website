@@ -1,7 +1,6 @@
 @import "../../global.scss";
 
 .works {
-    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -48,7 +47,6 @@
             .item{
                 width: 700px;
                 height: 100%;
-                background-color: white;
                 border-radius: 20px;
                 display: flex;
                 align-items: center;
@@ -83,7 +81,6 @@
                             width: 80px;
                             height: 80px;
                             border-radius: 50%;
-                            background-color: darkorchid;
                             display: flex;
                             align-items: center;
                             justify-content: center;

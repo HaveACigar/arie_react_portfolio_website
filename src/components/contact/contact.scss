@@ -1,7 +1,6 @@
 @import "../../global.scss";
 
 .contact {
-    background-color:white;
     display: flex;
 
     @include mobile{
@@ -67,6 +66,7 @@
                 border-radius: 10px;
                 font-weight: 500;
                 cursor: pointer;
+
 
                 &.focus{
                     outline: none;

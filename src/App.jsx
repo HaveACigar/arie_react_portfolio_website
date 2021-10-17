@@ -10,22 +10,20 @@ import { ThemeContext } from "./context";
 
 function App() {
   const [menuOpen,setMenuOpen] = useState(false)
-  const [dark,setDark] = useState(false)
   const theme = useContext(ThemeContext)
   const darkMode = theme.state.darkMode;
   return (
-    <div className="app" 
-    style={{
-      backgroundColor:darkMode ? "#222" : "white", 
-      color:darkMode && "white",
+    <div className="app"  style={{
+      backgroundColor: darkMode ? "#222" : "white", 
+      color: darkMode && "white",
       }}>
-      <Topbar setDark={setDark} menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
-      <Menu dark={dark} menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+      <Topbar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+      <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
       <div className="sections">
-        <Intro dark={dark}/>
-        <Portfolio dark={dark}/>
-        <Works dark={dark}/>
-        <Contact dark={dark}/>
+        <Intro/>
+        <Works/>
+        <Portfolio/>
+        <Contact/>
       </div>
     </div>
   );
