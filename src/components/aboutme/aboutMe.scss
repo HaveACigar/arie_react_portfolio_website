@@ -1,0 +1,28 @@
+.aboutMe{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    .left{
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        .card-background{
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            background-color: #333;
+        }
+
+        .card{
+            width: 60%;
+            height: 70vh;
+            border-radius: 30px;
+        }
+    }
+    .right{
+        flex: 1;
+    }
+}
