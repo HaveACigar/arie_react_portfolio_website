@@ -4,11 +4,11 @@ export default function AboutMe() {
     return (
         <div className="aboutMe" id="aboutMe">
             <div className="left">
-                <div className="card-background"></div>
+                <div className="cardBg"></div>
                 <div className="card">
-                    <img src="assets/java.png" alt="" />
-                    <img src="assets/react.png" alt="" />
-                    <img src="assets/nodejs.png" alt="" />
+                    <img src="assets/java.png" alt="Java logo" />
+                    <img src="assets/react.png" alt="React logo" />
+                    <img src="assets/nodejs.png" alt="NodeJs logo" />
                 </div>
             </div>
             <div className="right">

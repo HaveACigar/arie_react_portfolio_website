@@ -16,8 +16,8 @@ function App() {
   const darkMode = theme.state.darkMode;
   return (
     <div className="app"  style={{
-      backgroundColor: darkMode ? "#222" : "white", 
       color: darkMode && "white",
+      backgroundColor: darkMode ? "#222" : "white", 
       }}>
       <Topbar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
       <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>

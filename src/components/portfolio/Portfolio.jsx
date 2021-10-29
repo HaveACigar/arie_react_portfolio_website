@@ -1,10 +1,10 @@
-import { FeaturedVideoTwoTone } from "@material-ui/icons"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import PortfolioList from "../portfolioList/PortfolioList"
 import "./portfolio.scss"
 import {
     reactPortfolio,
     angularPortfolio} from "../../data"
+import { ThemeContext } from "../../context"
 
 export default function Portfolio() {
     const [selected,setSelected] = useState("react")
@@ -19,6 +19,8 @@ export default function Portfolio() {
             title: "Angular",
         },
     ];
+    const theme = useContext(ThemeContext)
+    const darkMode = theme.state.darkMode
 
     useEffect(()=>{
         switch(selected){
@@ -35,7 +37,8 @@ export default function Portfolio() {
             <h1>Portfolio</h1>
             <ul>
                 {list.map(item=>(
-                    <PortfolioList 
+                    <PortfolioList
+                    style={{color: darkMode && "#333"}} 
                     title={item.title} 
                     active={selected === item.id} 
                     setSelected={setSelected}

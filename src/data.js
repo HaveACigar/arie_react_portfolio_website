@@ -1,7 +1,7 @@
 export const reactPortfolio = [
     {
         id: 1,
-        title: "This website is my only current React project, but I intend on undertaking a lot more projects incorporating React in the future.",
+        title: "This website",
         img: "assets/portfolio.png"
     },
     {
