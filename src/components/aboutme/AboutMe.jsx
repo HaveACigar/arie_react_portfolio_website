@@ -2,7 +2,7 @@ import "./aboutMe.scss"
 
 export default function AboutMe() {
     return (
-        <div className="aboutMe">
+        <div className="aboutMe" id="aboutMe">
             <div className="left">
                 <div className="card-background"></div>
                 <div className="card">

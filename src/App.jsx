@@ -3,11 +3,12 @@ import Intro from "./components/intro/Intro";
 import Portfolio from "./components/portfolio/Portfolio";
 import Topbar from "./components/topbar/Topbar"
 import Works from "./components/works/Works";
+import AboutMe from "./components/aboutme/AboutMe";
+import Menu from "./components/menu/Menu";
 import "./app.scss";
 import { useContext, useState } from "react";
-import Menu from "./components/menu/Menu";
 import { ThemeContext } from "./context";
-import AboutMe from "./components/aboutme/AboutMe";
+
 
 function App() {
   const [menuOpen,setMenuOpen] = useState(false)
