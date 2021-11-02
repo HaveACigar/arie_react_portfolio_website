@@ -14,9 +14,11 @@ export default function Topbar({ menuOpen, setMenuOpen }) {
         <div className={"topbar " + (menuOpen && "active")}>
             <div className="wrapper">
                 <div className="left">
-                    <a href="#intro">
-                        <img src="assets/black_downarrow.png" alt="" />
-                    </a>
+                    <div className="intro">
+                        <a href="#intro">
+                            <img src="assets/black_downarrow.png" alt="" />
+                        </a>
+                    </div>
                     <div className="toggle">
                         <img src="assets/sun_icon.png" alt="toggleIcon" />
                         <img src="assets/moon_icon.png" alt="toggleIcon" />
@@ -30,9 +32,19 @@ export default function Topbar({ menuOpen, setMenuOpen }) {
                         <Mail/>
                         <span>ariedekraker@gmail.com</span>
                     </div>
-                    <div className="linkedIn">
-                        <a href="https://www.linkedin.com/in/arie-dekraker-824738141/" className="linkedIn">
+                    <div className="imageLinks">
+                        <a href="https://www.linkedin.com/in/arie-dekraker-824738141/">
                             <img src="assets/linkedin.png" alt="" />
+                        </a>
+                    </div>
+                    <div className="imageLinks">
+                        <a href="https://github.com/HaveACigar">
+                            <img src="assets/github.png" alt="" />
+                        </a>
+                    </div>
+                    <div className="imageLinks">
+                        <a href="https://www.hackerrank.com/ariedekraker">
+                            <img src="assets/hackerrank.png" alt="" />
                         </a>
                     </div>
                 </div>

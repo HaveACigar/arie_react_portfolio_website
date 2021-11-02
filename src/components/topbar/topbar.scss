@@ -44,17 +44,19 @@
                 }
             }
 
-            a{
-                img{
-                    width: 40px;
-                    transform: rotateX(180deg);
-                    position:absolute;
-                    left: 40px;
-                    animation: arrowBlink 2s infinite;
-                }
-                @keyframes arrowBlink {
-                    100%{
-                        opacity: 0;
+            .intro{
+                a{
+                    img{
+                        width: 40px;
+                        transform: rotateX(180deg);
+                        position:absolute;
+                        left: 40px;
+                        animation: arrowBlink 2s infinite;
+                    }
+                    @keyframes arrowBlink {
+                        100%{
+                            opacity: 0;
+                        }
                     }
                 }
             }
@@ -86,10 +88,10 @@
                     font-weight: 500;
                 }
             }
-            .linkedIn{
+            .imageLinks{
                 a{
                     img{
-                        height: 40px;
+                        height: 35px;
                     }
                 }
             }
