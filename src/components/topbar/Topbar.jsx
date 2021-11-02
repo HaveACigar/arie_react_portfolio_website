@@ -30,6 +30,11 @@ export default function Topbar({ menuOpen, setMenuOpen }) {
                         <Mail/>
                         <span>ariedekraker@gmail.com</span>
                     </div>
+                    <div className="linkedIn">
+                        <a href="https://www.linkedin.com/in/arie-dekraker-824738141/" className="linkedIn">
+                            <img src="assets/linkedin.png" alt="" />
+                        </a>
+                    </div>
                 </div>
                 <div className="right">
                     <div className="beyondBurger" onClick={()=>setMenuOpen(!menuOpen)}>
