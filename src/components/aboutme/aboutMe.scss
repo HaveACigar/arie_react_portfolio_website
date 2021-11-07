@@ -23,11 +23,15 @@
             border-radius: 30px;
 
             img{
-                width: 50%;
+                width: 40%;
             }
         }
     }
     .right{
         flex: 1;
+
+        .update{
+            font-size: 30px;
+        }
     }
 }

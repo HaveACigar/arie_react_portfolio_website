@@ -8,7 +8,6 @@
 
     .left{
         flex: 0.4;
-        background-color: orangered;
         overflow: hidden;
         @include mobile{
             align-items: flex-start;
