@@ -25,12 +25,13 @@ export default function Contact() {
         //         alert(error.message)
         //     });
         (async () => {
-        const docRef = addDoc(collection(db, "contacts"), {
+        const docRef = await addDoc(collection(db, "contacts"), {
             name: name,
             email: email,
             message: message
               });
               console.log("Document written with ID: ", docRef.id);
+              alert("Thank you for your message! I will try and respond as soon as I am able.");
         
         setName("");
         setEmail("");
@@ -45,9 +46,9 @@ export default function Contact() {
             <div className="right">
                 <h2>Contact</h2>
                 <form onSubmit={handleSubmit}>
-                    <input style={{backgroundColor: darkMode && "#555"}} type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
-                    <input style={{backgroundColor: darkMode && "#555"}} type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                    <textarea style={{backgroundColor: darkMode && "#555"}} placeholder="Message" value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
+                    <input style={{backgroundColor: darkMode && "#555", color: darkMode && "white"}} type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                    <input style={{backgroundColor: darkMode && "#555", color: darkMode && "white"}} type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <textarea style={{backgroundColor: darkMode && "#555", color: darkMode && "white"}} placeholder="Message" value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
                     <button type="submit">Send</button>
                 </form>
             </div>            
