@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { ThemeContext } from "../../context";
 import "./contact.scss";
 import { db } from "../firebase";
+import { collection, addDoc } from "firebase/firestore"; 
 
 export default function Contact() {
     const theme = useContext(ThemeContext)
@@ -13,12 +14,23 @@ export default function Contact() {
     const handleSubmit = (e)=>{
         e.preventDefault();
         setResponse(true);
-        db.collection('contact').add({
-            name: name,
-            email: email,
-            message: message,
-        })
-    }
+        db.collection("contacts")
+            .add({
+                name: name,
+                email: email,
+                message: message
+            })
+            .then(() => {
+                alert("Your message has been submitted. I will try and reach back to you as soon as I am able.")
+            })
+            .catch((error) => {
+                alert(error.message)
+            });
+        
+        setName("");
+        setEmail("");
+        setMessage("");
+    };
     return (
         <div className="contact" id="contact">
             <div className="left">

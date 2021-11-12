@@ -1,6 +1,6 @@
 import "firebase/firestore";
 import { initializeApp } from "firebase/app";
-import { getFirestore} from 'firebase/firestore/lite';
+import { getFirestore, collection} from 'firebase/firestore/lite';
 const firebaseConfig = {
   apiKey: "AIzaSyDdcGGw-GTieDUl-DQgRpK1vpTN36UvOGI",
   authDomain: "react-contact-form-26c58.firebaseapp.com",
