@@ -10,26 +10,32 @@ export default function Contact() {
     const [name,setName] = useState("");
     const [email,setEmail] = useState("");
     const [message,setMessage] = useState("");
-    const [response,setResponse] = useState(false);
     const handleSubmit = (e)=>{
         e.preventDefault();
-        setResponse(true);
-        db.collection("contacts")
-            .add({
-                name: name,
-                email: email,
-                message: message
-            })
-            .then(() => {
-                alert("Your message has been submitted. I will try and reach back to you as soon as I am able.")
-            })
-            .catch((error) => {
-                alert(error.message)
-            });
+        // db.collection("contacts")
+        //     .add({
+        //         name: name,
+        //         email: email,
+        //         message: message
+        //     })
+        //     .then(() => {
+        //         alert("Your message has been submitted. I will try and reach back to you as soon as I am able.")
+        //     })
+        //     .catch((error) => {
+        //         alert(error.message)
+        //     });
+        (async () => {
+        const docRef = addDoc(collection(db, "contacts"), {
+            name: name,
+            email: email,
+            message: message
+              });
+              console.log("Document written with ID: ", docRef.id);
         
         setName("");
         setEmail("");
         setMessage("");
+            })();
     };
     return (
         <div className="contact" id="contact">
@@ -43,7 +49,6 @@ export default function Contact() {
                     <input style={{backgroundColor: darkMode && "#555"}} type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     <textarea style={{backgroundColor: darkMode && "#555"}} placeholder="Message" value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
                     <button type="submit">Send</button>
-                    {response && <span>Thank you for you message! I'll try and get back to you as soon as possible.</span>}
                 </form>
             </div>            
         </div>
