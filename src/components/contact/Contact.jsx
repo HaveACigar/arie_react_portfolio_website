@@ -1,14 +1,23 @@
 import { useContext, useState } from "react";
 import { ThemeContext } from "../../context";
-import "./contact.scss"
+import "./contact.scss";
+import { db } from "../firebase";
 
 export default function Contact() {
     const theme = useContext(ThemeContext)
     const darkMode = theme.state.darkMode
-    const [message,setMessage] = useState(false);
+    const [name,setName] = useState("");
+    const [email,setEmail] = useState("");
+    const [message,setMessage] = useState("");
+    const [response,setResponse] = useState(false);
     const handleSubmit = (e)=>{
         e.preventDefault();
-        setMessage(true);
+        setResponse(true);
+        db.collection('contact').add({
+            name: name,
+            email: email,
+            message: message,
+        })
     }
     return (
         <div className="contact" id="contact">
@@ -18,11 +27,11 @@ export default function Contact() {
             <div className="right">
                 <h2>Contact</h2>
                 <form onSubmit={handleSubmit}>
-                    <input style={{backgroundColor: darkMode && "#555"}} type="text" placeholder="Name"/>
-                    <input style={{backgroundColor: darkMode && "#555"}} type="text" placeholder="Email"/>
-                    <textarea style={{backgroundColor: darkMode && "#555"}} placeholder="Message"></textarea>
+                    <input style={{backgroundColor: darkMode && "#555"}} type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
+                    <input style={{backgroundColor: darkMode && "#555"}} type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                    <textarea style={{backgroundColor: darkMode && "#555"}} placeholder="Message" value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
                     <button type="submit">Send</button>
-                    {message && <span>Thank you for you message! I'll try and get back to you as soon as possible.</span>}
+                    {response && <span>Thank you for you message! I'll try and get back to you as soon as possible.</span>}
                 </form>
             </div>            
         </div>
