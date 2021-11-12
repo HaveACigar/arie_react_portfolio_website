@@ -10,20 +10,10 @@ export default function Contact() {
     const [name,setName] = useState("");
     const [email,setEmail] = useState("");
     const [message,setMessage] = useState("");
+    const [loader, setLoader] = useState(false);
     const handleSubmit = (e)=>{
         e.preventDefault();
-        // db.collection("contacts")
-        //     .add({
-        //         name: name,
-        //         email: email,
-        //         message: message
-        //     })
-        //     .then(() => {
-        //         alert("Your message has been submitted. I will try and reach back to you as soon as I am able.")
-        //     })
-        //     .catch((error) => {
-        //         alert(error.message)
-        //     });
+        setLoader(true);
         (async () => {
         const docRef = await addDoc(collection(db, "contacts"), {
             name: name,
@@ -32,6 +22,7 @@ export default function Contact() {
               });
               console.log("Document written with ID: ", docRef.id);
               alert("Thank you for your message! I will try and respond as soon as I am able.");
+              setLoader(false);
         
         setName("");
         setEmail("");
@@ -49,7 +40,7 @@ export default function Contact() {
                     <input style={{backgroundColor: darkMode && "#555", color: darkMode && "white"}} type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}/>
                     <input style={{backgroundColor: darkMode && "#555", color: darkMode && "white"}} type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     <textarea style={{backgroundColor: darkMode && "#555", color: darkMode && "white"}} placeholder="Message" value={message} onChange={(e) => setMessage(e.target.value)}></textarea>
-                    <button type="submit">Send</button>
+                    <button type="submit" style={{background: loader ? "gray" : "green"}}>Send</button>
                 </form>
             </div>            
         </div>
