@@ -18,6 +18,7 @@ export default function Contact() {
             <div className="right">
                 <h2>Contact</h2>
                 <form onSubmit={handleSubmit}>
+                    <input style={{backgroundColor: darkMode && "#555"}} type="text" placeholder="Name"/>
                     <input style={{backgroundColor: darkMode && "#555"}} type="text" placeholder="Email"/>
                     <textarea style={{backgroundColor: darkMode && "#555"}} placeholder="Message"></textarea>
                     <button type="submit">Send</button>

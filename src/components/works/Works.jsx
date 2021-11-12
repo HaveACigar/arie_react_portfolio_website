@@ -6,21 +6,18 @@ export default function Works() {
     const data = [
         {
             id: "1",
-            icon: "./assets/website.png",
             title: "Web Works",
             description: "This is where I will post projects involving webdesign and frontend work",
             image: "./assets/website.png"
         },
         {
             id: "2",
-            icon: "./assets/java.png",
             title: "Java Works",
             description: "This is where I will post projects involving Java, OOP and backend work",
             image: "./assets/java.png"
         },
         {
             id: "3",
-            icon: "./assets/EMU.png",
             title: "College Works",
             description: "This is where I will post projects from my time at EMU",
             image: "./assets/EMU.png"
