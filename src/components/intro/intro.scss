@@ -20,7 +20,8 @@
             img{
                 height: 90%;
                 @include mobile{
-                    height: 50%;
+                    height: 37%;
+                    width: 37%;
                 }
             }
         }
@@ -88,7 +89,7 @@
             left: 50%;
 
             img{
-                width: 30px;
+                width: 50px;
                 animation: arrowBlink 2s infinite;
             }
 

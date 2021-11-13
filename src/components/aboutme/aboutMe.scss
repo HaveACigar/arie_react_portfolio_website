@@ -1,3 +1,5 @@
+@import "../../global.scss";
+
 .aboutMe{
     height: 100vh;
     display: flex;
@@ -8,6 +10,10 @@
         align-items: center;
         justify-content: center;
         position: relative;
+
+        @include mobile{
+            display:none;
+        }
 
         .cardBg{
             position: absolute;
@@ -30,5 +36,10 @@
     .right{
         flex: 1;
         font-size: 20px;
+        justify-content: space-around;
+        @include mobile{
+            font-size: 22px;
+            text-align: center;
+        }
     }
 }
