@@ -9,13 +9,13 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "again": "0.0.1",
-    "firebase": "^9.4.1",
+    "firebase": "^9.23.0",
     "ityped": "^1.0.3",
-    "node-sass": "^7.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-google-recaptcha": "^2.1.0",
     "react-scripts": "^5.0.0",
+    "sass": "^1.70.0",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
