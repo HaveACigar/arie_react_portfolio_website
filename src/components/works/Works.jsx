@@ -6,9 +6,9 @@ export default function Works() {
     const data = [
         {
             id: "1",
-            title: "Web Works",
-            description: "This is where I will post projects involving webdesign and frontend work",
-            image: "./assets/website.png"
+            title: "Masters Works",
+            description: "This is where I will post projects from my time at the University of Calgary",
+            image: "./assets/Calgary_Logo.png"
         },
         {
             id: "2",
@@ -18,7 +18,13 @@ export default function Works() {
         },
         {
             id: "3",
-            title: "College Works",
+            title: "Web Works",
+            description: "This is where I will post projects involving webdesign and frontend work",
+            image: "./assets/website.png"
+        },
+        {
+            id: "4",
+            title: "Undergrad Works",
             description: "This is where I will post projects from my time at EMU",
             image: "./assets/EMU.png"
         },

@@ -6,6 +6,7 @@ export default function AboutMe() {
             <div className="left">
                 <div className="cardBg"></div>
                 <div className="card">
+                    <img src="assets/python.png" alt="Python logo" />
                     <img src="assets/java.png" alt="Java logo" />
                     <img src="assets/react.png" alt="React logo" />
                     <img src="assets/nodejs.png" alt="NodeJs logo" />
