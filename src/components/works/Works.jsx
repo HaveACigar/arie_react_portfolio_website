@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 import "./works.scss"
 
 export default function Works() {
@@ -8,7 +9,8 @@ export default function Works() {
             id: "1",
             title: "Masters Works",
             description: "This is where I will post projects from my time at the University of Calgary",
-            image: "./assets/Calgary_Logo.png"
+            image: "./assets/Calgary_Logo.png",
+            link: "/mastersprojects"
         },
         {
             id: "2",
@@ -39,7 +41,7 @@ export default function Works() {
         <div className="works" id="works">
             <div className="slider" style={{transform: `translateX(-${currentSlide * 100}vw)`}}>
                 {data.map(d=>(
-                <div className="container">
+                <div className="container" key={d.id}>
                     <div className="item">
                         <div className="left">
                             <div className="leftContainer">
@@ -50,7 +52,11 @@ export default function Works() {
                                 <p>
                                     {d.description}
                                 </p>
-                                <span>Projects</span>
+                                {d.link && (
+                                        <Link to={d.link}>
+                                            <span>Projects</span>
+                                        </Link>
+                                    )}
                             </div>
                         </div>
                         <div className="right">
