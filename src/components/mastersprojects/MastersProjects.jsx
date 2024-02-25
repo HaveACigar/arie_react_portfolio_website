@@ -23,6 +23,11 @@ function MastersProjects() {
                 <h2>Assessing Residential Building Costs with Economic Indicators in Calgary</h2>
                 <a href="DATA 602 - Final Report.pdf" target="_blank" rel="noopener noreferrer" className="pdf-link">View PDF</a>
             </div>
+            <div className="project-item">
+                <h2>Calgary Mobility App</h2>
+                <p>Interactive tool analyzing duration and distance in Calgary.</p>
+                <a href="https://mobility-app-yyc.onrender.com/duration-distance" target="_blank" rel="noopener noreferrer" className="notion-link">Visit the Mobility App</a>
+            </div>
         </div>
     );
 }
