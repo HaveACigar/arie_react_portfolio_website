@@ -33,7 +33,7 @@ export default function Topbar({ menuOpen, setMenuOpen }) {
                         <span>ariedekraker@gmail.com</span>
                     </div>
                     <div className="imageLinks">
-                        <a href="https://www.linkedin.com/in/arie-dekraker-824738141/">
+                        <a href="https://www.linkedin.com/in/arie-dekraker/">
                             <img src="assets/linkedin.png" alt="" />
                         </a>
                     </div>
