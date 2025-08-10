@@ -106,6 +106,21 @@ function App() {
                     zIndex: 2,
                   }}>Contact Me</a>
                 </div>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: 32 }}>
+                  <a href="/Arie_Resume_general.pdf" download style={{
+                    display: 'inline-block',
+                    padding: '10px 22px',
+                    fontSize: '1.08rem',
+                    fontWeight: 600,
+                    color: darkMode ? '#fff' : '#222',
+                    background: darkMode ? '#1976d2' : '#90caf9',
+                    borderRadius: 8,
+                    textDecoration: 'none',
+                    boxShadow: '0 2px 8px rgba(25, 118, 210, 0.10)',
+                    transition: 'background 0.2s',
+                    zIndex: 2,
+                  }}>Download Resume (PDF)</a>
+                </div>
               </div>
             </>
           } />
