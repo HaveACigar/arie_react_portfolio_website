@@ -1,0 +1,7 @@
+@import "../../global.scss";
+
+.experience-section {
+  @include mobile {
+    padding: 32px 8px;
+  }
+}

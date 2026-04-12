@@ -1,45 +1,9 @@
 @import "../../global.scss";
 
 .aboutMe{
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    .left{
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
+    width: 100%;
 
-        @include mobile{
-            display:none;
-        }
-
-        .cardBg{
-            position: absolute;
-            top: 50px;
-            left: 50px;
-            background-color: #333;
-        }
-
-        .card{
-            position: relative;
-            width: 60%;
-            height: 70vh;
-            border-radius: 30px;
-
-            img{
-                width: 40%;
-            }
-        }
-    }
-    .right{
-        flex: 1;
-        font-size: 20px;
-        justify-content: space-around;
-        @include mobile{
-            font-size: 22px;
-            text-align: center;
-        }
+    @include mobile{
+        padding: 24px 8px;
     }
 }

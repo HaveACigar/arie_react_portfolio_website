@@ -1,0 +1,7 @@
+@import "../../global.scss";
+
+.site-footer {
+  @include mobile {
+    padding: 24px 12px;
+  }
+}

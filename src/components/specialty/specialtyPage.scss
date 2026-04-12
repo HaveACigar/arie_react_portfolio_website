@@ -1,0 +1,9 @@
+@import "../../global.scss";
+
+.specialty-page {
+  @include mobile {
+    padding-top: 72px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
