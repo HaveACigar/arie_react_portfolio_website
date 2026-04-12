@@ -1,0 +1,15 @@
+# Ignore git files
+.git
+.gitignore
+.gcloudignore
+
+# Ignore dev dependencies and source (only need build/ for static hosting)
+node_modules/
+src/
+public/
+coverage/
+.env
+.env.*
+*.log
+.DS_Store
+README.md
