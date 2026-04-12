@@ -10,7 +10,6 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
-    "again": "0.0.1",
     "firebase": "^9.23.0",
     "ityped": "^1.0.3",
     "react": "^18.2.0",
