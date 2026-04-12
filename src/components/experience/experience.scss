@@ -1,7 +1,13 @@
 @import "../../global.scss";
 
 .experience-section {
+  overflow: hidden;
+
   @include mobile {
     padding: 32px 8px;
+  }
+
+  .timeline-item {
+    overflow: hidden;
   }
 }

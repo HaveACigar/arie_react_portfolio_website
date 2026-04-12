@@ -2,8 +2,9 @@
 
 .aboutMe{
     width: 100%;
+    word-break: break-word;
 
     @include mobile{
-        padding: 24px 8px;
+        padding: 24px 12px;
     }
 }

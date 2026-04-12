@@ -91,8 +91,11 @@ export default function Experience({ filter }) {
               sx={{
                 flex: 1,
                 ml: 2,
-                p: 3,
+                p: { xs: 2, md: 3 },
                 borderRadius: 3,
+                minWidth: 0,
+                overflow: "hidden",
+                wordBreak: "break-word",
                 background: darkMode ? "#2a2a2a" : "#fff",
                 border: darkMode ? "1px solid #444" : "1px solid #e3f0ff",
                 transition: "transform 0.2s, box-shadow 0.2s",
