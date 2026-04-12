@@ -1,70 +1,75 @@
-# Getting Started with Create React App
+# Arie DeKraker — Portfolio Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive portfolio site built with React showcasing my professional experience, technical skills, and data science & software engineering projects.
 
-## Available Scripts
+**Live:** [https://www.arieswebsite.com](https://www.arieswebsite.com)
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **Interactive Home Page** — Hero section with typing animation, stat highlights, and call-to-action buttons
+- **Skills & Technologies** — Categorized skill grid covering Programming, AI/ML, Cloud, Databases, and Data Visualization
+- **Work Experience** — Timeline of roles at Ford Motor Company with key contributions and tech stacks
+- **Projects** — Portfolio of data science and engineering projects with live links and status badges
+- **Education** — Degree details with relevant coursework
+- **Specialty Pages** — Dedicated pages for [Data Science & Analysis](/data-science) and [Backend Software Engineering](/software-engineering), each with filtered experience, skills, and projects
+- **Contact Form** — Firebase-powered contact form with reCAPTCHA
+- **Dark Mode** — Toggle between light and dark themes
+- **Mobile Responsive** — Fully responsive across all screen sizes
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Tech Stack
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **Framework:** React 18 with React Router 6
+- **UI:** Material UI (MUI) 7, SCSS
+- **Backend Services:** Firebase (Firestore for contact form, Analytics)
+- **Hosting:** Google Cloud App Engine
+- **Animations:** ityped for typing effects
 
-### `npm test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+- Node.js 18+
+- A `.env` file with Firebase configuration (see [GCP_DEPLOY.md](GCP_DEPLOY.md))
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Install & Run Locally
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm install
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Opens [http://localhost:3000](http://localhost:3000) in your browser.
 
-### `npm run eject`
+### Build for Production
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+npm run build
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Creates an optimized production build in the `build/` folder.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Deployment
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+See [GCP_DEPLOY.md](GCP_DEPLOY.md) for full deployment instructions to Google Cloud App Engine.
 
-## Learn More
+## Project Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+src/
+├── App.jsx                  # Routes and layout
+├── data.js                  # Centralized content data
+├── context.js               # Theme context (dark mode)
+├── components/
+│   ├── intro/               # Hero section
+│   ├── aboutme/             # About Me section
+│   ├── skills/              # Skills grid
+│   ├── experience/          # Work experience timeline
+│   ├── education/           # Education cards
+│   ├── projects/            # Project portfolio grid
+│   ├── specialty/           # Data Science & Engineering pages
+│   ├── contact/             # Contact form (Firebase)
+│   ├── topbar/              # Navigation bar
+│   ├── menu/                # Slide-out menu
+│   ├── footer/              # Site footer
+│   └── mastersprojects/     # Master's program projects
+```
