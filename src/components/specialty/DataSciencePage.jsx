@@ -3,7 +3,7 @@ import { Box, Typography, Button, Chip, Paper } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ScienceIcon from "@mui/icons-material/Science";
 import { ThemeContext } from "../../context";
-import { experience, projects, skills, education } from "../../data";
+import { projects, skills, education } from "../../data";
 import Experience from "../experience/Experience";
 import "./specialtyPage.scss";
 
