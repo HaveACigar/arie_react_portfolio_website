@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { Box, Typography, Paper, Chip } from "@mui/material";
-import SchoolIcon from "@mui/icons-material/School";
 import { ThemeContext } from "../../context";
 import { education } from "../../data";
 import "./education.scss";
@@ -65,19 +64,23 @@ export default function Education() {
           >
             <Box
               sx={{
-                width: 48,
-                height: 48,
+                width: 52,
+                height: 52,
                 borderRadius: "50%",
-                bgcolor: darkMode ? "#1976d2" : "#e3f2fd",
+                overflow: "hidden",
+                bgcolor: darkMode ? "#1e3a5f" : "#e3f2fd",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
                 mt: 0.5,
+                border: darkMode ? "2px solid #1976d2" : "2px solid #bbdefb",
               }}
             >
-              <SchoolIcon
-                sx={{ color: darkMode ? "#fff" : "#1976d2", fontSize: 24 }}
+              <img
+                src={edu.logo}
+                alt={edu.school}
+                style={{ width: 36, height: 36, objectFit: "contain" }}
               />
             </Box>
 

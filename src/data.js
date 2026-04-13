@@ -180,6 +180,7 @@ export const education = [
     school: "University of Calgary",
     location: "Canada",
     period: "September 2023 – December 2024",
+    logo: "assets/Calgary_Logo.png",
     coursework: [
       "Machine Learning",
       "Big Data Applications",
@@ -193,6 +194,7 @@ export const education = [
     school: "Eastern Michigan University",
     location: "USA",
     period: "September 2015 – April 2019",
+    logo: "assets/EMU.png",
     coursework: [],
   },
 ];
