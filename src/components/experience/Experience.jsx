@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { Box, Typography, Paper, Chip } from "@mui/material";
-import WorkIcon from "@mui/icons-material/Work";
 import { ThemeContext } from "../../context";
 import { experience } from "../../data";
 import "./experience.scss";
@@ -71,17 +70,23 @@ export default function Experience({ filter }) {
             >
               <Box
                 sx={{
-                  width: 40,
-                  height: 40,
+                  width: 44,
+                  height: 44,
                   borderRadius: "50%",
-                  bgcolor: darkMode ? "#1976d2" : "#1976d2",
+                  overflow: "hidden",
+                  bgcolor: darkMode ? "#1e3a5f" : "#e3f2fd",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   boxShadow: 2,
+                  border: darkMode ? "2px solid #1976d2" : "2px solid #bbdefb",
                 }}
               >
-                <WorkIcon sx={{ color: "#fff", fontSize: 20 }} />
+                <img
+                  src="assets/Ford_Logo.png"
+                  alt="Ford"
+                  style={{ width: 30, height: 30, objectFit: "contain" }}
+                />
               </Box>
             </Box>
 
