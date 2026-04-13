@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 
-export default function Topbar({ menuOpen, setMenuOpen }) {
+export default function Topbar() {
     const theme = useContext(ThemeContext);
     const darkMode = theme.state.darkMode;
 
@@ -19,7 +19,7 @@ export default function Topbar({ menuOpen, setMenuOpen }) {
 
 
     return (
-        <Box className={"topbar " + (menuOpen && "active")}
+        <Box className="topbar"
             sx={{
                 width: '100%',
                 bgcolor: darkMode ? 'grey.900' : 'grey.100',
@@ -29,16 +29,6 @@ export default function Topbar({ menuOpen, setMenuOpen }) {
                 zIndex: 1300,
             }}>
             <Box className="wrapper" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: { xs: 1, md: 2 }, py: 1 }}>
-                {/* Hamburger menu - mobile only */}
-                <Box
-                    className="hamburger"
-                    onClick={() => setMenuOpen(!menuOpen)}
-                    sx={{ display: { xs: 'flex', md: 'none' }, flexDirection: 'column', justifyContent: 'space-between', width: 28, height: 20, cursor: 'pointer' }}
-                >
-                    <span style={{ width: '100%', height: 3, backgroundColor: menuOpen ? '#fff' : (darkMode ? '#eee' : '#333'), transformOrigin: 'left', transition: 'all 0.5s ease', transform: menuOpen ? 'rotate(45deg)' : 'none' }} />
-                    <span style={{ width: '100%', height: 3, backgroundColor: menuOpen ? '#fff' : (darkMode ? '#eee' : '#333'), transition: 'all 0.5s ease', opacity: menuOpen ? 0 : 1 }} />
-                    <span style={{ width: '100%', height: 3, backgroundColor: menuOpen ? '#fff' : (darkMode ? '#eee' : '#333'), transformOrigin: 'left', transition: 'all 0.5s ease', transform: menuOpen ? 'rotate(-45deg)' : 'none' }} />
-                </Box>
 
                 {/* Center content */}
                 <Stack direction="row" spacing={{ xs: 1, md: 3 }} alignItems="center" sx={{ flex: 1, justifyContent: 'center' }}>

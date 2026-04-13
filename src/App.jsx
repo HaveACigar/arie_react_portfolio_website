@@ -5,7 +5,6 @@ import Contact from "./components/contact/Contact";
 import Intro from "./components/intro/Intro";
 import Topbar from "./components/topbar/Topbar";
 import AboutMe from "./components/aboutme/AboutMe";
-import Menu from "./components/menu/Menu";
 import Skills from "./components/skills/Skills";
 import Experience from "./components/experience/Experience";
 import Education from "./components/education/Education";
@@ -15,11 +14,10 @@ import PortfolioWorks from "./components/PortfolioWorks";
 import DataSciencePage from "./components/specialty/DataSciencePage";
 import SoftwareEngineeringPage from "./components/specialty/SoftwareEngineeringPage";
 import "./app.scss";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ThemeContext } from "./context";
 
 function App() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const theme = useContext(ThemeContext);
   const darkMode = theme.state.darkMode;
 
@@ -36,8 +34,7 @@ function App() {
         <Routes>
           <Route path="/" element={
             <>
-              <Topbar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
-              <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+              <Topbar/>
               <div className="sections" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', position: 'relative', paddingTop: 80, paddingBottom: 0 }}>
                 <Intro/>
                 <AboutMe/>
@@ -51,48 +48,42 @@ function App() {
           } />
           <Route path="/aboutme" element={
             <>
-              <Topbar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
-              <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+              <Topbar/>
               <AboutMe />
               <Footer/>
             </>
           } />
           <Route path="/portfolio" element={
             <>
-              <Topbar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
-              <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+              <Topbar/>
               <PortfolioWorks />
               <Footer/>
             </>
           } />
           <Route path="/contact" element={
             <>
-              <Topbar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
-              <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+              <Topbar/>
               <Contact />
               <Footer/>
             </>
           } />
           <Route path="/contactme" element={
             <>
-              <Topbar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
-              <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+              <Topbar/>
               <ContactMe />
               <Footer/>
             </>
           } />
           <Route path="/data-science" element={
             <>
-              <Topbar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
-              <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+              <Topbar/>
               <DataSciencePage />
               <Footer/>
             </>
           } />
           <Route path="/software-engineering" element={
             <>
-              <Topbar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
-              <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+              <Topbar/>
               <SoftwareEngineeringPage />
               <Footer/>
             </>
