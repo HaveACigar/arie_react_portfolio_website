@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { ThemeContext } from "../../context";
 import { db } from "../firebase.js";
 import { collection, addDoc } from "firebase/firestore";
-import { Box, Button, TextField, Typography, Paper, CircularProgress } from "@mui/material";
+import { Box, Button, TextField, Typography, CircularProgress } from "@mui/material";
 
 export default function ContactMe() {
   const theme = useContext(ThemeContext);
@@ -16,7 +16,7 @@ export default function ContactMe() {
     e.preventDefault();
     setLoader(true);
     try {
-      const docRef = await addDoc(collection(db, "contacts"), {
+      await addDoc(collection(db, "contacts"), {
         name,
         email,
         message,

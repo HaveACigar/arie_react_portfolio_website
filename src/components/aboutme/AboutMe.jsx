@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Box, Typography, Chip } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { ThemeContext } from "../../context";
 import "./aboutMe.scss";
 
