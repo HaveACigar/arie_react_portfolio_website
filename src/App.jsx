@@ -15,6 +15,7 @@ import DataSciencePage from "./components/specialty/DataSciencePage";
 import SoftwareEngineeringPage from "./components/specialty/SoftwareEngineeringPage";
 import PersonalProjects from "./components/personalprojects/PersonalProjects";
 import EDAProjectPage from "./components/personalprojects/EDAProjectPage";
+import ChurnPredictionPage from "./components/personalprojects/ChurnPredictionPage";
 import ReactPortfolioPage from "./components/personalprojects/ReactPortfolioPage";
 import SchoolProjectPage from "./components/schoolprojects/SchoolProjectPage";
 import "./app.scss";
@@ -118,6 +119,13 @@ function App() {
             <>
               <Topbar/>
               <ReactPortfolioPage />
+              <Footer/>
+            </>
+          } />
+          <Route path="/personal-projects/supervised-ml-pipeline" element={
+            <>
+              <Topbar/>
+              <ChurnPredictionPage />
               <Footer/>
             </>
           } />

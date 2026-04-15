@@ -390,7 +390,40 @@ export const personalProjects = [
     ],
   },
   // Future personal projects will be added here as they are completed:
-  // { id: "supervised-ml-pipeline", title: "Supervised ML: Prediction Pipeline", ... },
+  // { id: "supervised-ml-pipeline", title: "Supervised ML: Prediction Pipeline", ... },  // DONE ↓
+  {
+    id: "supervised-ml-pipeline",
+    title: "Supervised ML: Churn Prediction Pipeline",
+    subtitle: "End-to-End Classification — sklearn Pipelines, XGBoost & SHAP Explainability",
+    description:
+      "End-to-end supervised ML project on the IBM Telco Customer Churn dataset (7,043 customers, " +
+      "20 features). Demonstrates a full production-quality workflow: sklearn ColumnTransformer " +
+      "preprocessing pipelines, 5-fold stratified cross-validation across 4 models, " +
+      "SHAP TreeExplainer for feature explainability, and a live interactive Streamlit dashboard " +
+      "with ROC curves, confusion matrices, and a real-time churn probability predictor.",
+    tech: [
+      "Python", "Scikit-learn", "XGBoost", "SHAP", "Pandas",
+      "Plotly", "Streamlit", "Docker", "GCP Cloud Run", "GitHub Actions",
+    ],
+    skillsShowcased: [
+      "Supervised ML (Classification)",
+      "Feature Engineering & Pipelines",
+      "Model Evaluation & Explainability",
+      "MLOps & Cloud Deployment",
+    ],
+    status: "Complete",
+    category: "data-science",
+    github: "https://github.com/HaveACigar/supervised-ml-pipeline",
+    route: "/personal-projects/supervised-ml-pipeline",
+    highlights: [
+      "4 models compared via 5-fold stratified CV: Logistic Regression, Random Forest, Gradient Boosting, XGBoost",
+      "Full sklearn Pipeline with ColumnTransformer — zero data leakage guaranteed during cross-validation",
+      "SHAP TreeExplainer on XGBoost: mean |SHAP| bar chart + beeswarm summary plot",
+      "Models pre-trained at Docker build time and serialized to disk — instant startup in Cloud Run",
+      "Interactive churn predictor with per-prediction SHAP feature contribution breakdown",
+      "Class imbalance handled via class_weight='balanced' and XGBoost scale_pos_weight",
+    ],
+  },
   // { id: "nlp-text-analytics", title: "NLP & Text Analytics", ... },
   // { id: "deep-learning-image-classifier", title: "Deep Learning Image Classifier", ... },
   // { id: "time-series-forecasting", title: "Time Series Forecasting", ... },
