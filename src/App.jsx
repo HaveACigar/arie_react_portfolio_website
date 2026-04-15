@@ -43,8 +43,8 @@ function App() {
                 <AboutMe/>
                 <Skills/>
                 <Experience/>
-                <Projects/>
                 <Education/>
+                <Projects/>
               </div>
               <Footer/>
             </>
