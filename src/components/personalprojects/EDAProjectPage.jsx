@@ -33,6 +33,7 @@ export default function EDAProjectPage() {
   const accent = darkMode ? "#90caf9" : "#1976d2";
   const cardBg = darkMode ? "#2a2a2a" : "#fff";
   const cardBorder = darkMode ? "1px solid #444" : "1px solid #e3f0ff";
+  const dashboardUrl = process.env.REACT_APP_EDA_DASHBOARD_URL;
 
   // ── Data quality issues tackled — shown as a visual checklist ──
   const dataQualityIssues = [
@@ -193,6 +194,56 @@ export default function EDAProjectPage() {
             </Box>
           ))}
         </Paper>
+
+        {/* ── Live Dashboard Embed ── */}
+        <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+          Live Dashboard Preview
+        </Typography>
+        {dashboardUrl ? (
+          <Paper
+            elevation={2}
+            sx={{
+              p: 1.5,
+              borderRadius: 3,
+              background: cardBg,
+              border: cardBorder,
+              mb: 5,
+            }}
+          >
+            <Box
+              component="iframe"
+              title="EDA Dashboard"
+              src={`${dashboardUrl}${dashboardUrl.includes("?") ? "&" : "?"}embed=true`}
+              sx={{
+                width: "100%",
+                height: { xs: 500, md: 700 },
+                border: 0,
+                borderRadius: 2,
+                background: darkMode ? "#111" : "#fff",
+              }}
+            />
+          </Paper>
+        ) : (
+          <Paper
+            elevation={2}
+            sx={{ p: 3, borderRadius: 3, background: cardBg, border: cardBorder, mb: 5 }}
+          >
+            <Typography variant="body2" sx={{ color: darkMode ? "#bbb" : "#555", lineHeight: 1.7, mb: 2 }}>
+              Dashboard embed is ready. Add a deployed Streamlit URL using
+              <strong> REACT_APP_EDA_DASHBOARD_URL </strong>
+              to render the live dashboard directly on this page.
+            </Typography>
+            <Button
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outlined"
+              sx={{ textTransform: "none", fontWeight: 600 }}
+            >
+              Open Project Repository
+            </Button>
+          </Paper>
+        )}
 
         {/* ── Dashboard Sections ── */}
         <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>

@@ -203,6 +203,7 @@ export const education = [
 export const projects = [
   {
     id: 2,
+    slug: "economic-gender-divide-analysis",
     title: "Economic & Gender Divide Analysis",
     description:
       "Comprehensive analysis of wage disparities across Canadian regions, presented at YYC DataCon 2024.",
@@ -210,9 +211,17 @@ export const projects = [
     status: "Complete",
     category: "data-science",
     link: "https://carnelian-partridge-c1a.notion.site/Economic-and-Gender-Divides-A-Comprehensive-Analysis-of-Wage-Disparities-Across-Canadian-Regions-e3d0e935111a41b295136ac77fe0964c",
+    resources: [
+      {
+        title: "Notion Analysis",
+        type: "Website",
+        url: "https://carnelian-partridge-c1a.notion.site/Economic-and-Gender-Divides-A-Comprehensive-Analysis-of-Wage-Disparities-Across-Canadian-Regions-e3d0e935111a41b295136ac77fe0964c",
+      },
+    ],
   },
   {
     id: 3,
+    slug: "tmdb-movie-analysis",
     title: "TMDb Movie Analysis",
     description:
       "Leveraged predictive Machine Learning models to forecast future film success using The Movie Database.",
@@ -220,9 +229,22 @@ export const projects = [
     status: "Complete",
     category: "data-science",
     link: "/In-Depth Analysis of The Movie Database (TMDb).pdf",
+    resources: [
+      {
+        title: "Project Report (PDF)",
+        type: "PDF",
+        url: "/In-Depth Analysis of The Movie Database (TMDb).pdf",
+      },
+      {
+        title: "Workbook (Jupyter Notebook)",
+        type: "Notebook",
+        url: "/In-Depth Analysis of The Movie Database (TMDb).ipynb",
+      },
+    ],
   },
   {
     id: 4,
+    slug: "calgary-mobility-app",
     title: "Calgary Mobility App",
     description:
       "Interactive tool analyzing transit duration and distance in Calgary with real-time data.",
@@ -230,9 +252,17 @@ export const projects = [
     status: "Complete",
     category: "data-science",
     link: "https://mobility-app-yyc.onrender.com/duration-distance",
+    resources: [
+      {
+        title: "Live Mobility Dashboard",
+        type: "Website",
+        url: "https://mobility-app-yyc.onrender.com/duration-distance",
+      },
+    ],
   },
   {
     id: 5,
+    slug: "calgary-climate-model-report",
     title: "Calgary Climate Model Report",
     description:
       "Climate modeling and statistical analysis of Calgary weather patterns.",
@@ -240,9 +270,17 @@ export const projects = [
     status: "Complete",
     category: "data-science",
     link: "/Calgary Climate Model Report_603.pdf",
+    resources: [
+      {
+        title: "Climate Model Report (PDF)",
+        type: "PDF",
+        url: "/Calgary Climate Model Report_603.pdf",
+      },
+    ],
   },
   {
     id: 6,
+    slug: "residential-building-costs-analysis",
     title: "Residential Building Costs Analysis",
     description:
       "Analysis of residential building costs correlated with economic indicators.",
@@ -250,6 +288,13 @@ export const projects = [
     status: "Complete",
     category: "data-science",
     link: "/DATA 602 - Final Report.pdf",
+    resources: [
+      {
+        title: "Final Report (PDF)",
+        type: "PDF",
+        url: "/DATA 602 - Final Report.pdf",
+      },
+    ],
   },
 ];
 

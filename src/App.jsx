@@ -16,6 +16,7 @@ import SoftwareEngineeringPage from "./components/specialty/SoftwareEngineeringP
 import PersonalProjects from "./components/personalprojects/PersonalProjects";
 import EDAProjectPage from "./components/personalprojects/EDAProjectPage";
 import ReactPortfolioPage from "./components/personalprojects/ReactPortfolioPage";
+import SchoolProjectPage from "./components/schoolprojects/SchoolProjectPage";
 import "./app.scss";
 import { useContext } from "react";
 import { ThemeContext } from "./context";
@@ -117,6 +118,13 @@ function App() {
             <>
               <Topbar/>
               <ReactPortfolioPage />
+              <Footer/>
+            </>
+          } />
+          <Route path="/school-projects/:projectSlug" element={
+            <>
+              <Topbar/>
+              <SchoolProjectPage />
               <Footer/>
             </>
           } />

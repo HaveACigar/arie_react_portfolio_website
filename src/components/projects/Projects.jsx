@@ -94,11 +94,29 @@ export default function Projects() {
                 <Chip key={t} label={t} size="small" sx={{ fontWeight: 500, fontSize: "0.7rem", bgcolor: darkMode ? "#333" : "#f3e5f5", color: darkMode ? "#ce93d8" : "#7b1fa2", border: darkMode ? "1px solid #9c27b0" : "1px solid #ce93d8" }} />
               ))}
             </Box>
-            {project.link && (
-              <Button href={project.link} target="_blank" rel="noopener noreferrer" size="small" endIcon={<OpenInNewIcon />} sx={{ alignSelf: "flex-start", textTransform: "none", fontWeight: 600, color: accent }}>
-                View Project
+            <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
+              <Button
+                component={Link}
+                to={`/school-projects/${project.slug}`}
+                size="small"
+                variant="outlined"
+                sx={{ textTransform: "none", fontWeight: 600 }}
+              >
+                View Details →
               </Button>
-            )}
+              {project.link && (
+                <Button
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  size="small"
+                  endIcon={<OpenInNewIcon />}
+                  sx={{ textTransform: "none", fontWeight: 600, color: accent }}
+                >
+                  Open Primary Resource
+                </Button>
+              )}
+            </Box>
           </Paper>
         ))}
       </Box>
