@@ -270,3 +270,51 @@ export const reactPortfolio = [
 export const angularPortfolio = [
   { id: 1, title: "TBD", img: "assets/portfolio.png" },
 ];
+
+// ── Personal Projects (Data Science Portfolio) ──
+// These are independent, self-directed projects designed to showcase
+// specific Data Science skillsets beyond academic and professional work.
+export const personalProjects = [
+  {
+    id: "eda-visualization-dashboard",
+    title: "EDA & Visualization Dashboard",
+    subtitle: "Data Cleaning, Statistical Analysis & Interactive Visualization",
+    description:
+      "End-to-end exploratory data analysis on a synthetically generated Global Health dataset " +
+      "containing 12+ categories of data quality issues. Demonstrates a full wrangling pipeline " +
+      "(mixed types, inconsistent naming, impossible values, duplicates, scattered nulls) " +
+      "followed by statistical analysis and an interactive Streamlit dashboard with 9 sections.",
+    tech: [
+      "Python", "Pandas", "NumPy", "Plotly", "Streamlit",
+      "Scikit-learn", "Regex", "Statistics",
+    ],
+    skillsShowcased: [
+      "Data Cleaning & Wrangling",
+      "Statistical Analysis",
+      "Interactive Visualization",
+      "Modular Python Architecture",
+    ],
+    status: "Complete",
+    category: "data-science",
+    github: "https://github.com/HaveACigar/eda-visualization-dashboard",
+    // Route within the portfolio website for the detailed project page
+    route: "/personal-projects/eda-visualization-dashboard",
+    highlights: [
+      "Cleaned 12+ categories of data quality issues in a 7-step automated pipeline",
+      "Built 8 reusable Plotly chart types (heatmaps, scatter + OLS, box plots, ranked bars, etc.)",
+      "Streamlit dashboard with 9 interactive sections covering full EDA workflow",
+      "World Bank-style income group classification with group comparison analysis",
+      "46 countries across 24 years (2000–2023) with 11 health & economic indicators",
+    ],
+  },
+  // Future personal projects will be added here as they are completed:
+  // { id: "supervised-ml-pipeline", title: "Supervised ML: Prediction Pipeline", ... },
+  // { id: "nlp-text-analytics", title: "NLP & Text Analytics", ... },
+  // { id: "deep-learning-image-classifier", title: "Deep Learning Image Classifier", ... },
+  // { id: "time-series-forecasting", title: "Time Series Forecasting", ... },
+  // { id: "recommendation-system", title: "Recommendation System", ... },
+  // { id: "ab-testing-statistical-inference", title: "A/B Testing & Statistical Inference", ... },
+  // { id: "sql-data-engineering-pipeline", title: "SQL & Data Engineering Pipeline", ... },
+  // { id: "ml-model-deployment", title: "ML Model Deployment (MLOps)", ... },
+  // { id: "big-data-cloud-analytics", title: "Big Data & Cloud Analytics", ... },
+];

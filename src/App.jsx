@@ -13,6 +13,8 @@ import Footer from "./components/footer/Footer";
 import PortfolioWorks from "./components/PortfolioWorks";
 import DataSciencePage from "./components/specialty/DataSciencePage";
 import SoftwareEngineeringPage from "./components/specialty/SoftwareEngineeringPage";
+import PersonalProjects from "./components/personalprojects/PersonalProjects";
+import EDAProjectPage from "./components/personalprojects/EDAProjectPage";
 import "./app.scss";
 import { useContext } from "react";
 import { ThemeContext } from "./context";
@@ -91,6 +93,20 @@ function App() {
           <Route path="/mastersprojects" element={
             <>
               <MastersProjects />
+              <Footer/>
+            </>
+          } />
+          <Route path="/personal-projects" element={
+            <>
+              <Topbar/>
+              <PersonalProjects />
+              <Footer/>
+            </>
+          } />
+          <Route path="/personal-projects/eda-visualization-dashboard" element={
+            <>
+              <Topbar/>
+              <EDAProjectPage />
               <Footer/>
             </>
           } />

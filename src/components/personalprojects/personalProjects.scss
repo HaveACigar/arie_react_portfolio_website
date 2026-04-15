@@ -1,0 +1,12 @@
+@import "../../global.scss";
+
+.personal-projects-page {
+  overflow-x: hidden;
+  word-break: break-word;
+
+  @include mobile {
+    padding-top: 72px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
