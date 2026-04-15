@@ -424,12 +424,301 @@ export const personalProjects = [
       "Class imbalance handled via class_weight='balanced' and XGBoost scale_pos_weight",
     ],
   },
-  // { id: "nlp-text-analytics", title: "NLP & Text Analytics", ... },
-  // { id: "deep-learning-image-classifier", title: "Deep Learning Image Classifier", ... },
-  // { id: "time-series-forecasting", title: "Time Series Forecasting", ... },
-  // { id: "recommendation-system", title: "Recommendation System", ... },
-  // { id: "ab-testing-statistical-inference", title: "A/B Testing & Statistical Inference", ... },
-  // { id: "sql-data-engineering-pipeline", title: "SQL & Data Engineering Pipeline", ... },
-  // { id: "ml-model-deployment", title: "ML Model Deployment (MLOps)", ... },
-  // { id: "big-data-cloud-analytics", title: "Big Data & Cloud Analytics", ... },
+  {
+    id: "nlp-text-analytics",
+    title: "NLP & Text Analytics",
+    subtitle: "Topic Modeling, Sentiment Analysis & Retrieval-Augmented Search",
+    description:
+      "An end-to-end NLP portfolio project focused on unstructured customer feedback and product reviews. " +
+      "The final build is scoped to include document cleaning, embedding-based semantic search, topic modeling, " +
+      "sentiment classification, and an interactive dashboard that lets recruiters inspect themes, complaints, and example documents.",
+    tech: [
+      "Python", "Pandas", "spaCy", "Sentence Transformers", "BERTopic",
+      "scikit-learn", "Plotly", "Streamlit",
+    ],
+    skillsShowcased: [
+      "NLP Pipelines",
+      "Text Classification",
+      "Semantic Search / Embeddings",
+      "Insight Communication",
+    ],
+    status: "Scaffolded",
+    category: "data-science",
+    route: "/personal-projects/nlp-text-analytics",
+    highlights: [
+      "Customer-review dataset with realistic preprocessing challenges: HTML, emojis, typos, duplicated complaints, and mixed sentiment",
+      "Embedding-based nearest-neighbor search for semantic retrieval of similar complaints and product issues",
+      "BERTopic or LDA topic modeling to surface recurring problem categories and latent themes",
+      "Binary or multi-class sentiment classifier benchmarked with precision, recall, F1, and confusion matrices",
+    ],
+    recruiterSignals: [
+      "Shows ability to work with messy unstructured text instead of only structured CSV data",
+      "Demonstrates practical LLM-adjacent skills recruiters now look for: embeddings, retrieval, and explainability",
+      "Creates a direct bridge between classic NLP and the modern RAG/GenAI ecosystem",
+    ],
+    deliverables: [
+      "Python training pipeline for text cleaning, vectorization, topic modeling, and sentiment modeling",
+      "Interactive Streamlit app with search, topic explorer, and model evaluation tabs",
+      "Cloud Run deployment and embedded portfolio page once the app is live",
+    ],
+  },
+  {
+    id: "deep-learning-image-classifier",
+    title: "Deep Learning Image Classifier",
+    subtitle: "Transfer Learning, CNN Fine-Tuning & Explainable Vision Models",
+    description:
+      "A computer vision project centered on transfer learning and model explainability. " +
+      "The planned build uses a well-known benchmark dataset to fine-tune a modern CNN, compare architectures, and surface Grad-CAM visual explanations in a recruiter-friendly demo app.",
+    tech: [
+      "Python", "PyTorch", "Torchvision", "OpenCV", "NumPy",
+      "Plotly", "Streamlit", "Docker",
+    ],
+    skillsShowcased: [
+      "Deep Learning",
+      "Computer Vision",
+      "Transfer Learning",
+      "Model Explainability",
+    ],
+    status: "Scaffolded",
+    category: "data-science",
+    route: "/personal-projects/deep-learning-image-classifier",
+    highlights: [
+      "Fine-tune pretrained CNN backbones such as ResNet or EfficientNet on a curated labeled image dataset",
+      "Benchmark accuracy, precision, recall, top-k accuracy, and calibration across model variants",
+      "Use Grad-CAM or saliency maps to show which image regions drove each prediction",
+      "Package a lightweight inference demo where users upload an image and inspect confidence scores and visual explanations",
+    ],
+    recruiterSignals: [
+      "Signals hands-on deep learning capability beyond tabular models",
+      "Shows you can communicate black-box models using explainability tooling instead of accuracy alone",
+      "Adds breadth to your portfolio across vision, not just analytics and regression/classification",
+    ],
+    deliverables: [
+      "Training notebook or script with experiment tracking and validation curves",
+      "Inference app with uploaded-image prediction, top classes, and Grad-CAM overlay",
+      "Cloud deployment with model artifacts optimized for responsive inference",
+    ],
+  },
+  {
+    id: "time-series-forecasting",
+    title: "Time Series Forecasting",
+    subtitle: "Multi-Horizon Forecasting, Backtesting & Error Analysis",
+    description:
+      "A forecasting project designed to showcase rigor around temporal validation and business-facing forecast interpretation. " +
+      "The build is scoped around demand or subscription forecasting with walk-forward validation, feature engineering, benchmark models, and error decomposition over time.",
+    tech: [
+      "Python", "Pandas", "Statsmodels", "scikit-learn", "XGBoost",
+      "Prophet", "Plotly", "Streamlit",
+    ],
+    skillsShowcased: [
+      "Time Series Forecasting",
+      "Backtesting",
+      "Feature Engineering",
+      "Business Metric Interpretation",
+    ],
+    status: "Scaffolded",
+    category: "data-science",
+    route: "/personal-projects/time-series-forecasting",
+    highlights: [
+      "Walk-forward backtesting instead of random train/test splits to preserve time order",
+      "Comparison of naive baseline, ARIMA/ETS-style models, gradient boosting, and Prophet-style forecasting",
+      "Calendar and lag-feature engineering for trend, seasonality, promotions, and external regressors",
+      "Forecast error analysis by horizon, season, and event windows to explain where the model wins and fails",
+    ],
+    recruiterSignals: [
+      "Closely matches business forecasting work many data science teams actually need",
+      "Shows methodological discipline around leakage prevention and proper temporal evaluation",
+      "Connects naturally to your Ford background in demand, subscription, and product analytics",
+    ],
+    deliverables: [
+      "Forecasting pipeline with configurable horizons and walk-forward evaluation",
+      "Interactive dashboard with forecast bands, actuals vs predicted, and error diagnostics",
+      "Deployment-ready inference service for scoring future periods from uploaded input data",
+    ],
+  },
+  {
+    id: "recommendation-system",
+    title: "Recommendation System",
+    subtitle: "Ranking, Similarity Search & Personalized Candidate Generation",
+    description:
+      "A recommender-system project focused on personalized ranking and explainable suggestions. " +
+      "The scoped build combines popularity baselines, content-based similarity, and collaborative filtering to show how recommendations improve as richer user-item interactions become available.",
+    tech: [
+      "Python", "Pandas", "Surprise", "scikit-learn", "Implicit",
+      "Sentence Transformers", "Plotly", "Streamlit",
+    ],
+    skillsShowcased: [
+      "Recommendation Systems",
+      "Ranking Metrics",
+      "Similarity Search",
+      "Experiment Design",
+    ],
+    status: "Scaffolded",
+    category: "data-science",
+    route: "/personal-projects/recommendation-system",
+    highlights: [
+      "Popularity, content-based, and collaborative-filtering recommenders benchmarked side by side",
+      "Offline ranking metrics such as Precision@K, Recall@K, MAP, or NDCG to evaluate recommendation quality",
+      "Cold-start strategy using metadata embeddings and item similarity when interaction history is sparse",
+      "Interactive demo where users choose a profile and inspect recommended items plus explanation traces",
+    ],
+    recruiterSignals: [
+      "Demonstrates ranking and personalization, which are distinct from standard classification work",
+      "Shows awareness of both product impact and evaluation methodology for recommender systems",
+      "Adds a strong product-analytics and consumer-experience use case to the portfolio",
+    ],
+    deliverables: [
+      "Modeling pipeline for baseline, content, and collaborative recommenders",
+      "Evaluation notebook or script with ranking metrics and ablation comparisons",
+      "Streamlit experience for interactive recommendations and model explanations",
+    ],
+  },
+  {
+    id: "ab-testing-statistical-inference",
+    title: "A/B Testing & Statistical Inference",
+    subtitle: "Experiment Design, Hypothesis Testing & Causal Decision Support",
+    description:
+      "A statistics-first project designed to mirror real experimentation work. " +
+      "The final build is scoped around randomized test design, power analysis, confidence intervals, uplift estimation, segment analysis, and a results dashboard that explains whether a product change should ship.",
+    tech: [
+      "Python", "Pandas", "SciPy", "Statsmodels", "NumPy",
+      "Plotly", "Streamlit",
+    ],
+    skillsShowcased: [
+      "Experimental Design",
+      "Statistical Inference",
+      "Power Analysis",
+      "Decision Framing",
+    ],
+    status: "Scaffolded",
+    category: "data-science",
+    route: "/personal-projects/ab-testing-statistical-inference",
+    highlights: [
+      "End-to-end simulated or real experiment with treatment/control cohorts and success metrics",
+      "Power and sample-size calculations to justify experiment readiness before launch",
+      "Frequentist and practical-significance framing: p-values, confidence intervals, effect sizes, uplift",
+      "Segment and heterogeneity analysis to show where treatment effects differ by audience or product usage",
+    ],
+    recruiterSignals: [
+      "Closely aligned with your Ford experience leading A/B testing and DOE work",
+      "Shows rigor in decision-making rather than just model building",
+      "Demonstrates statistical maturity that many portfolios gloss over",
+    ],
+    deliverables: [
+      "Experiment-analysis pipeline with reusable statistical utilities",
+      "Interactive dashboard for sample-size assumptions, test results, and segment breakdowns",
+      "Portfolio write-up that frames statistical findings as business recommendations",
+    ],
+  },
+  {
+    id: "sql-data-engineering-pipeline",
+    title: "SQL & Data Engineering Pipeline",
+    subtitle: "Data Modeling, Incremental ETL & Analytical Reporting Layers",
+    description:
+      "A project showcasing the engineering side of analytics: raw ingestion, data quality enforcement, dimensional modeling, and downstream reporting views. " +
+      "The scoped build focuses on SQL-first transformations and reproducible analytics layers suitable for BI dashboards or ML feature stores.",
+    tech: [
+      "SQL", "Python", "PostgreSQL", "dbt", "Airflow",
+      "Docker", "Power BI", "BigQuery",
+    ],
+    skillsShowcased: [
+      "Data Engineering",
+      "Data Modeling",
+      "ETL / ELT",
+      "Analytics Enablement",
+    ],
+    status: "Scaffolded",
+    category: "data-science",
+    route: "/personal-projects/sql-data-engineering-pipeline",
+    highlights: [
+      "Multi-layer warehouse design: raw, staged, marts, and business-facing reporting outputs",
+      "Incremental SQL transformations with tests for uniqueness, nullability, referential integrity, and freshness",
+      "Fact and dimension modeling built for both BI consumption and ML feature generation",
+      "Pipeline orchestration with scheduled loads and observability around row counts, failures, and latency",
+    ],
+    recruiterSignals: [
+      "Shows you can own the data foundation instead of relying on pre-cleaned datasets",
+      "Bridges analytics engineering and data science, which is valuable for smaller teams",
+      "Directly reinforces your production data-quality and BigQuery experience",
+    ],
+    deliverables: [
+      "Local or cloud warehouse environment with repeatable seed and transformation scripts",
+      "dbt or SQL test suite proving data quality across pipeline stages",
+      "Summary dashboard or dataset mart feeding downstream analytics use cases",
+    ],
+  },
+  {
+    id: "ml-model-deployment",
+    title: "ML Model Deployment (MLOps)",
+    subtitle: "Model Serving, Drift Monitoring & CI/CD for Inference Systems",
+    description:
+      "A model-operations project focused on the production lifecycle after training. " +
+      "The scoped build uses a trained predictive model served behind an API, backed by containerization, CI/CD, health checks, batch scoring, and lightweight monitoring for drift and latency.",
+    tech: [
+      "Python", "FastAPI", "Docker", "Cloud Run", "GitHub Actions",
+      "Evidently", "Pandas", "Prometheus",
+    ],
+    skillsShowcased: [
+      "MLOps",
+      "Model Serving",
+      "Monitoring & Drift Detection",
+      "Production Engineering",
+    ],
+    status: "Scaffolded",
+    category: "data-science",
+    route: "/personal-projects/ml-model-deployment",
+    highlights: [
+      "REST inference API with schema validation, health endpoint, and explicit model versioning",
+      "Containerized deployment with CI/CD, automated build, and staged production rollout",
+      "Drift and data-quality checks on inference payloads with lightweight monitoring reports",
+      "Batch-scoring path to contrast online inference vs scheduled prediction workflows",
+    ],
+    recruiterSignals: [
+      "Makes your production mindset obvious instead of implying it through notebook work",
+      "Pairs naturally with the churn prediction project and your Ford-scale deployment experience",
+      "Shows you understand the full model lifecycle beyond training and AUC",
+    ],
+    deliverables: [
+      "FastAPI service for prediction requests and artifact loading",
+      "Monitoring or reporting job for drift, payload validation, and basic service metrics",
+      "Cloud deployment with a documented inference contract and smoke-test workflow",
+    ],
+  },
+  {
+    id: "big-data-cloud-analytics",
+    title: "Big Data & Cloud Analytics",
+    subtitle: "Distributed Processing, Cloud Warehousing & Production-Scale KPIs",
+    description:
+      "A cloud-focused analytics project designed to demonstrate work at larger scale. " +
+      "The scoped build covers raw event ingestion, distributed transformation, warehousing, and KPI-serving layers that emulate the kind of product analytics stack used by subscription and marketplace teams.",
+    tech: [
+      "Python", "Spark", "BigQuery", "GCP", "Databricks",
+      "SQL", "Docker", "Power BI",
+    ],
+    skillsShowcased: [
+      "Big Data Processing",
+      "Cloud Analytics",
+      "Distributed Compute",
+      "KPI Modeling",
+    ],
+    status: "Scaffolded",
+    category: "data-science",
+    route: "/personal-projects/big-data-cloud-analytics",
+    highlights: [
+      "Large synthetic or public event dataset processed with Spark-style transformations and partitioned storage",
+      "Cloud warehouse marts built for executive KPI reporting and subscription/product analysis",
+      "Performance-aware design with clustering, partitioning, and cost-conscious query patterns",
+      "End-to-end flow from raw events to curated business metrics and dashboard-ready tables",
+    ],
+    recruiterSignals: [
+      "Reinforces your experience with BigQuery, GCP, and production analytics at enterprise scale",
+      "Shows you can think in terms of pipelines, warehouses, and KPI layers instead of isolated models",
+      "Adds a clear large-scale data engineering story to complement ML and experimentation work",
+    ],
+    deliverables: [
+      "Spark or warehouse transformation pipeline over an event-style dataset",
+      "Curated KPI tables with documented metric logic and dimensional definitions",
+      "Cloud-hosted analytics showcase tied to one or two business-facing dashboards",
+    ],
+  },
 ];

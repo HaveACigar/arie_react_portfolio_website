@@ -16,6 +16,7 @@ import SoftwareEngineeringPage from "./components/specialty/SoftwareEngineeringP
 import PersonalProjects from "./components/personalprojects/PersonalProjects";
 import EDAProjectPage from "./components/personalprojects/EDAProjectPage";
 import ChurnPredictionPage from "./components/personalprojects/ChurnPredictionPage";
+import PersonalProjectDetailPage from "./components/personalprojects/PersonalProjectDetailPage";
 import ReactPortfolioPage from "./components/personalprojects/ReactPortfolioPage";
 import SchoolProjectPage from "./components/schoolprojects/SchoolProjectPage";
 import "./app.scss";
@@ -126,6 +127,13 @@ function App() {
             <>
               <Topbar/>
               <ChurnPredictionPage />
+              <Footer/>
+            </>
+          } />
+          <Route path="/personal-projects/:projectId" element={
+            <>
+              <Topbar/>
+              <PersonalProjectDetailPage />
               <Footer/>
             </>
           } />
