@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { ThemeContext } from "../../context";
-import { db } from "../firebase.js";
-import { collection, addDoc } from "firebase/firestore";
+import emailjs from "@emailjs/browser";
 import { Box, Button, TextField, Typography, CircularProgress } from "@mui/material";
 
 export default function ContactMe() {
@@ -16,11 +15,12 @@ export default function ContactMe() {
     e.preventDefault();
     setLoader(true);
     try {
-      await addDoc(collection(db, "contacts"), {
-        name,
-        email,
-        message,
-      });
+      await emailjs.send(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        { from_name: name, from_email: email, message: message },
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      );
       alert("Thank you for your message! I will try and respond as soon as I am able.");
       setName("");
       setEmail("");

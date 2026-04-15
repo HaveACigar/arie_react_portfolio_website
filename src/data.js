@@ -273,12 +273,12 @@ export const personalProjects = [
       "A professional portfolio website built as a single-page application with React 18 and " +
       "React Router v6 for client-side routing. The UI is composed with Material UI (MUI) components " +
       "and custom SCSS. Features include dark/light mode via React Context, specialty pages that " +
-      "filter experience and projects by category, a contact form backed by Firebase, and reCAPTCHA " +
-      "protection. Deployed on GCP App Engine with a GitHub Actions CI/CD pipeline that auto-builds " +
-      "and deploys on every push to main.",
+      "filter experience and projects by category, and a contact form powered by EmailJS that emails " +
+      "the site owner directly. Deployed on GCP App Engine with a GitHub Actions CI/CD pipeline " +
+      "that auto-builds and deploys on every push to main.",
     tech: [
       "React 18", "React Router v6", "MUI", "Emotion", "SCSS",
-      "Firebase", "GCP App Engine", "GitHub Actions", "reCAPTCHA",
+      "EmailJS", "GCP App Engine", "GitHub Actions",
     ],
     skillsShowcased: [
       "Frontend Architecture",
@@ -301,7 +301,7 @@ export const personalProjects = [
       "/personal-projects/react-portfolio-website — This page: technical breakdown of the portfolio site itself",
       "/portfolio — Tabbed view: React works, Angular works, Masters/Java/Web/Undergrad works",
       "/mastersprojects — University of Calgary project showcase (Notion, PDFs, Jupyter)",
-      "/contact — Firebase-backed contact form with reCAPTCHA",
+      "/contact — EmailJS-powered contact form that emails the site owner directly",
       "/contactme — Alternative contact page",
       "/aboutme — Dedicated about page",
     ],
@@ -310,7 +310,7 @@ export const personalProjects = [
       "Dark/light mode toggle powered by React Context + useReducer",
       "Specialty pages dynamically filter skills, experience, and projects by category",
       "GitHub Actions workflow auto-deploys to GCP App Engine on every push to main",
-      "Firebase integration for contact form submissions with reCAPTCHA spam protection",
+      "EmailJS integration for contact form — sends email directly to the site owner",
       "Responsive grid layouts via MUI sx props with xs/sm/md breakpoints",
       "Centralized data architecture — all content driven from a single data.js file",
     ],
