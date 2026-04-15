@@ -22,7 +22,6 @@ export const skills = [
       "Pandas",
       "GeoPandas",
       "Plotly",
-      "Matplotlib",
       "SQLAlchemy",
       "R",
       "JavaScript",
@@ -72,12 +71,10 @@ export const skills = [
     items: [
       "PostgreSQL",
       "MongoDB",
-      "Firebase",
       "Hive",
       "Spark",
       "MariaDB",
       "MySQL",
-      "PHP",
     ],
   },
   {
@@ -206,7 +203,7 @@ export const projects = [
     slug: "economic-gender-divide-analysis",
     title: "Economic & Gender Divide Analysis",
     description:
-      "Comprehensive analysis of wage disparities across Canadian regions, presented at YYC DataCon 2024.",
+      "Multi-dimensional analysis of wage disparities across Canadian provinces and industries, examining the intersection of economic inequality and gender divides using statistical modeling and visualization. Research was accepted and presented at YYC DataCon 2024.",
     tech: ["Python", "Pandas", "Visualization", "Statistics"],
     status: "Complete",
     category: "data-science",
@@ -224,7 +221,7 @@ export const projects = [
     slug: "tmdb-movie-analysis",
     title: "TMDb Movie Analysis",
     description:
-      "Leveraged predictive Machine Learning models to forecast future film success using The Movie Database.",
+      "End-to-end ML pipeline on The Movie Database (TMDb) applying feature engineering, regression, and classification models to predict box office revenue and audience reception from pre-release film metadata.",
     tech: ["Python", "Scikit-learn", "Pandas", "Matplotlib"],
     status: "Complete",
     category: "data-science",
@@ -247,7 +244,7 @@ export const projects = [
     slug: "calgary-mobility-app",
     title: "Calgary Mobility App",
     description:
-      "Interactive tool analyzing transit duration and distance in Calgary with real-time data.",
+      "Interactive geospatial dashboard analyzing Calgary transit trip durations and distances across city zones using real trip data. Built with Python Dash, Plotly, and GeoPandas; deployed live on Render.",
     tech: ["Python", "Dash", "Plotly", "GeoPandas"],
     status: "Complete",
     category: "data-science",
@@ -265,7 +262,7 @@ export const projects = [
     slug: "calgary-climate-model-report",
     title: "Calgary Climate Model Report",
     description:
-      "Climate modeling and statistical analysis of Calgary weather patterns.",
+      "Statistical climate modeling of Calgary weather patterns using R, applying time-series analysis, regression, and ggplot2 visualizations to identify long-term temperature and precipitation trends.",
     tech: ["R", "Statistical Modeling", "ggplot2"],
     status: "Complete",
     category: "data-science",
@@ -283,7 +280,7 @@ export const projects = [
     slug: "residential-building-costs-analysis",
     title: "Residential Building Costs Analysis",
     description:
-      "Analysis of residential building costs correlated with economic indicators.",
+      "Regression-based analysis correlating residential building costs with macroeconomic indicators, identifying key cost drivers through feature selection and multivariate modeling across Canadian housing market datasets.",
     tech: ["Python", "Regression", "Pandas"],
     status: "Complete",
     category: "data-science",
