@@ -202,16 +202,6 @@ export const education = [
 // ── Projects ──
 export const projects = [
   {
-    id: 1,
-    title: "React Portfolio Website",
-    description:
-      "Architected and deployed a professional data science portfolio leveraging GCP and Generative AI principles, showcasing high-impact projects.",
-    tech: ["React", "MUI", "SCSS", "GCP", "Firebase"],
-    status: "Ongoing",
-    category: "both",
-    link: "https://www.arieswebsite.com",
-  },
-  {
     id: 2,
     title: "Economic & Gender Divide Analysis",
     description:
@@ -275,6 +265,56 @@ export const angularPortfolio = [
 // These are independent, self-directed projects designed to showcase
 // specific Data Science skillsets beyond academic and professional work.
 export const personalProjects = [
+  {
+    id: "react-portfolio-website",
+    title: "React Portfolio Website",
+    subtitle: "Full-Stack SPA — React, MUI, GCP App Engine & CI/CD",
+    description:
+      "A professional portfolio website built as a single-page application with React 18 and " +
+      "React Router v6 for client-side routing. The UI is composed with Material UI (MUI) components " +
+      "and custom SCSS. Features include dark/light mode via React Context, specialty pages that " +
+      "filter experience and projects by category, a contact form backed by Firebase, and reCAPTCHA " +
+      "protection. Deployed on GCP App Engine with a GitHub Actions CI/CD pipeline that auto-builds " +
+      "and deploys on every push to main.",
+    tech: [
+      "React 18", "React Router v6", "MUI", "Emotion", "SCSS",
+      "Firebase", "GCP App Engine", "GitHub Actions", "reCAPTCHA",
+    ],
+    skillsShowcased: [
+      "Frontend Architecture",
+      "Component-Driven UI",
+      "CI/CD Pipelines",
+      "Cloud Deployment",
+    ],
+    status: "Ongoing",
+    category: "both",
+    github: "https://github.com/HaveACigar/arie_react_portfolio_website",
+    link: "https://www.arieswebsite.com",
+    route: "/personal-projects/react-portfolio-website",
+    // Page makeup — update this list when noteworthy structural changes are made
+    pageMakeup: [
+      "/ — Landing page: Intro (typed tagline via ityped), About Me, Skills grid, Experience timeline, School Projects grid, Personal Projects grid, Education cards",
+      "/data-science — Filtered view: DS skills, data-science experience, education, data-science projects",
+      "/software-engineering — Filtered view: SWE skills, software-engineering experience, education, SWE projects, key highlights",
+      "/personal-projects — Listing of all self-directed Data Science portfolio projects",
+      "/personal-projects/eda-visualization-dashboard — Deep-dive: EDA project with tech stack, highlights, data quality issues, dashboard sections, architecture",
+      "/personal-projects/react-portfolio-website — This page: technical breakdown of the portfolio site itself",
+      "/portfolio — Tabbed view: React works, Angular works, Masters/Java/Web/Undergrad works",
+      "/mastersprojects — University of Calgary project showcase (Notion, PDFs, Jupyter)",
+      "/contact — Firebase-backed contact form with reCAPTCHA",
+      "/contactme — Alternative contact page",
+      "/aboutme — Dedicated about page",
+    ],
+    highlights: [
+      "11 routes served via React Router v6 in a single-page application",
+      "Dark/light mode toggle powered by React Context + useReducer",
+      "Specialty pages dynamically filter skills, experience, and projects by category",
+      "GitHub Actions workflow auto-deploys to GCP App Engine on every push to main",
+      "Firebase integration for contact form submissions with reCAPTCHA spam protection",
+      "Responsive grid layouts via MUI sx props with xs/sm/md breakpoints",
+      "Centralized data architecture — all content driven from a single data.js file",
+    ],
+  },
   {
     id: "eda-visualization-dashboard",
     title: "EDA & Visualization Dashboard",

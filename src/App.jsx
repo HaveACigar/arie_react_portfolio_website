@@ -15,6 +15,7 @@ import DataSciencePage from "./components/specialty/DataSciencePage";
 import SoftwareEngineeringPage from "./components/specialty/SoftwareEngineeringPage";
 import PersonalProjects from "./components/personalprojects/PersonalProjects";
 import EDAProjectPage from "./components/personalprojects/EDAProjectPage";
+import ReactPortfolioPage from "./components/personalprojects/ReactPortfolioPage";
 import "./app.scss";
 import { useContext } from "react";
 import { ThemeContext } from "./context";
@@ -107,6 +108,13 @@ function App() {
             <>
               <Topbar/>
               <EDAProjectPage />
+              <Footer/>
+            </>
+          } />
+          <Route path="/personal-projects/react-portfolio-website" element={
+            <>
+              <Topbar/>
+              <ReactPortfolioPage />
               <Footer/>
             </>
           } />
