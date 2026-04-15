@@ -19,6 +19,7 @@ import ReactPortfolioPage from "./components/personalprojects/ReactPortfolioPage
 import "./app.scss";
 import { useContext } from "react";
 import { ThemeContext } from "./context";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 function App() {
   const theme = useContext(ThemeContext);
@@ -33,8 +34,9 @@ function App() {
       minHeight: '100vh',
       transition: 'background 0.4s',
     }}>
-      <Router>
-        <Routes>
+      <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}>
+        <Router>
+          <Routes>
           <Route path="/" element={
             <>
               <Topbar/>
@@ -118,8 +120,9 @@ function App() {
               <Footer/>
             </>
           } />
-        </Routes>
-      </Router>
+          </Routes>
+        </Router>
+      </GoogleReCaptchaProvider>
     </div>
   );
 }

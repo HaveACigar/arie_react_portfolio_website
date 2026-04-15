@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { ThemeContext } from "../../context";
 import "./contact.scss";
 import emailjs from "@emailjs/browser";
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export default function Contact() {
     const theme = useContext(ThemeContext)
@@ -10,14 +11,21 @@ export default function Contact() {
     const [email,setEmail] = useState("");
     const [message,setMessage] = useState("");
     const [loader, setLoader] = useState(false);
+    const { executeRecaptcha } = useGoogleReCaptcha();
     const handleSubmit = async (e)=>{
         e.preventDefault();
         setLoader(true);
         try {
+            if (!executeRecaptcha) {
+                alert("reCAPTCHA not yet available. Please try again later.");
+                setLoader(false);
+                return;
+            }
+            const token = await executeRecaptcha('contact_form');
             await emailjs.send(
                 process.env.REACT_APP_EMAILJS_SERVICE_ID,
                 process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
-                { from_name: name, from_email: email, message: message },
+                { from_name: name, from_email: email, message: message, "g-recaptcha-response": token },
                 process.env.REACT_APP_EMAILJS_PUBLIC_KEY
             );
             alert("Thank you for your message! I will try and respond as soon as I am able.");
