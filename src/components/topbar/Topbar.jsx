@@ -1,22 +1,58 @@
 import "./topbar.scss";
 import PersonIcon from "@mui/icons-material/Person";
 import MailIcon from "@mui/icons-material/Mail";
-import { useContext } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import { useState, useContext } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { ThemeContext } from "../../context";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
+
+// Navigation links shown in the hamburger menu
+const NAV_LINKS = [
+    { label: "Home", to: "/", anchor: null },
+    { label: "About Me", to: "/", anchor: "#aboutMe" },
+    { label: "Skills", to: "/", anchor: "#skills" },
+    { label: "Experience", to: "/", anchor: "#experience" },
+    { label: "Projects", to: "/", anchor: "#projects" },
+    { label: "Education", to: "/", anchor: "#education" },
+    { label: "Data Science", to: "/data-science", anchor: null },
+    { label: "Software Engineering", to: "/software-engineering", anchor: null },
+    { label: "Personal Projects", to: "/personal-projects", anchor: null },
+    { label: "Portfolio & Works", to: "/portfolio", anchor: null },
+    { label: "Contact", to: "/contact", anchor: null },
+];
 
 export default function Topbar() {
     const theme = useContext(ThemeContext);
     const darkMode = theme.state.darkMode;
+    const location = useLocation();
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     const handleClick = () => {
         theme.dispatch({ type: "TOGGLE" });
     };
 
+    const handleNavClick = (link) => {
+        setDrawerOpen(false);
+        // If the link targets an anchor on the homepage and we're already on /,
+        // scroll to it. Otherwise React Router will navigate first.
+        if (link.anchor && location.pathname === "/") {
+            setTimeout(() => {
+                const el = document.querySelector(link.anchor);
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+            }, 100);
+        }
+    };
 
     return (
         <Box className="topbar"
@@ -29,6 +65,16 @@ export default function Topbar() {
                 zIndex: 1300,
             }}>
             <Box className="wrapper" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: { xs: 1, md: 2 }, py: 1 }}>
+
+                {/* Hamburger menu button */}
+                <IconButton
+                    onClick={() => setDrawerOpen(true)}
+                    size="small"
+                    sx={{ flexShrink: 0, color: darkMode ? 'grey.100' : 'grey.900' }}
+                    aria-label="Open navigation menu"
+                >
+                    <MenuIcon />
+                </IconButton>
 
                 {/* Center content */}
                 <Stack direction="row" spacing={{ xs: 1, md: 3 }} alignItems="center" sx={{ flex: 1, justifyContent: 'center' }}>
@@ -64,6 +110,53 @@ export default function Topbar() {
                     <img src={darkMode ? "assets/sun_icon.png" : "assets/moon_icon.png"} alt="toggleIcon" style={{ width: 22, height: 22 }} />
                 </IconButton>
             </Box>
+
+            {/* Navigation drawer */}
+            <Drawer
+                anchor="left"
+                open={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+                PaperProps={{
+                    sx: {
+                        width: 260,
+                        bgcolor: darkMode ? "#1a1a1a" : "#fff",
+                        color: darkMode ? "#f5f5f5" : "#222",
+                    },
+                }}
+            >
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", px: 2, py: 1.5 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                        Navigate
+                    </Typography>
+                    <IconButton onClick={() => setDrawerOpen(false)} size="small">
+                        <CloseIcon sx={{ color: darkMode ? "#f5f5f5" : "#222" }} />
+                    </IconButton>
+                </Box>
+                <Divider sx={{ borderColor: darkMode ? "#333" : "#e0e0e0" }} />
+                <List>
+                    {NAV_LINKS.map((link) => (
+                        <ListItemButton
+                            key={link.label}
+                            component={Link}
+                            to={link.anchor ? `/${link.anchor}` : link.to}
+                            onClick={() => handleNavClick(link)}
+                            sx={{
+                                "&:hover": {
+                                    bgcolor: darkMode ? "#333" : "#e3f2fd",
+                                },
+                            }}
+                        >
+                            <ListItemText
+                                primary={link.label}
+                                primaryTypographyProps={{
+                                    fontWeight: 600,
+                                    fontSize: "0.95rem",
+                                }}
+                            />
+                        </ListItemButton>
+                    ))}
+                </List>
+            </Drawer>
         </Box>
     );
 }
