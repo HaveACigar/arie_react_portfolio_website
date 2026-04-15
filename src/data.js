@@ -427,39 +427,34 @@ export const personalProjects = [
   {
     id: "nlp-text-analytics",
     title: "NLP & Text Analytics",
-    subtitle: "Topic Modeling, Sentiment Analysis & Retrieval-Augmented Search",
+    subtitle: "Sentiment Classification, Topic Modeling & Semantic Similarity Search",
     description:
-      "An end-to-end NLP portfolio project focused on unstructured customer feedback and product reviews. " +
-      "The final build is scoped to include document cleaning, embedding-based semantic search, topic modeling, " +
-      "sentiment classification, and an interactive dashboard that lets recruiters inspect themes, complaints, and example documents.",
+      "End-to-end NLP pipeline on 8,530 Rotten Tomatoes critic reviews. " +
+      "A full text-processing workflow (HTML stripping, stopword removal, tokenization) " +
+      "feeds a TF-IDF + Logistic Regression sentiment classifier, dual topic models (NMF + LDA), " +
+      "and sentence-embedding semantic search using all-MiniLM-L6-v2 — all served in a " +
+      "5-tab interactive Streamlit dashboard deployed on Cloud Run.",
     tech: [
-      "Python", "Pandas", "spaCy", "Sentence Transformers", "BERTopic",
-      "scikit-learn", "Plotly", "Streamlit",
+      "Python", "Pandas", "NLTK", "Scikit-learn", "Sentence Transformers",
+      "Plotly", "Streamlit", "Docker", "GCP Cloud Run", "GitHub Actions",
     ],
     skillsShowcased: [
       "NLP Pipelines",
       "Text Classification",
       "Semantic Search / Embeddings",
-      "Insight Communication",
+      "Topic Modeling",
     ],
-    status: "Scaffolded",
+    status: "Complete",
     category: "data-science",
+    github: "https://github.com/HaveACigar/nlp-text-analytics",
     route: "/personal-projects/nlp-text-analytics",
     highlights: [
-      "Customer-review dataset with realistic preprocessing challenges: HTML, emojis, typos, duplicated complaints, and mixed sentiment",
-      "Embedding-based nearest-neighbor search for semantic retrieval of similar complaints and product issues",
-      "BERTopic or LDA topic modeling to surface recurring problem categories and latent themes",
-      "Binary or multi-class sentiment classifier benchmarked with precision, recall, F1, and confusion matrices",
-    ],
-    recruiterSignals: [
-      "Shows ability to work with messy unstructured text instead of only structured CSV data",
-      "Demonstrates practical LLM-adjacent skills recruiters now look for: embeddings, retrieval, and explainability",
-      "Creates a direct bridge between classic NLP and the modern RAG/GenAI ecosystem",
-    ],
-    deliverables: [
-      "Python training pipeline for text cleaning, vectorization, topic modeling, and sentiment modeling",
-      "Interactive Streamlit app with search, topic explorer, and model evaluation tabs",
-      "Cloud Run deployment and embedded portfolio page once the app is live",
+      "7-step text cleaning pipeline: lowercase, HTML removal, URL stripping, non-alpha filter, stopword removal, short-token pruning",
+      "TF-IDF (10K features, bigrams) + Logistic Regression sentiment classifier with 5-fold CV and ROC curve evaluation",
+      "Both NMF and LDA topic models (10 topics each) with interactive word charts and representative document retrieval",
+      "Sentence-level semantic search using all-MiniLM-L6-v2 embeddings — finds thematically similar reviews beyond keyword overlap",
+      "Live sentiment demo: type any text and get a model prediction with confidence score",
+      "Models pre-trained at Docker build time; artifacts serialized with joblib for instant Streamlit startup",
     ],
   },
   {
