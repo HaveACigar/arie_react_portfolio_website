@@ -460,38 +460,32 @@ export const personalProjects = [
   {
     id: "deep-learning-image-classifier",
     title: "Deep Learning Image Classifier",
-    subtitle: "Transfer Learning, CNN Fine-Tuning & Explainable Vision Models",
+    subtitle: "Transfer Learning with MobileNetV3 on CIFAR-10",
     description:
-      "A computer vision project centered on transfer learning and model explainability. " +
-      "The planned build uses a well-known benchmark dataset to fine-tune a modern CNN, compare architectures, and surface Grad-CAM visual explanations in a recruiter-friendly demo app.",
+      "End-to-end computer vision pipeline using transfer learning on CIFAR-10. " +
+      "A pretrained MobileNetV3-small backbone is fine-tuned for 10-class classification, " +
+      "evaluated with training/validation curves and confusion matrix diagnostics, and deployed " +
+      "as an interactive Streamlit app on Cloud Run with upload-based inference.",
     tech: [
-      "Python", "PyTorch", "Torchvision", "OpenCV", "NumPy",
-      "Plotly", "Streamlit", "Docker",
+      "Python", "PyTorch", "Torchvision", "NumPy", "Scikit-learn",
+      "Plotly", "Streamlit", "Docker", "GCP Cloud Run", "GitHub Actions",
     ],
     skillsShowcased: [
       "Deep Learning",
       "Computer Vision",
       "Transfer Learning",
-      "Model Explainability",
+      "Model Evaluation",
     ],
-    status: "Scaffolded",
+    status: "Complete",
     category: "data-science",
+    github: "https://github.com/HaveACigar/deep-learning-image-classifier",
     route: "/personal-projects/deep-learning-image-classifier",
     highlights: [
-      "Fine-tune pretrained CNN backbones such as ResNet or EfficientNet on a curated labeled image dataset",
-      "Benchmark accuracy, precision, recall, top-k accuracy, and calibration across model variants",
-      "Use Grad-CAM or saliency maps to show which image regions drove each prediction",
-      "Package a lightweight inference demo where users upload an image and inspect confidence scores and visual explanations",
-    ],
-    recruiterSignals: [
-      "Signals hands-on deep learning capability beyond tabular models",
-      "Shows you can communicate black-box models using explainability tooling instead of accuracy alone",
-      "Adds breadth to your portfolio across vision, not just analytics and regression/classification",
-    ],
-    deliverables: [
-      "Training notebook or script with experiment tracking and validation curves",
-      "Inference app with uploaded-image prediction, top classes, and Grad-CAM overlay",
-      "Cloud deployment with model artifacts optimized for responsive inference",
+      "Transfer learning with pretrained MobileNetV3-small; frozen feature extractor and retrained classifier head",
+      "Trained on 12,000-image subset with separate validation split for fast iterative experimentation",
+      "Interactive diagnostics dashboard with epoch-level train/validation curves and full 10-class confusion matrix",
+      "Live upload inference with top-5 predicted classes and probability visualization",
+      "Model artifact pre-trained at Docker build time for fast Cloud Run startup",
     ],
   },
   {
