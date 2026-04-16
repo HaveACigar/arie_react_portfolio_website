@@ -491,38 +491,32 @@ export const personalProjects = [
   {
     id: "time-series-forecasting",
     title: "Time Series Forecasting",
-    subtitle: "Multi-Horizon Forecasting, Backtesting & Error Analysis",
+    subtitle: "Walk-Forward Backtesting with Naive, Holt-Winters, and XGBoost",
     description:
-      "A forecasting project designed to showcase rigor around temporal validation and business-facing forecast interpretation. " +
-      "The build is scoped around demand or subscription forecasting with walk-forward validation, feature engineering, benchmark models, and error decomposition over time.",
+      "End-to-end monthly forecasting pipeline on atmospheric CO2 series using three model families: " +
+      "Seasonal Naive baseline, Holt-Winters Exponential Smoothing, and XGBoost with lag/calendar features. " +
+      "Includes walk-forward backtesting, RMSE/MAE/sMAPE model comparison, and a 24-month interactive forecast dashboard deployed on Cloud Run.",
     tech: [
-      "Python", "Pandas", "Statsmodels", "scikit-learn", "XGBoost",
-      "Prophet", "Plotly", "Streamlit",
+      "Python", "Pandas", "Statsmodels", "Scikit-learn", "XGBoost",
+      "Plotly", "Streamlit", "Docker", "GCP Cloud Run", "GitHub Actions",
     ],
     skillsShowcased: [
       "Time Series Forecasting",
       "Backtesting",
       "Feature Engineering",
-      "Business Metric Interpretation",
+      "Model Benchmarking",
     ],
-    status: "Scaffolded",
+    status: "Complete",
     category: "data-science",
+    github: "https://github.com/HaveACigar/time-series-forecasting",
     route: "/personal-projects/time-series-forecasting",
     highlights: [
-      "Walk-forward backtesting instead of random train/test splits to preserve time order",
-      "Comparison of naive baseline, ARIMA/ETS-style models, gradient boosting, and Prophet-style forecasting",
-      "Calendar and lag-feature engineering for trend, seasonality, promotions, and external regressors",
-      "Forecast error analysis by horizon, season, and event windows to explain where the model wins and fails",
-    ],
-    recruiterSignals: [
-      "Closely matches business forecasting work many data science teams actually need",
-      "Shows methodological discipline around leakage prevention and proper temporal evaluation",
-      "Connects naturally to your Ford background in demand, subscription, and product analytics",
-    ],
-    deliverables: [
-      "Forecasting pipeline with configurable horizons and walk-forward evaluation",
-      "Interactive dashboard with forecast bands, actuals vs predicted, and error diagnostics",
-      "Deployment-ready inference service for scoring future periods from uploaded input data",
+      "12-month walk-forward holdout evaluation (no random split leakage) with side-by-side predictions",
+      "Model benchmark table with MAE, RMSE, and sMAPE across Seasonal Naive, Holt-Winters, and XGBoost",
+      "Lag feature engineering (1,2,3,6,12 months) plus month/quarter/trend predictors for boosting model",
+      "24-month forward forecast with interactive overlay of all three model trajectories",
+      "XGBoost feature-importance chart surfacing which lag/calendar features drive predictions",
+      "Artifacts pre-trained at Docker build time for fast startup in production",
     ],
   },
   {
