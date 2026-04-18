@@ -523,38 +523,32 @@ export const personalProjects = [
   {
     id: "recommendation-system",
     title: "Recommendation System",
-    subtitle: "Ranking, Similarity Search & Personalized Candidate Generation",
+    subtitle: "Popularity Ranking, Content Similarity, and Collaborative Filtering",
     description:
-      "A recommender-system project focused on personalized ranking and explainable suggestions. " +
-      "The scoped build combines popularity baselines, content-based similarity, and collaborative filtering to show how recommendations improve as richer user-item interactions become available.",
+      "MovieLens recommendation platform comparing three recommendation strategies: Bayesian popularity ranking, " +
+      "content-based similarity from movie metadata, and collaborative filtering via matrix factorization. " +
+      "The deployed Streamlit app lets reviewers inspect top titles, find similar movies, and generate personalized recommendations for real users.",
     tech: [
-      "Python", "Pandas", "Surprise", "scikit-learn", "Implicit",
-      "Sentence Transformers", "Plotly", "Streamlit",
+      "Python", "Pandas", "Scikit-learn", "SciPy", "Plotly",
+      "Streamlit", "Docker", "GCP Cloud Run", "GitHub Actions",
     ],
     skillsShowcased: [
       "Recommendation Systems",
       "Ranking Metrics",
       "Similarity Search",
-      "Experiment Design",
+      "Matrix Factorization",
     ],
-    status: "Scaffolded",
+    status: "Complete",
     category: "data-science",
+    github: "https://github.com/HaveACigar/recommendation-system",
     route: "/personal-projects/recommendation-system",
     highlights: [
-      "Popularity, content-based, and collaborative-filtering recommenders benchmarked side by side",
-      "Offline ranking metrics such as Precision@K, Recall@K, MAP, or NDCG to evaluate recommendation quality",
-      "Cold-start strategy using metadata embeddings and item similarity when interaction history is sparse",
-      "Interactive demo where users choose a profile and inspect recommended items plus explanation traces",
-    ],
-    recruiterSignals: [
-      "Demonstrates ranking and personalization, which are distinct from standard classification work",
-      "Shows awareness of both product impact and evaluation methodology for recommender systems",
-      "Adds a strong product-analytics and consumer-experience use case to the portfolio",
-    ],
-    deliverables: [
-      "Modeling pipeline for baseline, content, and collaborative recommenders",
-      "Evaluation notebook or script with ranking metrics and ablation comparisons",
-      "Streamlit experience for interactive recommendations and model explanations",
+      "MovieLens latest-small dataset powering popularity, content, and collaborative recommendation flows",
+      "Bayesian weighted-rating baseline to prevent low-volume titles from dominating top charts",
+      "TF-IDF similarity on titles + genres for content-based 'find similar movies' recommendations",
+      "NMF matrix factorization over the user-item matrix for personalized top-N ranking",
+      "Offline Precision@10 evaluation using a per-user temporal holdout",
+      "Interactive app tabs for top movies, similar titles, and user-level recommendations",
     ],
   },
   {
@@ -562,11 +556,12 @@ export const personalProjects = [
     title: "A/B Testing & Statistical Inference",
     subtitle: "Experiment Design, Hypothesis Testing & Causal Decision Support",
     description:
-      "A statistics-first project designed to mirror real experimentation work. " +
-      "The final build is scoped around randomized test design, power analysis, confidence intervals, uplift estimation, segment analysis, and a results dashboard that explains whether a product change should ship.",
+      "End-to-end experiment analysis workflow on a simulated product test with treatment/control cohorts, " +
+      "conversion lift estimation, significance testing, confidence intervals, power curves, and segment-level heterogeneity analysis. " +
+      "The Streamlit app presents statistical findings in a business-facing format suitable for product decisions.",
     tech: [
       "Python", "Pandas", "SciPy", "Statsmodels", "NumPy",
-      "Plotly", "Streamlit",
+      "Plotly", "Streamlit", "Docker", "GCP Cloud Run", "GitHub Actions",
     ],
     skillsShowcased: [
       "Experimental Design",
@@ -574,24 +569,16 @@ export const personalProjects = [
       "Power Analysis",
       "Decision Framing",
     ],
-    status: "Scaffolded",
+    status: "Complete",
     category: "data-science",
+    github: "https://github.com/HaveACigar/ab-testing-statistical-inference",
     route: "/personal-projects/ab-testing-statistical-inference",
     highlights: [
-      "End-to-end simulated or real experiment with treatment/control cohorts and success metrics",
-      "Power and sample-size calculations to justify experiment readiness before launch",
-      "Frequentist and practical-significance framing: p-values, confidence intervals, effect sizes, uplift",
-      "Segment and heterogeneity analysis to show where treatment effects differ by audience or product usage",
-    ],
-    recruiterSignals: [
-      "Closely aligned with your Ford experience leading A/B testing and DOE work",
-      "Shows rigor in decision-making rather than just model building",
-      "Demonstrates statistical maturity that many portfolios gloss over",
-    ],
-    deliverables: [
-      "Experiment-analysis pipeline with reusable statistical utilities",
-      "Interactive dashboard for sample-size assumptions, test results, and segment breakdowns",
-      "Portfolio write-up that frames statistical findings as business recommendations",
+      "40,000-user synthetic experiment with realistic device, geography, and member-status segments",
+      "Two-proportion z-test, confidence interval for lift, and relative/absolute uplift metrics",
+      "Power analysis and minimum sample-size calculations for experiment readiness",
+      "Segmented lift analysis across device, geography, and lifecycle cohorts",
+      "Business-facing charts that separate statistical significance from practical significance",
     ],
   },
   {
@@ -599,11 +586,12 @@ export const personalProjects = [
     title: "SQL & Data Engineering Pipeline",
     subtitle: "Data Modeling, Incremental ETL & Analytical Reporting Layers",
     description:
-      "A project showcasing the engineering side of analytics: raw ingestion, data quality enforcement, dimensional modeling, and downstream reporting views. " +
-      "The scoped build focuses on SQL-first transformations and reproducible analytics layers suitable for BI dashboards or ML feature stores.",
+      "Warehouse-style analytics pipeline that ingests raw ecommerce-style customer and order data, cleans it in staging, " +
+      "builds fact and dimension tables, and publishes mart tables for KPI reporting. " +
+      "Implemented in DuckDB with SQL transformations and surfaced through a Streamlit operations dashboard.",
     tech: [
-      "SQL", "Python", "PostgreSQL", "dbt", "Airflow",
-      "Docker", "Power BI", "BigQuery",
+      "SQL", "Python", "DuckDB", "Pandas", "PyArrow",
+      "Plotly", "Streamlit", "Docker", "GCP Cloud Run", "GitHub Actions",
     ],
     skillsShowcased: [
       "Data Engineering",
@@ -611,24 +599,16 @@ export const personalProjects = [
       "ETL / ELT",
       "Analytics Enablement",
     ],
-    status: "Scaffolded",
+    status: "Complete",
     category: "data-science",
+    github: "https://github.com/HaveACigar/sql-data-engineering-pipeline",
     route: "/personal-projects/sql-data-engineering-pipeline",
     highlights: [
-      "Multi-layer warehouse design: raw, staged, marts, and business-facing reporting outputs",
-      "Incremental SQL transformations with tests for uniqueness, nullability, referential integrity, and freshness",
-      "Fact and dimension modeling built for both BI consumption and ML feature generation",
-      "Pipeline orchestration with scheduled loads and observability around row counts, failures, and latency",
-    ],
-    recruiterSignals: [
-      "Shows you can own the data foundation instead of relying on pre-cleaned datasets",
-      "Bridges analytics engineering and data science, which is valuable for smaller teams",
-      "Directly reinforces your production data-quality and BigQuery experience",
-    ],
-    deliverables: [
-      "Local or cloud warehouse environment with repeatable seed and transformation scripts",
-      "dbt or SQL test suite proving data quality across pipeline stages",
-      "Summary dashboard or dataset mart feeding downstream analytics use cases",
+      "Raw, staging, dimension, fact, and mart layers built explicitly in SQL",
+      "Injected data-quality problems such as duplicates, null revenue, and invalid quantities then repaired in staging",
+      "KPI marts for monthly revenue, active customers, order volume, and segment performance",
+      "Operational data-quality test results surfaced directly in the dashboard",
+      "Warehouse file persisted in DuckDB for fast local analytics and reproducible transformations",
     ],
   },
   {
@@ -636,11 +616,11 @@ export const personalProjects = [
     title: "ML Model Deployment (MLOps)",
     subtitle: "Model Serving, Drift Monitoring & CI/CD for Inference Systems",
     description:
-      "A model-operations project focused on the production lifecycle after training. " +
-      "The scoped build uses a trained predictive model served behind an API, backed by containerization, CI/CD, health checks, batch scoring, and lightweight monitoring for drift and latency.",
+      "Production-style FastAPI inference service serving a churn-like binary classifier with health checks, schema validation, batch scoring, and lightweight feature-drift reporting. " +
+      "The model is trained at build time, versioned as an artifact, and exposed through Cloud Run with documented REST endpoints.",
     tech: [
-      "Python", "FastAPI", "Docker", "Cloud Run", "GitHub Actions",
-      "Evidently", "Pandas", "Prometheus",
+      "Python", "FastAPI", "Pandas", "Scikit-learn", "Docker",
+      "Cloud Run", "GitHub Actions", "Joblib",
     ],
     skillsShowcased: [
       "MLOps",
@@ -648,24 +628,16 @@ export const personalProjects = [
       "Monitoring & Drift Detection",
       "Production Engineering",
     ],
-    status: "Scaffolded",
+    status: "Complete",
     category: "data-science",
+    github: "https://github.com/HaveACigar/ml-model-deployment",
     route: "/personal-projects/ml-model-deployment",
     highlights: [
-      "REST inference API with schema validation, health endpoint, and explicit model versioning",
-      "Containerized deployment with CI/CD, automated build, and staged production rollout",
-      "Drift and data-quality checks on inference payloads with lightweight monitoring reports",
-      "Batch-scoring path to contrast online inference vs scheduled prediction workflows",
-    ],
-    recruiterSignals: [
-      "Makes your production mindset obvious instead of implying it through notebook work",
-      "Pairs naturally with the churn prediction project and your Ford-scale deployment experience",
-      "Shows you understand the full model lifecycle beyond training and AUC",
-    ],
-    deliverables: [
-      "FastAPI service for prediction requests and artifact loading",
-      "Monitoring or reporting job for drift, payload validation, and basic service metrics",
-      "Cloud deployment with a documented inference contract and smoke-test workflow",
+      "FastAPI endpoints for `/predict`, `/batch-predict`, `/health`, `/metrics`, and `/drift`",
+      "Synthetic churn-style reference dataset and trained logistic regression artifact serialized with joblib",
+      "Lightweight drift summary comparing live payload means against reference feature distributions",
+      "HTML landing page plus autogenerated OpenAPI docs for recruiter-friendly inspection",
+      "Cloud Run deployment pattern that mirrors real inference-service delivery workflows",
     ],
   },
   {
@@ -673,11 +645,11 @@ export const personalProjects = [
     title: "Big Data & Cloud Analytics",
     subtitle: "Distributed Processing, Cloud Warehousing & Production-Scale KPIs",
     description:
-      "A cloud-focused analytics project designed to demonstrate work at larger scale. " +
-      "The scoped build covers raw event ingestion, distributed transformation, warehousing, and KPI-serving layers that emulate the kind of product analytics stack used by subscription and marketplace teams.",
+      "Cloud-style event analytics pipeline over a large synthetic clickstream dataset written as partitioned Parquet and queried with DuckDB. " +
+      "The project demonstrates warehouse-style KPI marts, country/platform/product rollups, event-funnel analysis, and partition-aware analytics patterns suitable for cloud-scale reporting stacks.",
     tech: [
-      "Python", "Spark", "BigQuery", "GCP", "Databricks",
-      "SQL", "Docker", "Power BI",
+      "Python", "DuckDB", "Pandas", "PyArrow", "SQL",
+      "Plotly", "Streamlit", "Docker", "GCP Cloud Run", "GitHub Actions",
     ],
     skillsShowcased: [
       "Big Data Processing",
@@ -685,24 +657,16 @@ export const personalProjects = [
       "Distributed Compute",
       "KPI Modeling",
     ],
-    status: "Scaffolded",
+    status: "Complete",
     category: "data-science",
+    github: "https://github.com/HaveACigar/big-data-cloud-analytics",
     route: "/personal-projects/big-data-cloud-analytics",
     highlights: [
-      "Large synthetic or public event dataset processed with Spark-style transformations and partitioned storage",
-      "Cloud warehouse marts built for executive KPI reporting and subscription/product analysis",
-      "Performance-aware design with clustering, partitioning, and cost-conscious query patterns",
-      "End-to-end flow from raw events to curated business metrics and dashboard-ready tables",
-    ],
-    recruiterSignals: [
-      "Reinforces your experience with BigQuery, GCP, and production analytics at enterprise scale",
-      "Shows you can think in terms of pipelines, warehouses, and KPI layers instead of isolated models",
-      "Adds a clear large-scale data engineering story to complement ML and experimentation work",
-    ],
-    deliverables: [
-      "Spark or warehouse transformation pipeline over an event-style dataset",
-      "Curated KPI tables with documented metric logic and dimensional definitions",
-      "Cloud-hosted analytics showcase tied to one or two business-facing dashboards",
+      "250,000 synthetic product events written as hive-partitioned Parquet by date and country",
+      "Warehouse-style daily KPI marts for events, users, sessions, purchases, and revenue",
+      "Treemap breakdowns for country, platform, and product-category performance",
+      "Event funnel analysis plus data-quality checks for partition coverage and revenue integrity",
+      "Demonstrates partition-aware analytics patterns similar to cloud warehouse workloads",
     ],
   },
 ];
