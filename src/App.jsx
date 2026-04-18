@@ -1,5 +1,5 @@
 import ContactMe from "./components/contact/ContactMe";
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
 import ChatAssistantPage from "./components/chat/ChatAssistantPage";
 import MastersProjects from './components/mastersprojects/MastersProjects';
 import Contact from "./components/contact/Contact";
@@ -90,6 +90,7 @@ function App() {
               <Footer/>
             </>
           } />
+          <Route path="/assist" element={<Navigate to="/assistant" replace />} />
           <Route path="/data-science" element={
             <>
               <Topbar/>

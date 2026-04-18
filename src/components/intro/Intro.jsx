@@ -2,6 +2,7 @@ import { useContext, useEffect, useRef } from "react";
 import { Box, Typography, Avatar, Button, Chip } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import EmailIcon from "@mui/icons-material/Email";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 import { init } from "ityped";
 import "./intro.scss";
 import { ThemeContext } from "../../context";
@@ -87,6 +88,57 @@ export default function Intro() {
           {personalInfo.tagline}
         </Typography>
 
+        <Box
+          sx={{
+            maxWidth: 760,
+            width: "100%",
+            mb: 3,
+            px: 2,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: { xs: "flex-start", md: "center" },
+              justifyContent: "space-between",
+              gap: 2,
+              p: 2.25,
+              borderRadius: 3,
+              bgcolor: darkMode ? "rgba(25, 118, 210, 0.12)" : "rgba(25, 118, 210, 0.08)",
+              border: darkMode ? "1px solid rgba(144, 202, 249, 0.25)" : "1px solid rgba(25, 118, 210, 0.15)",
+            }}
+          >
+            <Box>
+              <Chip
+                icon={<SmartToyIcon />}
+                label="New AI Assistant"
+                sx={{
+                  mb: 1,
+                  fontWeight: 700,
+                  bgcolor: darkMode ? "#1f2a37" : "#e3f2fd",
+                  color: darkMode ? "#90caf9" : "#1565c0",
+                }}
+              />
+              <Typography variant="h6" sx={{ fontWeight: 800, mb: 0.5 }}>
+                Ask about my projects, experience, and live demos
+              </Typography>
+              <Typography variant="body2" sx={{ color: darkMode ? "#c7d2da" : "#4b5563" }}>
+                The assistant answers questions about this portfolio, guides visitors to the right work, and keeps chat history after Google sign-in.
+              </Typography>
+            </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<SmartToyIcon />}
+              href="/assistant"
+              sx={{ fontWeight: 700, px: 3, py: 1.2, borderRadius: 2, whiteSpace: "nowrap" }}
+            >
+              Open AI Assistant
+            </Button>
+          </Box>
+        </Box>
+
         {/* Quick stat chips */}
         <Box
           sx={{
@@ -120,6 +172,15 @@ export default function Intro() {
         <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center" }}>
           <Button
             variant="contained"
+            color="primary"
+            startIcon={<SmartToyIcon />}
+            href="/assistant"
+            sx={{ fontWeight: 700, px: 3, py: 1.2, borderRadius: 2 }}
+          >
+            Try AI Assistant
+          </Button>
+          <Button
+            variant="outlined"
             color="primary"
             startIcon={<DownloadIcon />}
             href="/Arie_Resume_general.pdf"
