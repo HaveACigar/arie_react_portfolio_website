@@ -22,6 +22,22 @@ import { useAuth } from "../../auth/AuthContext";
 
 const CHAT_API_URL = process.env.REACT_APP_CHAT_API_URL;
 
+async function parseErrorResponse(response) {
+  let message = `Request failed with status ${response.status}`;
+  try {
+    const body = await response.json();
+    if (body?.detail) {
+      message = body.detail;
+    }
+  } catch {
+    const text = await response.text();
+    if (text) {
+      message = text;
+    }
+  }
+  return message;
+}
+
 async function authorizedFetch(path, token, options = {}) {
   const response = await fetch(`${CHAT_API_URL}${path}`, {
     ...options,
@@ -33,18 +49,24 @@ async function authorizedFetch(path, token, options = {}) {
   });
 
   if (!response.ok) {
-    let message = `Request failed with status ${response.status}`;
-    try {
-      const body = await response.json();
-      if (body?.detail) {
-        message = body.detail;
-      }
-    } catch {
-      const text = await response.text();
-      if (text) {
-        message = text;
-      }
-    }
+    const message = await parseErrorResponse(response);
+    throw new Error(message);
+  }
+
+  return response.json();
+}
+
+async function publicFetch(path, options = {}) {
+  const response = await fetch(`${CHAT_API_URL}${path}`, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+  });
+
+  if (!response.ok) {
+    const message = await parseErrorResponse(response);
     throw new Error(message);
   }
 
@@ -121,7 +143,7 @@ export default function ChatAssistantPage() {
   }
 
   async function handleSendMessage() {
-    if (!user || !draft.trim() || !CHAT_API_URL) return;
+    if (!draft.trim() || !CHAT_API_URL) return;
     const outgoing = draft.trim();
     setDraft("");
     setBusy(true);
@@ -129,25 +151,36 @@ export default function ChatAssistantPage() {
     setMessages((current) => [...current, { id: `local-${Date.now()}`, role: "user", content: outgoing }]);
 
     try {
-      const token = await user.getIdToken();
-      const data = await authorizedFetch("/chat", token, {
-        method: "POST",
-        body: JSON.stringify({
-          message: outgoing,
-          session_id: activeSessionId,
-        }),
-      });
+      if (user) {
+        const token = await user.getIdToken();
+        const data = await authorizedFetch("/chat", token, {
+          method: "POST",
+          body: JSON.stringify({
+            message: outgoing,
+            session_id: activeSessionId,
+          }),
+        });
 
-      if (!activeSessionId) {
+        if (!activeSessionId) {
+          setActiveSessionId(data.session_id);
+        }
+
+        const sessionsData = await authorizedFetch("/sessions", token);
+        setSessions(sessionsData.sessions || []);
+
+        const thread = await authorizedFetch(`/sessions/${data.session_id}`, token);
         setActiveSessionId(data.session_id);
+        setMessages(thread.messages || []);
+      } else {
+        const data = await publicFetch("/chat/public", {
+          method: "POST",
+          body: JSON.stringify({ message: outgoing }),
+        });
+        setMessages((current) => [
+          ...current,
+          { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
+        ]);
       }
-
-      const sessionsData = await authorizedFetch("/sessions", token);
-      setSessions(sessionsData.sessions || []);
-
-      const thread = await authorizedFetch(`/sessions/${data.session_id}`, token);
-      setActiveSessionId(data.session_id);
-      setMessages(thread.messages || []);
     } catch (err) {
       setError(`Unable to send your message right now. ${err.message || ""}`.trim());
       setMessages((current) => current.slice(0, -1));
@@ -177,10 +210,13 @@ export default function ChatAssistantPage() {
             ) : !user ? (
               <Stack spacing={2}>
                 <Typography variant="body2" color="text.secondary">
-                  Sign in with Google to start a persistent chat. Your sessions are stored under your account.
+                  You can chat right away without signing in.
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Sign in with Google if you want your chats to be saved and available later.
                 </Typography>
                 <Button variant="contained" startIcon={<LoginIcon />} onClick={signInWithGoogle} sx={{ textTransform: "none" }}>
-                  Sign in with Google
+                  Sign in to save chats
                 </Button>
               </Stack>
             ) : (
@@ -232,6 +268,12 @@ export default function ChatAssistantPage() {
               The assistant is restricted to public portfolio knowledge. It will not expose secrets, hidden configuration, or private infrastructure details.
             </Typography>
 
+            {!user && (
+              <Alert severity="info" sx={{ mb: 2 }}>
+                Guest mode is active. You can chat now, but chats are only saved when signed in.
+              </Alert>
+            )}
+
             {!CHAT_API_URL && (
               <Alert severity="warning" sx={{ mb: 2 }}>
                 Chat API is not configured yet. Add `REACT_APP_CHAT_API_URL` to the frontend environment.
@@ -278,15 +320,15 @@ export default function ChatAssistantPage() {
                 multiline
                 minRows={2}
                 maxRows={5}
-                placeholder={user ? "Ask about skills, projects, work experience, or live demos..." : "Sign in to start a persistent chat..."}
+                placeholder={user ? "Ask about skills, projects, work experience, or live demos..." : "Ask a question now, or sign in to save your chats..."}
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
-                disabled={!user || !CHAT_API_URL || busy}
+                disabled={!CHAT_API_URL || busy}
               />
               <Button
                 variant="contained"
                 onClick={handleSendMessage}
-                disabled={!user || !CHAT_API_URL || !draft.trim() || busy}
+                disabled={!CHAT_API_URL || !draft.trim() || busy}
                 sx={{ textTransform: "none", minWidth: { sm: 140 } }}
               >
                 {busy ? "Sending..." : "Send"}
