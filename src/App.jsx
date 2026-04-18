@@ -1,5 +1,6 @@
 import ContactMe from "./components/contact/ContactMe";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ChatAssistantPage from "./components/chat/ChatAssistantPage";
 import MastersProjects from './components/mastersprojects/MastersProjects';
 import Contact from "./components/contact/Contact";
 import Intro from "./components/intro/Intro";
@@ -79,6 +80,13 @@ function App() {
             <>
               <Topbar/>
               <ContactMe />
+              <Footer/>
+            </>
+          } />
+          <Route path="/assistant" element={
+            <>
+              <Topbar/>
+              <ChatAssistantPage />
               <Footer/>
             </>
           } />
