@@ -36,6 +36,7 @@ export default function PersonalProjectDetailPage() {
   const accent = darkMode ? "#90caf9" : "#1976d2";
   const cardBg = darkMode ? "#2a2a2a" : "#fff";
   const cardBorder = darkMode ? "1px solid #444" : "1px solid #e3f0ff";
+  const liveDemoUrl = project.liveDemo;
 
   return (
     <Box
@@ -84,6 +85,17 @@ export default function PersonalProjectDetailPage() {
                 sx={{ textTransform: "none", fontWeight: 600 }}
               >
                 View on GitHub
+              </Button>
+            )}
+            {liveDemoUrl && (
+              <Button
+                href={liveDemoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outlined"
+                sx={{ textTransform: "none", fontWeight: 600 }}
+              >
+                Open Live App
               </Button>
             )}
             <Chip
@@ -190,6 +202,28 @@ export default function PersonalProjectDetailPage() {
                   </Typography>
                 </Box>
               ))}
+            </Paper>
+          </>
+        )}
+
+        {liveDemoUrl && (
+          <>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+              Live Dashboard
+            </Typography>
+            <Paper elevation={2} sx={{ p: 1.5, borderRadius: 3, background: cardBg, border: cardBorder, mb: 5 }}>
+              <Box
+                component="iframe"
+                title={`${project.title} Live Dashboard`}
+                src={`${liveDemoUrl}${liveDemoUrl.includes("?") ? "&" : "?"}embed=true`}
+                sx={{
+                  width: "100%",
+                  height: { xs: 500, md: 700 },
+                  border: 0,
+                  borderRadius: 2,
+                  background: darkMode ? "#111" : "#fff",
+                }}
+              />
             </Paper>
           </>
         )}

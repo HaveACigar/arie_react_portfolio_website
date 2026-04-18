@@ -509,6 +509,7 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/time-series-forecasting",
+    liveDemo: "https://time-series-forecasting-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/time-series-forecasting",
     highlights: [
       "12-month walk-forward holdout evaluation (no random split leakage) with side-by-side predictions",
