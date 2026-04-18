@@ -21,6 +21,26 @@ import LoginIcon from "@mui/icons-material/Login";
 import { useAuth } from "../../auth/AuthContext";
 
 const CHAT_API_URL = process.env.REACT_APP_CHAT_API_URL;
+const CHAT_API_FALLBACKS = [
+  CHAT_API_URL,
+  "https://site-knowledge-chat-api-v7z4vnunqa-uc.a.run.app",
+  "https://site-knowledge-chat-api-1044248854820.us-central1.run.app",
+].filter(Boolean);
+
+async function fetchWithApiFallback(path, options = {}) {
+  let lastError = null;
+
+  for (const baseUrl of CHAT_API_FALLBACKS) {
+    try {
+      return await fetch(`${baseUrl}${path}`, options);
+    } catch (err) {
+      // Retry next known API host on low-level network failures.
+      lastError = err;
+    }
+  }
+
+  throw lastError || new Error("NetworkError when attempting to fetch resource.");
+}
 
 async function parseErrorResponse(response) {
   let message = `Request failed with status ${response.status}`;
@@ -39,7 +59,7 @@ async function parseErrorResponse(response) {
 }
 
 async function authorizedFetch(path, token, options = {}) {
-  const response = await fetch(`${CHAT_API_URL}${path}`, {
+  const response = await fetchWithApiFallback(path, {
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +77,7 @@ async function authorizedFetch(path, token, options = {}) {
 }
 
 async function publicFetch(path, options = {}) {
-  const response = await fetch(`${CHAT_API_URL}${path}`, {
+  const response = await fetchWithApiFallback(path, {
     ...options,
     headers: {
       "Content-Type": "application/json",
