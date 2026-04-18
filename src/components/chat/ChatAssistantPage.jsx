@@ -101,6 +101,7 @@ export default function ChatAssistantPage() {
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
 
   const userName = useMemo(() => {
     if (!user) return "";
@@ -168,35 +169,52 @@ export default function ChatAssistantPage() {
     setDraft("");
     setBusy(true);
     setError("");
+    setNotice("");
     setMessages((current) => [...current, { id: `local-${Date.now()}`, role: "user", content: outgoing }]);
 
     try {
       if (user) {
-        const token = await user.getIdToken();
-        const data = await authorizedFetch("/chat", token, {
-          method: "POST",
-          body: JSON.stringify({
-            message: outgoing,
-            session_id: activeSessionId,
-          }),
-        });
-
-        if (!activeSessionId) {
-          setActiveSessionId(data.session_id);
-        }
-
-        setMessages((current) => [
-          ...current,
-          { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
-        ]);
-
-        // Refresh saved sessions opportunistically; a failure here should not fail message sending.
         try {
-          const sessionsData = await authorizedFetch("/sessions", token);
-          setSessions(sessionsData.sessions || []);
-          setActiveSessionId(data.session_id);
-        } catch {
-          // Ignore non-critical refresh errors to keep chat UX responsive.
+          const token = await user.getIdToken();
+          const data = await authorizedFetch("/chat", token, {
+            method: "POST",
+            body: JSON.stringify({
+              message: outgoing,
+              session_id: activeSessionId,
+            }),
+          });
+
+          if (!activeSessionId) {
+            setActiveSessionId(data.session_id);
+          }
+
+          setMessages((current) => [
+            ...current,
+            { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
+          ]);
+
+          // Refresh saved sessions opportunistically; a failure here should not fail message sending.
+          try {
+            const sessionsData = await authorizedFetch("/sessions", token);
+            setSessions(sessionsData.sessions || []);
+            setActiveSessionId(data.session_id);
+          } catch {
+            // Ignore non-critical refresh errors to keep chat UX responsive.
+          }
+        } catch (err) {
+          if ((err?.message || "").includes("NetworkError")) {
+            const data = await publicFetch("/chat/public", {
+              method: "POST",
+              body: JSON.stringify({ message: outgoing }),
+            });
+            setMessages((current) => [
+              ...current,
+              { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
+            ]);
+            setNotice("Temporary connection issue with saved-chat mode. Your message was sent in guest mode and was not saved.");
+          } else {
+            throw err;
+          }
         }
       } else {
         const data = await publicFetch("/chat/public", {
@@ -306,6 +324,7 @@ export default function ChatAssistantPage() {
                 Chat API is not configured yet. Add `REACT_APP_CHAT_API_URL` to the frontend environment.
               </Alert>
             )}
+            {notice && <Alert severity="info" sx={{ mb: 2 }}>{notice}</Alert>}
             {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
             <Box sx={{ flex: 1, overflowY: "auto", border: "1px solid", borderColor: "divider", borderRadius: 3, p: 2, bgcolor: "background.default" }}>
