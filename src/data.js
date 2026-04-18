@@ -541,6 +541,7 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/recommendation-system",
+    liveDemo: "https://recommendation-system-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/recommendation-system",
     highlights: [
       "MovieLens latest-small dataset powering popularity, content, and collaborative recommendation flows",
@@ -572,6 +573,7 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/ab-testing-statistical-inference",
+    liveDemo: "https://ab-testing-statistical-inference-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/ab-testing-statistical-inference",
     highlights: [
       "40,000-user synthetic experiment with realistic device, geography, and member-status segments",
@@ -602,6 +604,7 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/sql-data-engineering-pipeline",
+    liveDemo: "https://sql-data-engineering-pipeline-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/sql-data-engineering-pipeline",
     highlights: [
       "Raw, staging, dimension, fact, and mart layers built explicitly in SQL",
@@ -631,6 +634,7 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/ml-model-deployment",
+    liveDemo: "https://ml-model-deployment-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/ml-model-deployment",
     highlights: [
       "FastAPI endpoints for `/predict`, `/batch-predict`, `/health`, `/metrics`, and `/drift`",
@@ -660,6 +664,7 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/big-data-cloud-analytics",
+    liveDemo: "https://big-data-cloud-analytics-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/big-data-cloud-analytics",
     highlights: [
       "250,000 synthetic product events written as hive-partitioned Parquet by date and country",
