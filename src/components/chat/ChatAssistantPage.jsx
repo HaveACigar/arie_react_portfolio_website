@@ -185,12 +185,19 @@ export default function ChatAssistantPage() {
           setActiveSessionId(data.session_id);
         }
 
-        const sessionsData = await authorizedFetch("/sessions", token);
-        setSessions(sessionsData.sessions || []);
+        setMessages((current) => [
+          ...current,
+          { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
+        ]);
 
-        const thread = await authorizedFetch(`/sessions/${data.session_id}`, token);
-        setActiveSessionId(data.session_id);
-        setMessages(thread.messages || []);
+        // Refresh saved sessions opportunistically; a failure here should not fail message sending.
+        try {
+          const sessionsData = await authorizedFetch("/sessions", token);
+          setSessions(sessionsData.sessions || []);
+          setActiveSessionId(data.session_id);
+        } catch {
+          // Ignore non-critical refresh errors to keep chat UX responsive.
+        }
       } else {
         const data = await publicFetch("/chat/public", {
           method: "POST",
