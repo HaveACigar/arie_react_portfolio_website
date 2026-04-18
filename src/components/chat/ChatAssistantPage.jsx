@@ -33,8 +33,19 @@ async function authorizedFetch(path, token, options = {}) {
   });
 
   if (!response.ok) {
-    const text = await response.text();
-    throw new Error(text || `Request failed with status ${response.status}`);
+    let message = `Request failed with status ${response.status}`;
+    try {
+      const body = await response.json();
+      if (body?.detail) {
+        message = body.detail;
+      }
+    } catch {
+      const text = await response.text();
+      if (text) {
+        message = text;
+      }
+    }
+    throw new Error(message);
   }
 
   return response.json();
@@ -66,7 +77,7 @@ export default function ChatAssistantPage() {
           setActiveSessionId((current) => current || data.sessions[0].id);
         }
       } catch (err) {
-        setError("Unable to load chat sessions.");
+        setError(`Unable to load chat sessions. ${err.message || ""}`.trim());
       }
     }
 
@@ -81,7 +92,7 @@ export default function ChatAssistantPage() {
         const data = await authorizedFetch(`/sessions/${activeSessionId}`, token);
         setMessages(data.messages || []);
       } catch (err) {
-        setError("Unable to load chat history.");
+        setError(`Unable to load chat history. ${err.message || ""}`.trim());
       }
     }
 
@@ -105,7 +116,7 @@ export default function ChatAssistantPage() {
       setMessages([]);
       setDraft("");
     } catch (err) {
-      setError("Unable to create a new chat.");
+      setError(`Unable to create a new chat. ${err.message || ""}`.trim());
     }
   }
 
@@ -138,7 +149,7 @@ export default function ChatAssistantPage() {
       setActiveSessionId(data.session_id);
       setMessages(thread.messages || []);
     } catch (err) {
-      setError("Unable to send your message right now.");
+      setError(`Unable to send your message right now. ${err.message || ""}`.trim());
       setMessages((current) => current.slice(0, -1));
       setDraft(outgoing);
     } finally {
