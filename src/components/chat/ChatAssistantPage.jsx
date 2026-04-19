@@ -229,11 +229,12 @@ export default function ChatAssistantPage() {
       if (user) {
         try {
           const token = await user.getIdToken();
-          const data = await authorizedFetch("/chat", token, {
+          const data = await publicFetch("/chat/user", {
             method: "POST",
             body: JSON.stringify({
               message: outgoing,
               session_id: activeSessionId,
+              id_token: token,
             }),
           });
 
@@ -256,7 +257,7 @@ export default function ChatAssistantPage() {
           }
         } catch (err) {
           if ((err?.message || "").includes("NetworkError")) {
-            setDiagnosticLine(createDiagnosticLine("logged_in_send_primary", err));
+            setDiagnosticLine(createDiagnosticLine("logged_in_send_user_endpoint", err));
             const data = await publicFetch("/chat/public", {
               method: "POST",
               body: JSON.stringify({ message: outgoing }),
@@ -267,7 +268,7 @@ export default function ChatAssistantPage() {
             ]);
             setNotice("Temporary connection issue with saved-chat mode. Your message was sent in guest mode and was not saved.");
           } else {
-            setDiagnosticLine(createDiagnosticLine("logged_in_send_primary", err));
+            setDiagnosticLine(createDiagnosticLine("logged_in_send_user_endpoint", err));
             throw err;
           }
         }
