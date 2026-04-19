@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Alert,
   Avatar,
@@ -155,6 +155,7 @@ export default function ChatAssistantPage() {
   const [notice, setNotice] = useState("");
   const [diagnosticLine, setDiagnosticLine] = useState("");
   const [savedSessionsAvailable, setSavedSessionsAvailable] = useState(true);
+  const sessionApisBlockedRef = useRef(false);
 
   const suggestedPrompts = [
     "What projects best show Arie's data science background?",
@@ -168,11 +169,12 @@ export default function ChatAssistantPage() {
   }, [user]);
 
   function enterLocalOnlyMode(context, err, message) {
+    sessionApisBlockedRef.current = true;
     setSavedSessionsAvailable(false);
     setSessions([]);
     setError("");
     setNotice(message);
-    setDiagnosticLine(createDiagnosticLine(context, err));
+    setDiagnosticLine((current) => current || createDiagnosticLine(context, err));
     setActiveSessionId((current) => {
       if (current && String(current).startsWith("local-")) return current;
       return `local-${Date.now()}`;
@@ -180,16 +182,13 @@ export default function ChatAssistantPage() {
   }
 
   useEffect(() => {
-    if (!user) {
-      setSavedSessionsAvailable(true);
-      return;
-    }
+    sessionApisBlockedRef.current = false;
     setSavedSessionsAvailable(true);
-  }, [user]);
+  }, [user?.uid]);
 
   useEffect(() => {
     async function loadSessions() {
-      if (!user || !CHAT_API_URL || !savedSessionsAvailable) return;
+      if (!user || !CHAT_API_URL || !savedSessionsAvailable || sessionApisBlockedRef.current) return;
       setError("");
       try {
         const token = await user.getIdToken();
@@ -212,7 +211,7 @@ export default function ChatAssistantPage() {
 
   useEffect(() => {
     async function loadSession() {
-      if (!user || !activeSessionId || !CHAT_API_URL || !savedSessionsAvailable) return;
+      if (!user || !activeSessionId || !CHAT_API_URL || !savedSessionsAvailable || sessionApisBlockedRef.current) return;
       if (String(activeSessionId).startsWith("local-")) return;
       try {
         const token = await user.getIdToken();
@@ -239,7 +238,7 @@ export default function ChatAssistantPage() {
       return;
     }
 
-    if (!savedSessionsAvailable) {
+    if (!savedSessionsAvailable || sessionApisBlockedRef.current) {
       setActiveSessionId(`local-${Date.now()}`);
       setMessages([]);
       setDraft("");
