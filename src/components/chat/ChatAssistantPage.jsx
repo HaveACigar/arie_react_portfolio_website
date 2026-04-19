@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   Alert,
   Avatar,
@@ -6,9 +6,6 @@ import {
   Button,
   CircularProgress,
   Divider,
-  List,
-  ListItemButton,
-  ListItemText,
   Paper,
   Stack,
   TextField,
@@ -36,7 +33,6 @@ async function fetchWithApiFallback(path, options = {}) {
       const response = await fetch(`${baseUrl}${path}`, options);
       return { response, baseUrl, attempts };
     } catch (err) {
-      // Retry next known API host on low-level network failures.
       attempts.push({
         baseUrl,
         type: "network",
@@ -48,97 +44,33 @@ async function fetchWithApiFallback(path, options = {}) {
   }
 
   const networkError = lastError || new Error("NetworkError when attempting to fetch resource.");
-  networkError.diagnostic = {
-    path,
-    method: options?.method || "GET",
-    attempts,
-  };
+  networkError.diagnostic = { path, method: options?.method || "GET", attempts };
   throw networkError;
-}
-
-function createDiagnosticLine(context, err) {
-  const diagnostic = err?.diagnostic || {};
-  const attempts = Array.isArray(diagnostic.attempts) && diagnostic.attempts.length > 0
-    ? diagnostic.attempts.map((a) => `${a.baseUrl} -> ${a.type}: ${a.name || "Error"}: ${a.message || "n/a"}`).join(" | ")
-    : "none";
-
-  const lines = [
-    `time=${new Date().toISOString()}`,
-    `context=${context}`,
-    `name=${err?.name || "Error"}`,
-    `message=${err?.message || "Unknown error"}`,
-    `method=${diagnostic.method || "n/a"}`,
-    `path=${diagnostic.path || "n/a"}`,
-    `host=${diagnostic.baseUrl || "n/a"}`,
-    `status=${diagnostic.status || "n/a"}`,
-    `attempts=${attempts}`,
-  ];
-
-  return lines.join("\n");
 }
 
 async function parseErrorResponse(response) {
   let message = `Request failed with status ${response.status}`;
   try {
     const body = await response.json();
-    if (body?.detail) {
-      message = body.detail;
-    }
+    if (body?.detail) message = body.detail;
   } catch {
     const text = await response.text();
-    if (text) {
-      message = text;
-    }
+    if (text) message = text;
   }
   return message;
-}
-
-async function authorizedFetch(path, token, options = {}) {
-  const { response, baseUrl, attempts } = await fetchWithApiFallback(path, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      ...(options.headers || {}),
-    },
-  });
-
-  if (!response.ok) {
-    const message = await parseErrorResponse(response);
-    const responseError = new Error(message);
-    responseError.diagnostic = {
-      path,
-      method: options?.method || "GET",
-      baseUrl,
-      status: response.status,
-      attempts,
-    };
-    throw responseError;
-  }
-
-  return response.json();
 }
 
 async function publicFetch(path, options = {}) {
   const { response, baseUrl, attempts } = await fetchWithApiFallback(path, {
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(options.headers || {}),
-    },
+    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
   });
 
   if (!response.ok) {
     const message = await parseErrorResponse(response);
-    const responseError = new Error(message);
-    responseError.diagnostic = {
-      path,
-      method: options?.method || "GET",
-      baseUrl,
-      status: response.status,
-      attempts,
-    };
-    throw responseError;
+    const err = new Error(message);
+    err.diagnostic = { path, method: options?.method || "GET", baseUrl, status: response.status, attempts };
+    throw err;
   }
 
   return response.json();
@@ -146,16 +78,11 @@ async function publicFetch(path, options = {}) {
 
 export default function ChatAssistantPage() {
   const { user, loading, signInWithGoogle, signOutUser } = useAuth();
-  const [sessions, setSessions] = useState([]);
-  const [activeSessionId, setActiveSessionId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
-  const [diagnosticLine, setDiagnosticLine] = useState("");
-  const [savedSessionsAvailable, setSavedSessionsAvailable] = useState(true);
-  const sessionApisBlockedRef = useRef(false);
 
   const suggestedPrompts = [
     "What projects best show Arie's data science background?",
@@ -168,108 +95,11 @@ export default function ChatAssistantPage() {
     return user.displayName || user.email || "Signed-in user";
   }, [user]);
 
-  function enterLocalOnlyMode(context, err, message) {
-    sessionApisBlockedRef.current = true;
-    setSavedSessionsAvailable(false);
-    setSessions([]);
+  function handleNewChat() {
+    setMessages([]);
+    setDraft("");
     setError("");
-    setNotice(message);
-    setDiagnosticLine((current) => current || createDiagnosticLine(context, err));
-    setActiveSessionId((current) => {
-      if (current && String(current).startsWith("local-")) return current;
-      return `local-${Date.now()}`;
-    });
-  }
-
-  useEffect(() => {
-    sessionApisBlockedRef.current = false;
-    setSavedSessionsAvailable(true);
-  }, [user?.uid]);
-
-  useEffect(() => {
-    async function loadSessions() {
-      if (!user || !CHAT_API_URL || !savedSessionsAvailable || sessionApisBlockedRef.current) return;
-      setError("");
-      try {
-        const token = await user.getIdToken();
-        const data = await authorizedFetch("/sessions", token);
-        setSessions(data.sessions || []);
-        if ((data.sessions || []).length > 0) {
-          setActiveSessionId((current) => current || data.sessions[0].id);
-        }
-      } catch (err) {
-        enterLocalOnlyMode(
-          "load_sessions",
-          err,
-          "Saved sessions are temporarily unavailable due to a network compatibility issue. You can still chat in local mode.",
-        );
-      }
-    }
-
-    loadSessions();
-  }, [user, savedSessionsAvailable]);
-
-  useEffect(() => {
-    async function loadSession() {
-      if (!user || !activeSessionId || !CHAT_API_URL || !savedSessionsAvailable || sessionApisBlockedRef.current) return;
-      if (String(activeSessionId).startsWith("local-")) return;
-      try {
-        const token = await user.getIdToken();
-        const data = await authorizedFetch(`/sessions/${activeSessionId}`, token);
-        setMessages(data.messages || []);
-      } catch (err) {
-        enterLocalOnlyMode(
-          "load_history",
-          err,
-          "Saved chat history is temporarily unavailable due to a network compatibility issue.",
-        );
-      }
-    }
-
-    loadSession();
-  }, [user, activeSessionId, savedSessionsAvailable]);
-
-  async function handleNewChat() {
-    if (!user) {
-      setMessages([]);
-      setDraft("");
-      setActiveSessionId(`local-${Date.now()}`);
-      setNotice("Started a new guest chat. Sign in to save conversations when network compatibility is restored.");
-      return;
-    }
-
-    if (!savedSessionsAvailable || sessionApisBlockedRef.current) {
-      setActiveSessionId(`local-${Date.now()}`);
-      setMessages([]);
-      setDraft("");
-      setNotice("Started a new local chat. Saved sessions are temporarily unavailable due to a network compatibility issue.");
-      return;
-    }
-
-    try {
-      const token = await user.getIdToken();
-      const data = await authorizedFetch("/sessions", token, {
-        method: "POST",
-        body: JSON.stringify({ title: "New chat" }),
-      });
-      const nextSession = {
-        id: data.session_id,
-        title: data.title,
-      };
-      setSessions((current) => [nextSession, ...current]);
-      setActiveSessionId(data.session_id);
-      setMessages([]);
-      setDraft("");
-      setNotice("");
-    } catch (err) {
-      enterLocalOnlyMode(
-        "new_chat",
-        err,
-        "Started a new local chat. Saved sessions are temporarily unavailable due to a network compatibility issue.",
-      );
-      setMessages([]);
-      setDraft("");
-    }
+    setNotice("");
   }
 
   async function sendMessageText(messageText) {
@@ -279,32 +109,18 @@ export default function ChatAssistantPage() {
     setBusy(true);
     setError("");
     setNotice("");
-    setDiagnosticLine("");
     setMessages((current) => [...current, { id: `local-${Date.now()}`, role: "user", content: outgoing }]);
 
     try {
-      if (user) {
-        const data = await publicFetch("/chat/public", {
-          method: "POST",
-          body: JSON.stringify({ message: outgoing }),
-        });
-        setMessages((current) => [
-          ...current,
-          { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
-        ]);
-        setNotice("Logged-in send is temporarily using guest mode due to a network compatibility issue. Messages from this session are not being saved yet.");
-      } else {
-        const data = await publicFetch("/chat/public", {
-          method: "POST",
-          body: JSON.stringify({ message: outgoing }),
-        });
-        setMessages((current) => [
-          ...current,
-          { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
-        ]);
-      }
+      const data = await publicFetch("/chat/public", {
+        method: "POST",
+        body: JSON.stringify({ message: outgoing }),
+      });
+      setMessages((current) => [
+        ...current,
+        { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
+      ]);
     } catch (err) {
-      setDiagnosticLine((current) => current || createDiagnosticLine("send_final", err));
       setError(`Unable to send your message right now. ${err.message || ""}`.trim());
       setMessages((current) => current.slice(0, -1));
       setDraft(outgoing);
@@ -362,40 +178,16 @@ export default function ChatAssistantPage() {
                 </Stack>
                 <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
                   <Button variant="outlined" startIcon={<AddCommentIcon />} onClick={handleNewChat} sx={{ textTransform: "none", flex: 1 }}>
-                    {savedSessionsAvailable ? "New chat" : "New local chat"}
+                    New chat
                   </Button>
                   <Button variant="text" color="inherit" startIcon={<LogoutIcon />} onClick={signOutUser} sx={{ textTransform: "none" }}>
                     Sign out
                   </Button>
                 </Stack>
                 <Divider sx={{ mb: 2 }} />
-                <Typography variant="overline" color="text.secondary">Recent sessions</Typography>
-                {savedSessionsAvailable ? (
-                  <List sx={{ px: 0 }}>
-                    {sessions.map((session) => (
-                      <ListItemButton
-                        key={session.id}
-                        selected={session.id === activeSessionId}
-                        onClick={() => setActiveSessionId(session.id)}
-                        sx={{ borderRadius: 2, mb: 0.5 }}
-                      >
-                        <ListItemText
-                          primary={session.title || "Untitled chat"}
-                          primaryTypographyProps={{ noWrap: true, fontWeight: 600 }}
-                        />
-                      </ListItemButton>
-                    ))}
-                    {sessions.length === 0 && (
-                      <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>
-                        No chats yet.
-                      </Typography>
-                    )}
-                  </List>
-                ) : (
-                  <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>
-                    Saved sessions are unavailable right now. You are in local chat mode.
-                  </Typography>
-                )}
+                <Typography variant="body2" color="text.secondary" sx={{ pt: 1 }}>
+                  Chat history saving is not available yet. Chats are local to this session only.
+                </Typography>
               </>
             )}
           </Paper>
@@ -406,12 +198,6 @@ export default function ChatAssistantPage() {
               The assistant is restricted to public portfolio knowledge. It will not expose secrets, hidden configuration, or private infrastructure details.
             </Typography>
 
-            {!user && (
-              <Alert severity="info" sx={{ mb: 2 }}>
-                Guest mode is active. You can chat now, but chats are only saved when signed in.
-              </Alert>
-            )}
-
             {!CHAT_API_URL && (
               <Alert severity="warning" sx={{ mb: 2 }}>
                 Chat API is not configured yet. Add `REACT_APP_CHAT_API_URL` to the frontend environment.
@@ -419,16 +205,6 @@ export default function ChatAssistantPage() {
             )}
             {notice && <Alert severity="info" sx={{ mb: 2 }}>{notice}</Alert>}
             {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-            {diagnosticLine && (
-              <Alert severity="warning" sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
-                  Debug details to share
-                </Typography>
-                <Typography component="pre" variant="caption" sx={{ m: 0, whiteSpace: "pre-wrap" }}>
-                  {diagnosticLine}
-                </Typography>
-              </Alert>
-            )}
 
             <Box sx={{ flex: 1, overflowY: "auto", border: "1px solid", borderColor: "divider", borderRadius: 3, p: 2, bgcolor: "background.default" }}>
               {messages.length === 0 ? (
