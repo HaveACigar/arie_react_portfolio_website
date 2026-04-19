@@ -227,51 +227,15 @@ export default function ChatAssistantPage() {
 
     try {
       if (user) {
-        try {
-          const token = await user.getIdToken();
-          const data = await publicFetch("/chat/user", {
-            method: "POST",
-            body: JSON.stringify({
-              message: outgoing,
-              session_id: activeSessionId,
-              id_token: token,
-            }),
-          });
-
-          if (!activeSessionId) {
-            setActiveSessionId(data.session_id);
-          }
-
-          setMessages((current) => [
-            ...current,
-            { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
-          ]);
-
-          // Refresh saved sessions opportunistically; a failure here should not fail message sending.
-          try {
-            const sessionsData = await authorizedFetch("/sessions", token);
-            setSessions(sessionsData.sessions || []);
-            setActiveSessionId(data.session_id);
-          } catch {
-            // Ignore non-critical refresh errors to keep chat UX responsive.
-          }
-        } catch (err) {
-          if ((err?.message || "").includes("NetworkError")) {
-            setDiagnosticLine(createDiagnosticLine("logged_in_send_user_endpoint", err));
-            const data = await publicFetch("/chat/public", {
-              method: "POST",
-              body: JSON.stringify({ message: outgoing }),
-            });
-            setMessages((current) => [
-              ...current,
-              { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
-            ]);
-            setNotice("Temporary connection issue with saved-chat mode. Your message was sent in guest mode and was not saved.");
-          } else {
-            setDiagnosticLine(createDiagnosticLine("logged_in_send_user_endpoint", err));
-            throw err;
-          }
-        }
+        const data = await publicFetch("/chat/public", {
+          method: "POST",
+          body: JSON.stringify({ message: outgoing }),
+        });
+        setMessages((current) => [
+          ...current,
+          { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
+        ]);
+        setNotice("Logged-in send is temporarily using guest mode due a network compatibility issue. Messages from this session are not being saved yet.");
       } else {
         const data = await publicFetch("/chat/public", {
           method: "POST",
