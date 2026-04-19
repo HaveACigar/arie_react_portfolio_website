@@ -195,7 +195,13 @@ export default function ChatAssistantPage() {
   }, [user, activeSessionId]);
 
   async function handleNewChat() {
-    if (!user) return;
+    if (!user) {
+      setMessages([]);
+      setDraft("");
+      setActiveSessionId(`local-${Date.now()}`);
+      setNotice("Started a new guest chat. Sign in to save conversations when network compatibility is restored.");
+      return;
+    }
     try {
       const token = await user.getIdToken();
       const data = await authorizedFetch("/sessions", token, {
@@ -210,8 +216,17 @@ export default function ChatAssistantPage() {
       setActiveSessionId(data.session_id);
       setMessages([]);
       setDraft("");
+      setNotice("");
     } catch (err) {
-      setError(`Unable to create a new chat. ${err.message || ""}`.trim());
+      if ((err?.message || "").includes("NetworkError")) {
+        setActiveSessionId(`local-${Date.now()}`);
+        setMessages([]);
+        setDraft("");
+        setNotice("Started a new local chat. Saved sessions are temporarily unavailable due a network compatibility issue.");
+        setDiagnosticLine(createDiagnosticLine("new_chat", err));
+      } else {
+        setError(`Unable to create a new chat. ${err.message || ""}`.trim());
+      }
     }
   }
 
