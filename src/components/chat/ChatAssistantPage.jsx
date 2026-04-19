@@ -29,17 +29,52 @@ const CHAT_API_FALLBACKS = [
 
 async function fetchWithApiFallback(path, options = {}) {
   let lastError = null;
+  const attempts = [];
 
   for (const baseUrl of CHAT_API_FALLBACKS) {
     try {
-      return await fetch(`${baseUrl}${path}`, options);
+      const response = await fetch(`${baseUrl}${path}`, options);
+      return { response, baseUrl, attempts };
     } catch (err) {
       // Retry next known API host on low-level network failures.
+      attempts.push({
+        baseUrl,
+        type: "network",
+        name: err?.name || "Error",
+        message: err?.message || "Unknown network error",
+      });
       lastError = err;
     }
   }
 
-  throw lastError || new Error("NetworkError when attempting to fetch resource.");
+  const networkError = lastError || new Error("NetworkError when attempting to fetch resource.");
+  networkError.diagnostic = {
+    path,
+    method: options?.method || "GET",
+    attempts,
+  };
+  throw networkError;
+}
+
+function createDiagnosticLine(context, err) {
+  const diagnostic = err?.diagnostic || {};
+  const attempts = Array.isArray(diagnostic.attempts) && diagnostic.attempts.length > 0
+    ? diagnostic.attempts.map((a) => `${a.baseUrl} -> ${a.type}: ${a.name || "Error"}: ${a.message || "n/a"}`).join(" | ")
+    : "none";
+
+  const lines = [
+    `time=${new Date().toISOString()}`,
+    `context=${context}`,
+    `name=${err?.name || "Error"}`,
+    `message=${err?.message || "Unknown error"}`,
+    `method=${diagnostic.method || "n/a"}`,
+    `path=${diagnostic.path || "n/a"}`,
+    `host=${diagnostic.baseUrl || "n/a"}`,
+    `status=${diagnostic.status || "n/a"}`,
+    `attempts=${attempts}`,
+  ];
+
+  return lines.join("\n");
 }
 
 async function parseErrorResponse(response) {
@@ -59,7 +94,7 @@ async function parseErrorResponse(response) {
 }
 
 async function authorizedFetch(path, token, options = {}) {
-  const response = await fetchWithApiFallback(path, {
+  const { response, baseUrl, attempts } = await fetchWithApiFallback(path, {
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -70,14 +105,22 @@ async function authorizedFetch(path, token, options = {}) {
 
   if (!response.ok) {
     const message = await parseErrorResponse(response);
-    throw new Error(message);
+    const responseError = new Error(message);
+    responseError.diagnostic = {
+      path,
+      method: options?.method || "GET",
+      baseUrl,
+      status: response.status,
+      attempts,
+    };
+    throw responseError;
   }
 
   return response.json();
 }
 
 async function publicFetch(path, options = {}) {
-  const response = await fetchWithApiFallback(path, {
+  const { response, baseUrl, attempts } = await fetchWithApiFallback(path, {
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -87,7 +130,15 @@ async function publicFetch(path, options = {}) {
 
   if (!response.ok) {
     const message = await parseErrorResponse(response);
-    throw new Error(message);
+    const responseError = new Error(message);
+    responseError.diagnostic = {
+      path,
+      method: options?.method || "GET",
+      baseUrl,
+      status: response.status,
+      attempts,
+    };
+    throw responseError;
   }
 
   return response.json();
@@ -102,6 +153,7 @@ export default function ChatAssistantPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [diagnosticLine, setDiagnosticLine] = useState("");
 
   const userName = useMemo(() => {
     if (!user) return "";
@@ -170,6 +222,7 @@ export default function ChatAssistantPage() {
     setBusy(true);
     setError("");
     setNotice("");
+    setDiagnosticLine("");
     setMessages((current) => [...current, { id: `local-${Date.now()}`, role: "user", content: outgoing }]);
 
     try {
@@ -203,6 +256,7 @@ export default function ChatAssistantPage() {
           }
         } catch (err) {
           if ((err?.message || "").includes("NetworkError")) {
+            setDiagnosticLine(createDiagnosticLine("logged_in_send_primary", err));
             const data = await publicFetch("/chat/public", {
               method: "POST",
               body: JSON.stringify({ message: outgoing }),
@@ -213,6 +267,7 @@ export default function ChatAssistantPage() {
             ]);
             setNotice("Temporary connection issue with saved-chat mode. Your message was sent in guest mode and was not saved.");
           } else {
+            setDiagnosticLine(createDiagnosticLine("logged_in_send_primary", err));
             throw err;
           }
         }
@@ -227,6 +282,7 @@ export default function ChatAssistantPage() {
         ]);
       }
     } catch (err) {
+      setDiagnosticLine((current) => current || createDiagnosticLine("send_final", err));
       setError(`Unable to send your message right now. ${err.message || ""}`.trim());
       setMessages((current) => current.slice(0, -1));
       setDraft(outgoing);
@@ -326,6 +382,16 @@ export default function ChatAssistantPage() {
             )}
             {notice && <Alert severity="info" sx={{ mb: 2 }}>{notice}</Alert>}
             {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+            {diagnosticLine && (
+              <Alert severity="warning" sx={{ mb: 2 }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
+                  Debug details to share
+                </Typography>
+                <Typography component="pre" variant="caption" sx={{ m: 0, whiteSpace: "pre-wrap" }}>
+                  {diagnosticLine}
+                </Typography>
+              </Alert>
+            )}
 
             <Box sx={{ flex: 1, overflowY: "auto", border: "1px solid", borderColor: "divider", borderRadius: 3, p: 2, bgcolor: "background.default" }}>
               {messages.length === 0 ? (
