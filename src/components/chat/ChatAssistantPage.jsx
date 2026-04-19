@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Alert,
   Avatar,
@@ -6,6 +6,9 @@ import {
   Button,
   CircularProgress,
   Divider,
+  List,
+  ListItemButton,
+  ListItemText,
   Paper,
   Stack,
   TextField,
@@ -76,8 +79,30 @@ async function publicFetch(path, options = {}) {
   return response.json();
 }
 
+async function authorizedFetch(path, token, options = {}) {
+  const { response, baseUrl, attempts } = await fetchWithApiFallback(path, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      ...(options.headers || {}),
+    },
+  });
+
+  if (!response.ok) {
+    const message = await parseErrorResponse(response);
+    const err = new Error(message);
+    err.diagnostic = { path, method: options?.method || "GET", baseUrl, status: response.status, attempts };
+    throw err;
+  }
+
+  return response.json();
+}
+
 export default function ChatAssistantPage() {
   const { user, loading, signInWithGoogle, signOutUser } = useAuth();
+  const [sessions, setSessions] = useState([]);
+  const [activeSessionId, setActiveSessionId] = useState(null);
   const [messages, setMessages] = useState([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
@@ -95,11 +120,62 @@ export default function ChatAssistantPage() {
     return user.displayName || user.email || "Signed-in user";
   }, [user]);
 
-  function handleNewChat() {
-    setMessages([]);
-    setDraft("");
+  // Load session list when user signs in
+  useEffect(() => {
+    async function loadSessions() {
+      if (!user || !CHAT_API_URL) return;
+      try {
+        const token = await user.getIdToken();
+        const data = await authorizedFetch("/sessions", token);
+        setSessions(data.sessions || []);
+        if ((data.sessions || []).length > 0) {
+          setActiveSessionId((current) => current || data.sessions[0].id);
+        }
+      } catch (err) {
+        setError(`Unable to load saved sessions. ${err.message || ""}`.trim());
+      }
+    }
+    loadSessions();
+  }, [user]);
+
+  // Load messages when active session changes
+  useEffect(() => {
+    async function loadMessages() {
+      if (!user || !activeSessionId || !CHAT_API_URL) return;
+      setMessages([]);
+      try {
+        const token = await user.getIdToken();
+        const data = await authorizedFetch(`/sessions/${activeSessionId}`, token);
+        setMessages(data.messages || []);
+      } catch (err) {
+        setError(`Unable to load chat history. ${err.message || ""}`.trim());
+      }
+    }
+    loadMessages();
+  }, [user, activeSessionId]);
+
+  async function handleNewChat() {
     setError("");
     setNotice("");
+    if (!user || !CHAT_API_URL) {
+      setMessages([]);
+      setDraft("");
+      setActiveSessionId(null);
+      return;
+    }
+    try {
+      const token = await user.getIdToken();
+      const data = await authorizedFetch("/sessions", token, {
+        method: "POST",
+        body: JSON.stringify({ title: "New chat" }),
+      });
+      setSessions((current) => [{ id: data.session_id, title: data.title }, ...current]);
+      setActiveSessionId(data.session_id);
+      setMessages([]);
+      setDraft("");
+    } catch (err) {
+      setError(`Unable to create a new chat. ${err.message || ""}`.trim());
+    }
   }
 
   async function sendMessageText(messageText) {
@@ -146,9 +222,7 @@ export default function ChatAssistantPage() {
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
               <Box>
                 <Typography variant="h5" sx={{ fontWeight: 800 }}>ArieAI</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Portfolio-aware assistant
-                </Typography>
+                <Typography variant="body2" color="text.secondary">Portfolio-aware assistant</Typography>
               </Box>
               <SmartToyIcon color="primary" />
             </Stack>
@@ -161,7 +235,7 @@ export default function ChatAssistantPage() {
                   You can chat right away without signing in.
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Sign in with Google if you want your chats to be saved and available later.
+                  Sign in with Google to save and revisit your chats.
                 </Typography>
                 <Button variant="contained" startIcon={<LoginIcon />} onClick={signInWithGoogle} sx={{ textTransform: "none" }}>
                   Sign in to save chats
@@ -185,9 +259,25 @@ export default function ChatAssistantPage() {
                   </Button>
                 </Stack>
                 <Divider sx={{ mb: 2 }} />
-                <Typography variant="body2" color="text.secondary" sx={{ pt: 1 }}>
-                  Chat history saving is not available yet. Chats are local to this session only.
-                </Typography>
+                <Typography variant="overline" color="text.secondary">Saved chats</Typography>
+                <List sx={{ px: 0 }}>
+                  {sessions.map((session) => (
+                    <ListItemButton
+                      key={session.id}
+                      selected={session.id === activeSessionId}
+                      onClick={() => { setError(""); setActiveSessionId(session.id); }}
+                      sx={{ borderRadius: 2, mb: 0.5 }}
+                    >
+                      <ListItemText
+                        primary={session.title || "Untitled chat"}
+                        primaryTypographyProps={{ noWrap: true, fontWeight: 600 }}
+                      />
+                    </ListItemButton>
+                  ))}
+                  {sessions.length === 0 && (
+                    <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>No saved chats yet.</Typography>
+                  )}
+                </List>
               </>
             )}
           </Paper>
@@ -198,9 +288,14 @@ export default function ChatAssistantPage() {
               The assistant is restricted to public portfolio knowledge. It will not expose secrets, hidden configuration, or private infrastructure details.
             </Typography>
 
+            {!user && (
+              <Alert severity="info" sx={{ mb: 2 }}>
+                Guest mode — chats are not saved. Sign in to keep your history.
+              </Alert>
+            )}
             {!CHAT_API_URL && (
               <Alert severity="warning" sx={{ mb: 2 }}>
-                Chat API is not configured yet. Add `REACT_APP_CHAT_API_URL` to the frontend environment.
+                Chat API is not configured. Add <code>REACT_APP_CHAT_API_URL</code> to the frontend environment.
               </Alert>
             )}
             {notice && <Alert severity="info" sx={{ mb: 2 }}>{notice}</Alert>}
