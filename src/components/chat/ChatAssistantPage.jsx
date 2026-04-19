@@ -154,6 +154,7 @@ export default function ChatAssistantPage() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [diagnosticLine, setDiagnosticLine] = useState("");
+  const [savedSessionsAvailable, setSavedSessionsAvailable] = useState(true);
 
   const suggestedPrompts = [
     "What projects best show Arie's data science background?",
@@ -166,9 +167,29 @@ export default function ChatAssistantPage() {
     return user.displayName || user.email || "Signed-in user";
   }, [user]);
 
+  function enterLocalOnlyMode(context, err, message) {
+    setSavedSessionsAvailable(false);
+    setSessions([]);
+    setError("");
+    setNotice(message);
+    setDiagnosticLine(createDiagnosticLine(context, err));
+    setActiveSessionId((current) => {
+      if (current && String(current).startsWith("local-")) return current;
+      return `local-${Date.now()}`;
+    });
+  }
+
+  useEffect(() => {
+    if (!user) {
+      setSavedSessionsAvailable(true);
+      return;
+    }
+    setSavedSessionsAvailable(true);
+  }, [user]);
+
   useEffect(() => {
     async function loadSessions() {
-      if (!user || !CHAT_API_URL) return;
+      if (!user || !CHAT_API_URL || !savedSessionsAvailable) return;
       setError("");
       try {
         const token = await user.getIdToken();
@@ -178,33 +199,36 @@ export default function ChatAssistantPage() {
           setActiveSessionId((current) => current || data.sessions[0].id);
         }
       } catch (err) {
-        setSessions([]);
-        setError("");
-        setNotice("Saved sessions are temporarily unavailable due to a network compatibility issue. You can still chat in local mode.");
-        setDiagnosticLine(createDiagnosticLine("load_sessions", err));
+        enterLocalOnlyMode(
+          "load_sessions",
+          err,
+          "Saved sessions are temporarily unavailable due to a network compatibility issue. You can still chat in local mode.",
+        );
       }
     }
 
     loadSessions();
-  }, [user]);
+  }, [user, savedSessionsAvailable]);
 
   useEffect(() => {
     async function loadSession() {
-      if (!user || !activeSessionId || !CHAT_API_URL) return;
+      if (!user || !activeSessionId || !CHAT_API_URL || !savedSessionsAvailable) return;
       if (String(activeSessionId).startsWith("local-")) return;
       try {
         const token = await user.getIdToken();
         const data = await authorizedFetch(`/sessions/${activeSessionId}`, token);
         setMessages(data.messages || []);
       } catch (err) {
-        setError("");
-        setNotice("Saved chat history is temporarily unavailable due to a network compatibility issue.");
-        setDiagnosticLine(createDiagnosticLine("load_history", err));
+        enterLocalOnlyMode(
+          "load_history",
+          err,
+          "Saved chat history is temporarily unavailable due to a network compatibility issue.",
+        );
       }
     }
 
     loadSession();
-  }, [user, activeSessionId]);
+  }, [user, activeSessionId, savedSessionsAvailable]);
 
   async function handleNewChat() {
     if (!user) {
@@ -214,6 +238,15 @@ export default function ChatAssistantPage() {
       setNotice("Started a new guest chat. Sign in to save conversations when network compatibility is restored.");
       return;
     }
+
+    if (!savedSessionsAvailable) {
+      setActiveSessionId(`local-${Date.now()}`);
+      setMessages([]);
+      setDraft("");
+      setNotice("Started a new local chat. Saved sessions are temporarily unavailable due to a network compatibility issue.");
+      return;
+    }
+
     try {
       const token = await user.getIdToken();
       const data = await authorizedFetch("/sessions", token, {
@@ -230,15 +263,13 @@ export default function ChatAssistantPage() {
       setDraft("");
       setNotice("");
     } catch (err) {
-      if ((err?.message || "").includes("NetworkError")) {
-        setActiveSessionId(`local-${Date.now()}`);
-        setMessages([]);
-        setDraft("");
-        setNotice("Started a new local chat. Saved sessions are temporarily unavailable due to a network compatibility issue.");
-        setDiagnosticLine(createDiagnosticLine("new_chat", err));
-      } else {
-        setError(`Unable to create a new chat. ${err.message || ""}`.trim());
-      }
+      enterLocalOnlyMode(
+        "new_chat",
+        err,
+        "Started a new local chat. Saved sessions are temporarily unavailable due to a network compatibility issue.",
+      );
+      setMessages([]);
+      setDraft("");
     }
   }
 
@@ -332,7 +363,7 @@ export default function ChatAssistantPage() {
                 </Stack>
                 <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
                   <Button variant="outlined" startIcon={<AddCommentIcon />} onClick={handleNewChat} sx={{ textTransform: "none", flex: 1 }}>
-                    New chat
+                    {savedSessionsAvailable ? "New chat" : "New local chat"}
                   </Button>
                   <Button variant="text" color="inherit" startIcon={<LogoutIcon />} onClick={signOutUser} sx={{ textTransform: "none" }}>
                     Sign out
@@ -340,26 +371,32 @@ export default function ChatAssistantPage() {
                 </Stack>
                 <Divider sx={{ mb: 2 }} />
                 <Typography variant="overline" color="text.secondary">Recent sessions</Typography>
-                <List sx={{ px: 0 }}>
-                  {sessions.map((session) => (
-                    <ListItemButton
-                      key={session.id}
-                      selected={session.id === activeSessionId}
-                      onClick={() => setActiveSessionId(session.id)}
-                      sx={{ borderRadius: 2, mb: 0.5 }}
-                    >
-                      <ListItemText
-                        primary={session.title || "Untitled chat"}
-                        primaryTypographyProps={{ noWrap: true, fontWeight: 600 }}
-                      />
-                    </ListItemButton>
-                  ))}
-                  {sessions.length === 0 && (
-                    <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>
-                      No chats yet.
-                    </Typography>
-                  )}
-                </List>
+                {savedSessionsAvailable ? (
+                  <List sx={{ px: 0 }}>
+                    {sessions.map((session) => (
+                      <ListItemButton
+                        key={session.id}
+                        selected={session.id === activeSessionId}
+                        onClick={() => setActiveSessionId(session.id)}
+                        sx={{ borderRadius: 2, mb: 0.5 }}
+                      >
+                        <ListItemText
+                          primary={session.title || "Untitled chat"}
+                          primaryTypographyProps={{ noWrap: true, fontWeight: 600 }}
+                        />
+                      </ListItemButton>
+                    ))}
+                    {sessions.length === 0 && (
+                      <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>
+                        No chats yet.
+                      </Typography>
+                    )}
+                  </List>
+                ) : (
+                  <Typography variant="body2" color="text.secondary" sx={{ py: 1 }}>
+                    Saved sessions are unavailable right now. You are in local chat mode.
+                  </Typography>
+                )}
               </>
             )}
           </Paper>
