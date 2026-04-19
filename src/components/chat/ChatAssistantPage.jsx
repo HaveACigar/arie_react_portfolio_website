@@ -155,6 +155,12 @@ export default function ChatAssistantPage() {
   const [notice, setNotice] = useState("");
   const [diagnosticLine, setDiagnosticLine] = useState("");
 
+  const suggestedPrompts = [
+    "What projects best show Arie's data science background?",
+    "Summarize Arie's Ford experience in machine learning and analytics.",
+    "Which live demos are currently available on the site?",
+  ];
+
   const userName = useMemo(() => {
     if (!user) return "";
     return user.displayName || user.email || "Signed-in user";
@@ -172,13 +178,10 @@ export default function ChatAssistantPage() {
           setActiveSessionId((current) => current || data.sessions[0].id);
         }
       } catch (err) {
-        if ((err?.message || "").includes("NetworkError")) {
-          setSessions([]);
-          setNotice("Saved sessions are temporarily unavailable due to a network compatibility issue. You can still chat in local mode.");
-          setDiagnosticLine(createDiagnosticLine("load_sessions", err));
-        } else {
-          setError(`Unable to load chat sessions. ${err.message || ""}`.trim());
-        }
+        setSessions([]);
+        setError("");
+        setNotice("Saved sessions are temporarily unavailable due to a network compatibility issue. You can still chat in local mode.");
+        setDiagnosticLine(createDiagnosticLine("load_sessions", err));
       }
     }
 
@@ -194,12 +197,9 @@ export default function ChatAssistantPage() {
         const data = await authorizedFetch(`/sessions/${activeSessionId}`, token);
         setMessages(data.messages || []);
       } catch (err) {
-        if ((err?.message || "").includes("NetworkError")) {
-          setNotice("Saved chat history is temporarily unavailable due to a network compatibility issue.");
-          setDiagnosticLine(createDiagnosticLine("load_history", err));
-        } else {
-          setError(`Unable to load chat history. ${err.message || ""}`.trim());
-        }
+        setError("");
+        setNotice("Saved chat history is temporarily unavailable due to a network compatibility issue.");
+        setDiagnosticLine(createDiagnosticLine("load_history", err));
       }
     }
 
@@ -242,9 +242,9 @@ export default function ChatAssistantPage() {
     }
   }
 
-  async function handleSendMessage() {
-    if (!draft.trim() || !CHAT_API_URL) return;
-    const outgoing = draft.trim();
+  async function sendMessageText(messageText) {
+    if (!messageText.trim() || !CHAT_API_URL) return;
+    const outgoing = messageText.trim();
     setDraft("");
     setBusy(true);
     setError("");
@@ -281,6 +281,15 @@ export default function ChatAssistantPage() {
     } finally {
       setBusy(false);
     }
+  }
+
+  async function handleSendMessage() {
+    await sendMessageText(draft);
+  }
+
+  async function handleSuggestedPrompt(prompt) {
+    if (busy || !CHAT_API_URL) return;
+    await sendMessageText(prompt);
   }
 
   return (
@@ -389,9 +398,20 @@ export default function ChatAssistantPage() {
               {messages.length === 0 ? (
                 <Stack spacing={1.5}>
                   <Typography variant="body1" sx={{ fontWeight: 700 }}>Example prompts</Typography>
-                  <Typography variant="body2" color="text.secondary">What projects best show Arie&apos;s data science background?</Typography>
-                  <Typography variant="body2" color="text.secondary">Summarize Arie&apos;s Ford experience in machine learning and analytics.</Typography>
-                  <Typography variant="body2" color="text.secondary">Which live demos are currently available on the site?</Typography>
+                  <Stack direction={{ xs: "column", sm: "row" }} spacing={1} flexWrap="wrap" useFlexGap>
+                    {suggestedPrompts.map((prompt) => (
+                      <Button
+                        key={prompt}
+                        variant="outlined"
+                        size="small"
+                        onClick={() => handleSuggestedPrompt(prompt)}
+                        disabled={!CHAT_API_URL || busy}
+                        sx={{ textTransform: "none", justifyContent: "flex-start" }}
+                      >
+                        {prompt}
+                      </Button>
+                    ))}
+                  </Stack>
                 </Stack>
               ) : (
                 <Stack spacing={2}>
