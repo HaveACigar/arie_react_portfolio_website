@@ -21,11 +21,11 @@ import LoginIcon from "@mui/icons-material/Login";
 import { useAuth } from "../../auth/AuthContext";
 
 const CHAT_API_URL = process.env.REACT_APP_CHAT_API_URL;
-const CHAT_API_FALLBACKS = [
+const CHAT_API_FALLBACKS = Array.from(new Set([
   CHAT_API_URL,
   "https://site-knowledge-chat-api-v7z4vnunqa-uc.a.run.app",
   "https://site-knowledge-chat-api-1044248854820.us-central1.run.app",
-].filter(Boolean);
+].filter(Boolean)));
 
 async function fetchWithApiFallback(path, options = {}) {
   let lastError = null;
@@ -172,7 +172,13 @@ export default function ChatAssistantPage() {
           setActiveSessionId((current) => current || data.sessions[0].id);
         }
       } catch (err) {
-        setError(`Unable to load chat sessions. ${err.message || ""}`.trim());
+        if ((err?.message || "").includes("NetworkError")) {
+          setSessions([]);
+          setNotice("Saved sessions are temporarily unavailable due to a network compatibility issue. You can still chat in local mode.");
+          setDiagnosticLine(createDiagnosticLine("load_sessions", err));
+        } else {
+          setError(`Unable to load chat sessions. ${err.message || ""}`.trim());
+        }
       }
     }
 
@@ -182,12 +188,18 @@ export default function ChatAssistantPage() {
   useEffect(() => {
     async function loadSession() {
       if (!user || !activeSessionId || !CHAT_API_URL) return;
+      if (String(activeSessionId).startsWith("local-")) return;
       try {
         const token = await user.getIdToken();
         const data = await authorizedFetch(`/sessions/${activeSessionId}`, token);
         setMessages(data.messages || []);
       } catch (err) {
-        setError(`Unable to load chat history. ${err.message || ""}`.trim());
+        if ((err?.message || "").includes("NetworkError")) {
+          setNotice("Saved chat history is temporarily unavailable due to a network compatibility issue.");
+          setDiagnosticLine(createDiagnosticLine("load_history", err));
+        } else {
+          setError(`Unable to load chat history. ${err.message || ""}`.trim());
+        }
       }
     }
 
@@ -222,7 +234,7 @@ export default function ChatAssistantPage() {
         setActiveSessionId(`local-${Date.now()}`);
         setMessages([]);
         setDraft("");
-        setNotice("Started a new local chat. Saved sessions are temporarily unavailable due a network compatibility issue.");
+        setNotice("Started a new local chat. Saved sessions are temporarily unavailable due to a network compatibility issue.");
         setDiagnosticLine(createDiagnosticLine("new_chat", err));
       } else {
         setError(`Unable to create a new chat. ${err.message || ""}`.trim());
@@ -250,7 +262,7 @@ export default function ChatAssistantPage() {
           ...current,
           { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
         ]);
-        setNotice("Logged-in send is temporarily using guest mode due a network compatibility issue. Messages from this session are not being saved yet.");
+        setNotice("Logged-in send is temporarily using guest mode due to a network compatibility issue. Messages from this session are not being saved yet.");
       } else {
         const data = await publicFetch("/chat/public", {
           method: "POST",
