@@ -20,6 +20,7 @@ import ChurnPredictionPage from "./components/personalprojects/ChurnPredictionPa
 import PersonalProjectDetailPage from "./components/personalprojects/PersonalProjectDetailPage";
 import ReactPortfolioPage from "./components/personalprojects/ReactPortfolioPage";
 import SchoolProjectPage from "./components/schoolprojects/SchoolProjectPage";
+import FitnessLogRoutePage from "./components/personalprojects/FitnessLogRoutePage";
 import "./app.scss";
 import { useContext } from "react";
 import { ThemeContext } from "./context";
@@ -150,6 +151,13 @@ function App() {
             <>
               <Topbar/>
               <SchoolProjectPage />
+              <Footer/>
+            </>
+          } />
+          <Route path="/fitness-log" element={
+            <>
+              <Topbar/>
+              <FitnessLogRoutePage />
               <Footer/>
             </>
           } />

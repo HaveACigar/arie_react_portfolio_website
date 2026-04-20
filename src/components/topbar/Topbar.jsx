@@ -29,6 +29,7 @@ const NAV_LINKS = [
     { label: "Data Science", to: "/data-science", anchor: null },
     { label: "Software Engineering", to: "/software-engineering", anchor: null },
     { label: "Personal Projects", to: "/personal-projects", anchor: null },
+    { label: "Fitness Log", to: "/fitness-log", anchor: null },
     { label: "Portfolio & Works", to: "/portfolio", anchor: null },
     { label: "Contact", to: "/contact", anchor: null },
 ];
