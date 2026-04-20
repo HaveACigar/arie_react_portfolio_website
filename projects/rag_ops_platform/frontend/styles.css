@@ -1,0 +1,128 @@
+:root {
+  --bg: #f5f5f0;
+  --surface: #fffdf8;
+  --ink: #1f1f1a;
+  --muted: #5a584f;
+  --accent: #1f7a8c;
+  --accent-strong: #145867;
+  --border: #d8d3c4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 20% -10%, #dcefe6 0, transparent 35%),
+    radial-gradient(circle at 90% 10%, #ffe9cc 0, transparent 35%),
+    var(--bg);
+}
+
+.shell {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 0 1rem 2rem;
+}
+
+.hero {
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  margin: 0 0 0.4rem;
+  font-size: 2rem;
+}
+
+.hero p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-top: 0.75rem;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+input,
+textarea,
+button {
+  width: 100%;
+  font: inherit;
+}
+
+input,
+textarea {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem;
+  background: #ffffff;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 0.65rem 0.8rem;
+  cursor: pointer;
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+
+button:hover {
+  background: var(--accent-strong);
+}
+
+button.secondary {
+  background: #ebe7dc;
+  color: var(--ink);
+}
+
+button.secondary:hover {
+  background: #ddd7c7;
+}
+
+pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #fcfbf7;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 0.75rem;
+  min-height: 90px;
+}
+
+#citationList {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+@media (max-width: 700px) {
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}

@@ -3,8 +3,40 @@ services:
     build:
       context: ./backend
     container_name: rag-ops-api
+    depends_on:
+      rag-db:
+        condition: service_healthy
     ports:
       - "8000:8000"
     environment:
       RAG_ENVIRONMENT: dev
+      RAG_CORS_ORIGINS: http://localhost:4173,http://127.0.0.1:4173
+      RAG_RETRIEVAL_BACKEND: pgvector
       RAG_MAX_CONTEXT_DOCS: "4"
+      RAG_PGVECTOR_DSN: postgresql://postgres:postgres@rag-db:5432/rag_ops
+      RAG_PGVECTOR_TABLE: documents
+      RAG_OPENAI_API_KEY: ${RAG_OPENAI_API_KEY:-}
+      RAG_OPENAI_EMBEDDING_MODEL: text-embedding-3-small
+      RAG_OPENAI_JUDGE_MODEL: gpt-4o-mini
+      RAG_EMBEDDING_DIMENSIONS: "1536"
+      RAG_LANGSMITH_TRACING: ${RAG_LANGSMITH_TRACING:-false}
+      RAG_LANGSMITH_API_KEY: ${RAG_LANGSMITH_API_KEY:-}
+      RAG_LANGSMITH_PROJECT: rag-ops-platform
+
+  rag-db:
+    image: pgvector/pgvector:pg16
+    container_name: rag-ops-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rag_ops
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d rag_ops"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - rag_ops_db_data:/var/lib/postgresql/data
+
+volumes:
+  rag_ops_db_data:

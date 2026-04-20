@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RAG Ops Stream Demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <h1>RAG Ops Streaming Console</h1>
+        <p>Ask questions against your ingested corpus and watch token streaming + citations in real time.</p>
+      </header>
+
+      <section class="panel">
+        <label for="apiBaseUrl">API Base URL</label>
+        <input id="apiBaseUrl" value="http://localhost:8000" />
+
+        <label for="userId">User ID</label>
+        <input id="userId" value="demo-user" />
+
+        <label for="question">Question</label>
+        <textarea id="question" rows="4">What are the biggest recurring NYC 311 complaint patterns?</textarea>
+
+        <label for="sourceFilters">Source Filters (optional, comma-separated)</label>
+        <input id="sourceFilters" value="nyc_311,sec_companyfacts,chicago_crimes" />
+
+        <label for="autoRouteSources">Auto-route sources when empty filters</label>
+        <input id="autoRouteSources" type="checkbox" checked />
+
+        <div class="actions">
+          <button id="askButton">Stream Answer</button>
+          <button id="judgeButton" class="secondary">Run Judge Eval Smoke Test</button>
+          <button id="clearButton" class="secondary">Clear</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Streaming Answer</h2>
+        <pre id="answerOutput"></pre>
+      </section>
+
+      <section class="panel">
+        <h2>Citations</h2>
+        <ul id="citationList"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>Routing Debug</h2>
+        <pre id="routingOutput">No routing metadata yet.</pre>
+      </section>
+
+      <section class="panel">
+        <h2>Status</h2>
+        <pre id="statusOutput">Idle.</pre>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

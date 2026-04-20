@@ -7,6 +7,7 @@ import Intro from "./components/intro/Intro";
 import Topbar from "./components/topbar/Topbar";
 import AboutMe from "./components/aboutme/AboutMe";
 import Skills from "./components/skills/Skills";
+import FeaturedProject from "./components/featuredproject/FeaturedProject";
 import Experience from "./components/experience/Experience";
 import Education from "./components/education/Education";
 import Projects from "./components/projects/Projects";
@@ -47,6 +48,7 @@ function App() {
               <Topbar/>
               <div className="sections" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', position: 'relative', paddingTop: 80, paddingBottom: 0 }}>
                 <Intro/>
+                <FeaturedProject/>
                 <AboutMe/>
                 <Skills/>
                 <Experience/>
