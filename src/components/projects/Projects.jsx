@@ -18,8 +18,38 @@ export default function Projects() {
   const cardBg = darkMode ? "#2a2a2a" : "#fff";
   const cardBorder = darkMode ? "1px solid #444" : "1px solid #e3f0ff";
 
-  const personalOnlyProjects = personalProjects.filter((project) => project.category !== "data-science");
-  const dataScienceProjects = personalProjects.filter((project) => project.category === "data-science");
+  const PERSONAL_PRIORITY = ["react-portfolio-website", "fitness-log-app"];
+  const DATA_SCIENCE_PRIORITY = [
+    "eda-visualization-dashboard",
+    "supervised-ml-pipeline",
+    "nlp-text-analytics",
+    "deep-learning-image-classifier",
+    "time-series-forecasting",
+    "recommendation-system",
+    "ab-testing-statistical-inference",
+    "sql-data-engineering-pipeline",
+    "ml-model-deployment",
+  ];
+
+  const sortByPriority = (items, priority) => {
+    return items.slice().sort((a, b) => {
+      const aIndex = priority.indexOf(a.id);
+      const bIndex = priority.indexOf(b.id);
+      const aRank = aIndex === -1 ? Number.MAX_SAFE_INTEGER : aIndex;
+      const bRank = bIndex === -1 ? Number.MAX_SAFE_INTEGER : bIndex;
+      if (aRank !== bRank) return aRank - bRank;
+      return a.title.localeCompare(b.title);
+    });
+  };
+
+  const personalOnlyProjects = sortByPriority(
+    personalProjects.filter((project) => project.category !== "data-science"),
+    PERSONAL_PRIORITY,
+  );
+  const dataScienceProjects = sortByPriority(
+    personalProjects.filter((project) => project.category === "data-science"),
+    DATA_SCIENCE_PRIORITY,
+  );
 
   return (
     <Box
