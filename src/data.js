@@ -358,6 +358,35 @@ export const personalProjects = [
     ],
   },
   {
+    id: "fitness-log-app",
+    title: "Fitness Log App",
+    subtitle: "Full-Stack Fitness Tracker — Next.js, Firebase Auth/Firestore/Storage",
+    description:
+      "A multi-page fitness tracking application with authentication, daily metrics logging, workouts, sleep tracking, nutrition planning, photo uploads, and 30-day trend prediction. " +
+      "Built with Next.js and Firebase, then integrated into this portfolio through a dedicated /fitness-log route.",
+    tech: [
+      "Next.js", "React", "TypeScript", "Firebase Auth", "Firestore",
+      "Firebase Storage", "Recharts", "CSS Modules",
+    ],
+    skillsShowcased: [
+      "Full-Stack Product Development",
+      "Realtime Data Modeling",
+      "Authentication & Cloud Storage",
+      "Analytics UX",
+    ],
+    status: "Ongoing",
+    category: "software-engineering",
+    github: "https://github.com/HaveACigar/arieai-chat-log",
+    route: "/fitness-log",
+    highlights: [
+      "Daily metrics logs with edit/delete controls",
+      "Workout, sleep, and nutrition pages with trend charts",
+      "Image uploads for meals and profile pictures",
+      "30-day progress projection locked until enough history is logged",
+      "Portfolio-route integration via /fitness-log",
+    ],
+  },
+  {
     id: "eda-visualization-dashboard",
     title: "EDA & Visualization Dashboard",
     subtitle: "Data Cleaning, Statistical Analysis & Interactive Visualization",

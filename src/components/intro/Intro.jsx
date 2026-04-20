@@ -18,7 +18,7 @@ export default function Intro() {
       strings: [
         "Intermediate Data Analyst",
         "ML Practitioner",
-        "Backend Engineer",
+        "Full Stack Engineer",
         "Problem Solver",
       ],
     });
