@@ -20,6 +20,7 @@ import Divider from "@mui/material/Divider";
 // Navigation links shown in the hamburger menu
 const NAV_LINKS = [
     { label: "Home", to: "/", anchor: null },
+    { label: "Featured RAG Project", to: "/personal-projects/rag-ops-platform", anchor: null },
     { label: "AI Assistant", to: "/assistant", anchor: null },
     { label: "About Me", to: "/", anchor: "#aboutMe" },
     { label: "Skills", to: "/", anchor: "#skills" },

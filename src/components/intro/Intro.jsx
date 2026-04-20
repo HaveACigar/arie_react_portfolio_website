@@ -3,6 +3,7 @@ import { Box, Typography, Avatar, Button, Chip } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
 import EmailIcon from "@mui/icons-material/Email";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
+import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
 import { init } from "ityped";
 import "./intro.scss";
 import { ThemeContext } from "../../context";
@@ -96,6 +97,49 @@ export default function Intro() {
             px: 2,
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: { xs: "flex-start", md: "center" },
+              justifyContent: "space-between",
+              gap: 2,
+              p: 2.25,
+              mb: 2,
+              borderRadius: 3,
+              bgcolor: darkMode ? "rgba(16, 185, 129, 0.12)" : "rgba(16, 185, 129, 0.08)",
+              border: darkMode ? "1px solid rgba(110, 231, 183, 0.25)" : "1px solid rgba(16, 185, 129, 0.16)",
+            }}
+          >
+            <Box>
+              <Chip
+                icon={<PsychologyAltIcon />}
+                label="Featured Build"
+                sx={{
+                  mb: 1,
+                  fontWeight: 700,
+                  bgcolor: darkMode ? "#142a22" : "#e8f5e9",
+                  color: darkMode ? "#86efac" : "#1b5e20",
+                }}
+              />
+              <Typography variant="h6" sx={{ fontWeight: 800, mb: 0.5 }}>
+                Production RAG Ops Platform
+              </Typography>
+              <Typography variant="body2" sx={{ color: darkMode ? "#c7d2da" : "#4b5563" }}>
+                Multi-source retrieval with streaming answers, source routing, evaluation harnesses, and telemetry-ready observability.
+              </Typography>
+            </Box>
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<PsychologyAltIcon />}
+              href="/personal-projects/rag-ops-platform"
+              sx={{ fontWeight: 700, px: 3, py: 1.2, borderRadius: 2, whiteSpace: "nowrap" }}
+            >
+              Explore RAG Project
+            </Button>
+          </Box>
+
           <Box
             sx={{
               display: "flex",
