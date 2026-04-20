@@ -1,0 +1,10 @@
+services:
+  rag-api:
+    build:
+      context: ./backend
+    container_name: rag-ops-api
+    ports:
+      - "8000:8000"
+    environment:
+      RAG_ENVIRONMENT: dev
+      RAG_MAX_CONTEXT_DOCS: "4"

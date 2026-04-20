@@ -387,6 +387,34 @@ export const personalProjects = [
     ],
   },
   {
+    id: "rag-ops-platform",
+    title: "LLM RAG Ops Platform",
+    subtitle: "Production-Style RAG API with Guardrails, Evals, and Telemetry",
+    description:
+      "An interview-focused production starter project that implements a retrieval-augmented generation service with ingestion APIs, guardrail checks, experiment variants, evaluation harnesses, and telemetry endpoints for latency/token/cost tracking.",
+    tech: [
+      "Python", "FastAPI", "Scikit-learn", "RAG", "Evaluation Harness",
+      "Docker", "Telemetry", "Guardrails",
+    ],
+    skillsShowcased: [
+      "LLM System Design",
+      "RAG Architecture",
+      "Evaluation and Monitoring",
+      "Production API Engineering",
+    ],
+    status: "Ongoing",
+    category: "data-science",
+    github: "https://github.com/HaveACigar/arie_react_portfolio_website",
+    route: "/personal-projects/rag-ops-platform",
+    highlights: [
+      "Document ingestion + retrieval API for grounded answers",
+      "Safety checks for blocked terms and basic PII patterns",
+      "Variant toggle for A/B style answer strategy experiments",
+      "Built-in eval endpoint with retrieval overlap and answer keyword hit rate",
+      "Telemetry endpoint reporting request counts, latency, token and cost estimates",
+    ],
+  },
+  {
     id: "eda-visualization-dashboard",
     title: "EDA & Visualization Dashboard",
     subtitle: "Data Cleaning, Statistical Analysis & Interactive Visualization",

@@ -20,6 +20,7 @@ export default function Projects() {
 
   const PERSONAL_PRIORITY = ["react-portfolio-website", "fitness-log-app"];
   const DATA_SCIENCE_PRIORITY = [
+    "rag-ops-platform",
     "eda-visualization-dashboard",
     "supervised-ml-pipeline",
     "nlp-text-analytics",
