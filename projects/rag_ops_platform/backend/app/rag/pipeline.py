@@ -7,6 +7,31 @@ from app.schemas import AskResponse, Citation
 from app.storage.vector_store import store
 
 
+PATTERN_QUERY_HINTS = (
+    "biggest",
+    "recurring",
+    "pattern",
+    "trend",
+    "top",
+    "across",
+    "compare",
+    "summary",
+)
+
+
+def _select_top_k(question: str, source_filters: list[str]) -> int:
+    top_k = settings.max_context_docs
+    lowered = question.lower()
+    has_pattern_intent = any(hint in lowered for hint in PATTERN_QUERY_HINTS)
+
+    if has_pattern_intent and any(source in source_filters for source in ("nyc_311", "chicago_crimes")):
+        top_k = max(top_k, 14)
+    elif has_pattern_intent and "sec_companyfacts" in source_filters:
+        top_k = max(top_k, 8)
+
+    return min(top_k, 25)
+
+
 @traceable_op("rag-answer-question")
 def answer_question(
     question: str,
@@ -31,9 +56,11 @@ def answer_question(
         routed_sources = route_sources(question)
         effective_source_filters = routed_sources.copy()
 
+    top_k = _select_top_k(question, effective_source_filters)
+
     top_docs = store.search(
         question,
-        top_k=settings.max_context_docs,
+        top_k=top_k,
         source_filters=effective_source_filters,
     )
     citations: list[Citation] = []
