@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     app_name: str = "RAG Ops Platform"
     environment: str = "dev"
-    cors_origins: str = "http://localhost:4173,http://127.0.0.1:4173"
+    cors_origins: str = "http://localhost:4173,http://127.0.0.1:4173,https://www.arieswebsite.com,https://arieswebsite.com"
     retrieval_backend: str = "tfidf"
     max_context_docs: int = 4
     max_context_chars: int = 5000

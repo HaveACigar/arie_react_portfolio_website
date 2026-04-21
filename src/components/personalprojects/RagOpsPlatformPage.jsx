@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -19,9 +19,14 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import RouteIcon from "@mui/icons-material/AltRoute";
 import SourceIcon from "@mui/icons-material/Source";
 import VerifiedIcon from "@mui/icons-material/Verified";
+import CloudDoneIcon from "@mui/icons-material/CloudDone";
+import CloudOffIcon from "@mui/icons-material/CloudOff";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { ThemeContext } from "../../context";
 import { personalProjects } from "../../data";
 import "./personalProjects.scss";
+
+const RAG_API_BASE_URL = process.env.REACT_APP_RAG_OPS_API_URL?.trim() || "";
 
 const DEMO_CASES = [
   {
@@ -101,36 +106,32 @@ const VALUE_POINTS = [
   },
 ];
 
-function useStreamingText(fullText, activeKey) {
-  const [visibleText, setVisibleText] = useState("");
-  const [isStreaming, setIsStreaming] = useState(false);
+function buildDemoMetricCards(activeCase) {
+  return [
+    { label: "Latency", value: activeCase.metrics.latency },
+    { label: "Retrieval", value: activeCase.metrics.retrievalMode },
+    { label: "Tokens", value: activeCase.metrics.streamTokens },
+    { label: "Sources", value: activeCase.appliedFilters.length },
+  ];
+}
 
-  useEffect(() => {
-    if (!fullText) {
-      setVisibleText("");
-      setIsStreaming(false);
-      return;
-    }
-
-    setVisibleText("");
-    setIsStreaming(true);
-
-    const words = fullText.split(" ");
-    let index = 0;
-
-    const timer = window.setInterval(() => {
-      index += 1;
-      setVisibleText(words.slice(0, index).join(" "));
-      if (index >= words.length) {
-        window.clearInterval(timer);
-        setIsStreaming(false);
-      }
-    }, 28);
-
-    return () => window.clearInterval(timer);
-  }, [fullText, activeKey]);
-
-  return { visibleText, isStreaming };
+function buildLiveMetricCards(metrics) {
+  return [
+    { label: "Ask requests", value: metrics?.["ask_stream.count"] ?? metrics?.["ask.count"] ?? "-" },
+    {
+      label: "Avg latency",
+      value: metrics?.["ask_stream.latency_avg_s"]
+        ? `${metrics["ask_stream.latency_avg_s"]} s`
+        : metrics?.["ask.latency_avg_s"]
+          ? `${metrics["ask.latency_avg_s"]} s`
+          : "-",
+    },
+    { label: "Tokens est.", value: metrics?.["tokens.estimated_total"] ?? "-" },
+    {
+      label: "Est. cost",
+      value: typeof metrics?.["cost.estimated_usd"] === "number" ? `$${metrics["cost.estimated_usd"]}` : "-",
+    },
+  ];
 }
 
 export default function RagOpsPlatformPage() {
@@ -140,28 +141,213 @@ export default function RagOpsPlatformPage() {
   const project = personalProjects.find((item) => item.id === "rag-ops-platform");
   const [selectedCaseId, setSelectedCaseId] = useState(DEMO_CASES[0].id);
   const [question, setQuestion] = useState(DEMO_CASES[0].question);
+  const [sourceFilters, setSourceFilters] = useState(DEMO_CASES[0].appliedFilters.join(", "));
   const [autoRoute, setAutoRoute] = useState(true);
+  const [answerText, setAnswerText] = useState("");
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [citations, setCitations] = useState([]);
+  const [routedSources, setRoutedSources] = useState([]);
+  const [appliedFilters, setAppliedFilters] = useState([]);
+  const [metrics, setMetrics] = useState(null);
+  const [statusText, setStatusText] = useState("Checking app mode...");
+  const [connection, setConnection] = useState({ mode: RAG_API_BASE_URL ? "checking" : "demo", environment: null, reason: null });
+  const demoTimerRef = useRef(null);
 
   const activeCase = useMemo(
     () => DEMO_CASES.find((item) => item.id === selectedCaseId) || DEMO_CASES[0],
     [selectedCaseId]
   );
 
-  const [runKey, setRunKey] = useState(0);
-  const { visibleText, isStreaming } = useStreamingText(activeCase.answer, `${selectedCaseId}-${runKey}`);
-
   useEffect(() => {
     setQuestion(activeCase.question);
+    setSourceFilters(activeCase.appliedFilters.join(", "));
   }, [activeCase]);
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    async function bootstrapLiveMode() {
+      if (!RAG_API_BASE_URL) {
+        setConnection({ mode: "demo", environment: null, reason: "No API URL configured" });
+        setStatusText("Demo mode: set REACT_APP_RAG_OPS_API_URL to connect the live backend.");
+        return;
+      }
+
+      try {
+        const healthResponse = await fetch(`${RAG_API_BASE_URL}/health`);
+        if (!healthResponse.ok) {
+          throw new Error(`Health check failed (${healthResponse.status})`);
+        }
+        const health = await healthResponse.json();
+        if (isCancelled) return;
+
+        setConnection({ mode: "live", environment: health.environment || "unknown", reason: null });
+        setStatusText(`Live mode connected${health.environment ? ` (${health.environment})` : ""}.`);
+
+        try {
+          const metricsResponse = await fetch(`${RAG_API_BASE_URL}/metrics`);
+          if (metricsResponse.ok) {
+            const snapshot = await metricsResponse.json();
+            if (!isCancelled) {
+              setMetrics(snapshot);
+            }
+          }
+        } catch {
+          // Metrics are optional for page load.
+        }
+      } catch (error) {
+        if (isCancelled) return;
+        setConnection({ mode: "demo", environment: null, reason: error.message });
+        setStatusText("Demo mode: live API is unavailable, showing the interactive fallback experience.");
+      }
+    }
+
+    bootstrapLiveMode();
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   const accent = darkMode ? "#90caf9" : "#1976d2";
   const secondaryAccent = darkMode ? "#86efac" : "#15803d";
   const cardBg = darkMode ? "#2a2a2a" : "#fff";
   const cardBorder = darkMode ? "1px solid #444" : "1px solid #e3f0ff";
 
-  const handleRunDemo = () => {
-    setRunKey((value) => value + 1);
+  const clearDemoTimer = () => {
+    if (demoTimerRef.current) {
+      window.clearInterval(demoTimerRef.current);
+      demoTimerRef.current = null;
+    }
   };
+
+  const loadMetrics = async () => {
+    if (connection.mode !== "live") return;
+
+    try {
+      const metricsResponse = await fetch(`${RAG_API_BASE_URL}/metrics`);
+      if (!metricsResponse.ok) return;
+      const snapshot = await metricsResponse.json();
+      setMetrics(snapshot);
+    } catch {
+      // Non-blocking.
+    }
+  };
+
+  const handleRunDemo = async () => {
+    clearDemoTimer();
+    setAnswerText("");
+    setCitations([]);
+    setRoutedSources([]);
+    setAppliedFilters([]);
+
+    if (connection.mode === "live") {
+      setIsStreaming(true);
+      setStatusText("Streaming live answer from backend...");
+
+      try {
+        const response = await fetch(`${RAG_API_BASE_URL}/ask/stream`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            question: question.trim(),
+            user_id: "portfolio-demo",
+            experiment_variant: "baseline",
+            source_filters: sourceFilters
+              .split(",")
+              .map((item) => item.trim())
+              .filter(Boolean),
+            auto_route_sources: autoRoute,
+          }),
+        });
+
+        if (!response.ok || !response.body) {
+          throw new Error(`Streaming request failed (${response.status}).`);
+        }
+
+        const decoder = new TextDecoder();
+        const reader = response.body.getReader();
+        let buffer = "";
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const frames = buffer.split("\n\n");
+          buffer = frames.pop() || "";
+
+          for (const frame of frames) {
+            let eventName = "message";
+            let data = "{}";
+
+            for (const line of frame.split("\n")) {
+              if (line.startsWith("event:")) {
+                eventName = line.slice("event:".length).trim();
+              } else if (line.startsWith("data:")) {
+                data = line.slice("data:".length).trim();
+              }
+            }
+
+            let parsed;
+            try {
+              parsed = JSON.parse(data);
+            } catch {
+              continue;
+            }
+
+            if (eventName === "token") {
+              setAnswerText((current) => current + (parsed.text || ""));
+            }
+            if (eventName === "metadata") {
+              setCitations(parsed.citations || []);
+              setRoutedSources(parsed.routed_sources || []);
+              setAppliedFilters(parsed.applied_source_filters || []);
+            }
+            if (eventName === "blocked") {
+              setStatusText(`Blocked by guardrails: ${parsed.reason || "Request blocked."}`);
+            }
+            if (eventName === "done") {
+              setStatusText("Live answer complete.");
+            }
+          }
+        }
+
+        await loadMetrics();
+      } catch (error) {
+        setStatusText(`Live mode error: ${error.message}. Falling back to demo preview.`);
+        setConnection({ mode: "demo", environment: null, reason: error.message });
+      } finally {
+        setIsStreaming(false);
+      }
+
+      return;
+    }
+
+    setIsStreaming(true);
+    setStatusText("Streaming demo answer...");
+    const words = activeCase.answer.split(" ");
+    let index = 0;
+
+    demoTimerRef.current = window.setInterval(() => {
+      index += 1;
+      setAnswerText(words.slice(0, index).join(" "));
+
+      if (index >= words.length) {
+        clearDemoTimer();
+        setIsStreaming(false);
+        setCitations(activeCase.citations);
+        setRoutedSources(activeCase.routedSources);
+        setAppliedFilters(autoRoute ? activeCase.appliedFilters : ["manual selection"]);
+        setStatusText("Demo answer complete.");
+      }
+    }, 28);
+  };
+
+  useEffect(() => () => clearDemoTimer(), []);
+
+  const metricCards = connection.mode === "live"
+    ? buildLiveMetricCards(metrics)
+    : buildDemoMetricCards(activeCase);
 
   return (
     <Box
@@ -242,8 +428,19 @@ export default function RagOpsPlatformPage() {
           </Box>
 
           <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#475569", mb: 3 }}>
-            Choose a scenario, edit the prompt, and replay the response stream. The demo mirrors the real product behavior: source routing, evidence-backed answers, citations, and operational metrics.
+            Choose a scenario, edit the prompt, and run the app. When a backend URL is configured, this panel uses the real API for health checks, streaming answers, citations, and telemetry. Otherwise it falls back to a fully interactive demo preview.
           </Typography>
+
+          <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ mb: 3, flexWrap: "wrap", gap: 1 }}>
+            <Chip
+              icon={connection.mode === "live" ? <CloudDoneIcon /> : <CloudOffIcon />}
+              label={connection.mode === "live" ? `Live API Connected${connection.environment ? ` · ${connection.environment}` : ""}` : "Interactive Demo Mode"}
+              sx={{ fontWeight: 700 }}
+            />
+            {RAG_API_BASE_URL ? (
+              <Chip label={`API: ${RAG_API_BASE_URL}`} sx={{ fontWeight: 700 }} />
+            ) : null}
+          </Stack>
 
           <Stack direction={{ xs: "column", md: "row" }} spacing={3}>
             <Paper elevation={0} sx={{ flex: 1, p: 2.5, borderRadius: 3, background: cardBg, border: cardBorder }}>
@@ -277,6 +474,14 @@ export default function RagOpsPlatformPage() {
                 sx={{ mb: 2 }}
               />
 
+              <TextField
+                label="Source filters (comma-separated, optional)"
+                fullWidth
+                value={sourceFilters}
+                onChange={(event) => setSourceFilters(event.target.value)}
+                sx={{ mb: 2 }}
+              />
+
               <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 2.5 }}>
                 <Switch checked={autoRoute} onChange={(event) => setAutoRoute(event.target.checked)} />
                 <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#475569" }}>
@@ -288,9 +493,10 @@ export default function RagOpsPlatformPage() {
                 variant="contained"
                 startIcon={<PlayArrowIcon />}
                 onClick={handleRunDemo}
+                disabled={isStreaming}
                 sx={{ textTransform: "none", fontWeight: 800 }}
               >
-                Replay Interactive Demo
+                {connection.mode === "live" ? "Run Live Query" : "Replay Interactive Demo"}
               </Button>
             </Paper>
 
@@ -322,23 +528,22 @@ export default function RagOpsPlatformPage() {
                 }}
               >
                 <Typography variant="body2" sx={{ color: darkMode ? "#e2e8f0" : "#1f2937", lineHeight: 1.7 }}>
-                  {visibleText || "Press replay to stream a grounded answer from the selected scenario."}
+                  {answerText || "Run the app to stream a grounded answer from the selected scenario."}
                 </Typography>
               </Paper>
 
               <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ flexWrap: "wrap", gap: 1, mb: 2 }}>
-                <Chip icon={<RouteIcon />} label={`Routed: ${autoRoute ? activeCase.routedSources.join(", ") : "manual mode"}`} sx={{ fontWeight: 700 }} />
-                <Chip icon={<SourceIcon />} label={`Citations: ${activeCase.citations.length}`} sx={{ fontWeight: 700 }} />
-                <Chip icon={<VerifiedIcon />} label={`Eval score: ${activeCase.metrics.evaluation}`} sx={{ fontWeight: 700 }} />
+                <Chip icon={<RouteIcon />} label={`Routed: ${(routedSources.length ? routedSources : (autoRoute ? activeCase.routedSources : ["manual mode"])).join(", ")}`} sx={{ fontWeight: 700 }} />
+                <Chip icon={<SourceIcon />} label={`Citations: ${(citations.length || activeCase.citations.length)}`} sx={{ fontWeight: 700 }} />
+                <Chip icon={<VerifiedIcon />} label={connection.mode === "live" ? "Live retrieval" : `Eval score: ${activeCase.metrics.evaluation}`} sx={{ fontWeight: 700 }} />
               </Stack>
 
+              <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#475569", mb: 2 }}>
+                {statusText}
+              </Typography>
+
               <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr 1fr", md: "repeat(4, 1fr)" }, gap: 1.2 }}>
-                {[
-                  { label: "Latency", value: activeCase.metrics.latency },
-                  { label: "Retrieval", value: activeCase.metrics.retrievalMode },
-                  { label: "Tokens", value: activeCase.metrics.streamTokens },
-                  { label: "Sources", value: activeCase.appliedFilters.length },
-                ].map((item) => (
+                {metricCards.map((item) => (
                   <Paper key={item.label} elevation={0} sx={{ p: 1.4, borderRadius: 2, background: darkMode ? "#161616" : "#f8fafc", border: cardBorder }}>
                     <Typography variant="caption" sx={{ color: darkMode ? "#94a3b8" : "#64748b", display: "block" }}>
                       {item.label}
@@ -349,6 +554,17 @@ export default function RagOpsPlatformPage() {
                   </Paper>
                 ))}
               </Box>
+
+              {connection.mode === "live" ? (
+                <Button
+                  variant="text"
+                  startIcon={<RefreshIcon />}
+                  onClick={loadMetrics}
+                  sx={{ mt: 1.5, textTransform: "none", fontWeight: 700 }}
+                >
+                  Refresh live metrics
+                </Button>
+              ) : null}
             </Paper>
           </Stack>
         </Paper>
@@ -380,7 +596,7 @@ export default function RagOpsPlatformPage() {
               Live Evidence Panel
             </Typography>
             <Stack spacing={1.2} sx={{ mb: 2.5 }}>
-              {activeCase.citations.map((citation) => (
+              {(citations.length ? citations : activeCase.citations).map((citation) => (
                 <Paper key={citation.title} elevation={0} sx={{ p: 1.4, borderRadius: 2, background: darkMode ? "#151515" : "#f8fafc", border: cardBorder }}>
                   <Typography variant="body2" sx={{ fontWeight: 800, mb: 0.4 }}>
                     {citation.title}
@@ -396,7 +612,7 @@ export default function RagOpsPlatformPage() {
               Applied source filters
             </Typography>
             <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", gap: 1 }}>
-              {(autoRoute ? activeCase.appliedFilters : ["manual selection"]).map((item) => (
+              {(appliedFilters.length ? appliedFilters : (autoRoute ? activeCase.appliedFilters : ["manual selection"])).map((item) => (
                 <Chip
                   key={item}
                   label={item}
