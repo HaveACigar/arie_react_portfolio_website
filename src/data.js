@@ -408,7 +408,7 @@ export const personalProjects = [
     title: "LLM RAG Ops Platform",
     subtitle: "Production RAG System - FastAPI, Streaming, Evals, pgvector, OpenAI",
     description:
-      "A production-style retrieval-augmented generation platform built around FastAPI, optional pgvector retrieval, OpenAI-backed generation, streaming responses, routed multi-source ingestion, and built-in evaluation and observability. The system ingests difficult real-world datasets, applies source-aware retrieval and guardrails, and exposes both API and demo UI surfaces that can be reviewed by interviewers and recruiters.",
+      "A production-style retrieval-augmented generation platform built around FastAPI, optional pgvector retrieval, OpenAI-backed generation, streaming responses, routed multi-source ingestion, and built-in evaluation and observability. The system ingests difficult real-world datasets, applies source-aware retrieval and guardrails, and exposes both API and demo UI surfaces for live operational exploration.",
     tech: [
       "Python", "FastAPI", "OpenAI", "pgvector", "Scikit-learn",
       "Docker", "LangSmith", "SSE Streaming", "Evaluation Harness", "Guardrails",

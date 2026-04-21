@@ -18,6 +18,7 @@ import SoftwareEngineeringPage from "./components/specialty/SoftwareEngineeringP
 import PersonalProjects from "./components/personalprojects/PersonalProjects";
 import EDAProjectPage from "./components/personalprojects/EDAProjectPage";
 import ChurnPredictionPage from "./components/personalprojects/ChurnPredictionPage";
+import RagOpsPlatformPage from "./components/personalprojects/RagOpsPlatformPage";
 import PersonalProjectDetailPage from "./components/personalprojects/PersonalProjectDetailPage";
 import ReactPortfolioPage from "./components/personalprojects/ReactPortfolioPage";
 import SchoolProjectPage from "./components/schoolprojects/SchoolProjectPage";
@@ -139,6 +140,13 @@ function App() {
             <>
               <Topbar/>
               <ChurnPredictionPage />
+              <Footer/>
+            </>
+          } />
+          <Route path="/personal-projects/rag-ops-platform" element={
+            <>
+              <Topbar/>
+              <RagOpsPlatformPage />
               <Footer/>
             </>
           } />
