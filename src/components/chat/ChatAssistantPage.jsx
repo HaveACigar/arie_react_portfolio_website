@@ -15,7 +15,6 @@ import {
   Typography,
 } from "@mui/material";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
-import AddCommentIcon from "@mui/icons-material/AddComment";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import { useAuth } from "../../auth/AuthContext";
@@ -154,30 +153,6 @@ export default function ChatAssistantPage() {
     loadMessages();
   }, [user, activeSessionId]);
 
-  async function handleNewChat() {
-    setError("");
-    setNotice("");
-    if (!user || !CHAT_API_URL) {
-      setMessages([]);
-      setDraft("");
-      setActiveSessionId(null);
-      return;
-    }
-    try {
-      const token = await user.getIdToken();
-      const data = await authorizedFetch("/sessions", token, {
-        method: "POST",
-        body: JSON.stringify({ title: "New chat" }),
-      });
-      setSessions((current) => [{ id: data.session_id, title: data.title }, ...current]);
-      setActiveSessionId(data.session_id);
-      setMessages([]);
-      setDraft("");
-    } catch (err) {
-      setError(`Unable to create a new chat. ${err.message || ""}`.trim());
-    }
-  }
-
   async function sendMessageText(messageText) {
     if (!messageText.trim() || !CHAT_API_URL) return;
     const outgoing = messageText.trim();
@@ -251,9 +226,12 @@ export default function ChatAssistantPage() {
                   </Box>
                 </Stack>
                 <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-                  <Button variant="outlined" startIcon={<AddCommentIcon />} onClick={handleNewChat} sx={{ textTransform: "none", flex: 1 }}>
-                    New chat
-                  </Button>
+                  {/*
+                    New chat option is temporarily disabled.
+                    <Button variant="outlined" startIcon={<AddCommentIcon />} onClick={handleNewChat} sx={{ textTransform: "none", flex: 1 }}>
+                      New chat
+                    </Button>
+                  */}
                   <Button variant="text" color="inherit" startIcon={<LogoutIcon />} onClick={signOutUser} sx={{ textTransform: "none" }}>
                     Sign out
                   </Button>
