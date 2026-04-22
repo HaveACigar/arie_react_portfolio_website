@@ -122,6 +122,7 @@ function App() {
               <Footer/>
             </>
           } />
+          <Route path="/projects" element={<Navigate to="/personal-projects" replace />} />
           <Route path="/personal-projects/eda-visualization-dashboard" element={
             <>
               <Topbar/>
@@ -150,6 +151,7 @@ function App() {
               <Footer/>
             </>
           } />
+          <Route path="/projects/rag-ops-platform" element={<Navigate to="/personal-projects/rag-ops-platform" replace />} />
           <Route path="/personal-projects/:projectId" element={
             <>
               <Topbar/>

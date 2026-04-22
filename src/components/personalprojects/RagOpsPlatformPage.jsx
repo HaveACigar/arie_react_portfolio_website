@@ -527,7 +527,14 @@ export default function RagOpsPlatformPage() {
                   mb: 2,
                 }}
               >
-                <Typography variant="body2" sx={{ color: darkMode ? "#e2e8f0" : "#1f2937", lineHeight: 1.7 }}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: darkMode ? "#e2e8f0" : "#1f2937",
+                    lineHeight: 1.7,
+                    whiteSpace: "pre-wrap",
+                  }}
+                >
                   {answerText || "Run the app to stream a grounded answer from the selected scenario."}
                 </Typography>
               </Paper>
