@@ -122,7 +122,7 @@ export default function ChatAssistantPage() {
   // Load session list when user signs in
   useEffect(() => {
     async function loadSessions() {
-      if (!user || !CHAT_API_URL) return;
+      if (!user || CHAT_API_FALLBACKS.length === 0) return;
       try {
         const token = await user.getIdToken();
         const data = await authorizedFetch("/sessions", token);
@@ -140,7 +140,7 @@ export default function ChatAssistantPage() {
   // Load messages when active session changes
   useEffect(() => {
     async function loadMessages() {
-      if (!user || !activeSessionId || !CHAT_API_URL) return;
+      if (!user || !activeSessionId || CHAT_API_FALLBACKS.length === 0) return;
       setMessages([]);
       try {
         const token = await user.getIdToken();
@@ -154,7 +154,7 @@ export default function ChatAssistantPage() {
   }, [user, activeSessionId]);
 
   async function sendMessageText(messageText) {
-    if (!messageText.trim() || !CHAT_API_URL) return;
+    if (!messageText.trim() || CHAT_API_FALLBACKS.length === 0) return;
     const outgoing = messageText.trim();
     setDraft("");
     setBusy(true);
