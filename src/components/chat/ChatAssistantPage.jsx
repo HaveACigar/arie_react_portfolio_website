@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
+import AddCommentIcon from "@mui/icons-material/AddComment";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import { useAuth } from "../../auth/AuthContext";
@@ -98,6 +99,17 @@ async function authorizedFetch(path, token, options = {}) {
   return response.json();
 }
 
+function formatFetchError(prefix, err) {
+  const message = err?.message || "Unknown error";
+  const attempts = err?.diagnostic?.attempts || [];
+  if (!attempts.length) return `${prefix} ${message}`.trim();
+
+  const summary = attempts
+    .map((attempt) => `${attempt.baseUrl}: ${attempt.message || attempt.name || "network error"}`)
+    .join(" | ");
+  return `${prefix} ${message} (${summary})`.trim();
+}
+
 export default function ChatAssistantPage() {
   const { user, loading, signInWithGoogle, signOutUser } = useAuth();
   const [sessions, setSessions] = useState([]);
@@ -131,7 +143,7 @@ export default function ChatAssistantPage() {
           setActiveSessionId((current) => current || data.sessions[0].id);
         }
       } catch (err) {
-        setError(`Unable to load saved sessions. ${err.message || ""}`.trim());
+        setError(formatFetchError("Unable to load saved sessions.", err));
       }
     }
     loadSessions();
@@ -147,7 +159,7 @@ export default function ChatAssistantPage() {
         const data = await authorizedFetch(`/sessions/${activeSessionId}`, token);
         setMessages(data.messages || []);
       } catch (err) {
-        setError(`Unable to load chat history. ${err.message || ""}`.trim());
+        setError(formatFetchError("Unable to load chat history.", err));
       }
     }
     loadMessages();
@@ -172,7 +184,7 @@ export default function ChatAssistantPage() {
         { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
       ]);
     } catch (err) {
-      setError(`Unable to send your message right now. ${err.message || ""}`.trim());
+      setError(formatFetchError("Unable to send your message right now.", err));
       setMessages((current) => current.slice(0, -1));
       setDraft(outgoing);
     } finally {
@@ -185,8 +197,16 @@ export default function ChatAssistantPage() {
   }
 
   async function handleSuggestedPrompt(prompt) {
-    if (busy || !CHAT_API_URL) return;
+    if (busy || CHAT_API_FALLBACKS.length === 0) return;
     await sendMessageText(prompt);
+  }
+
+  function handleNewChat() {
+    setError("");
+    setNotice("");
+    setActiveSessionId(null);
+    setMessages([]);
+    setDraft("");
   }
 
   return (
@@ -226,12 +246,9 @@ export default function ChatAssistantPage() {
                   </Box>
                 </Stack>
                 <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-                  {/*
-                    New chat option is temporarily disabled.
-                    <Button variant="outlined" startIcon={<AddCommentIcon />} onClick={handleNewChat} sx={{ textTransform: "none", flex: 1 }}>
-                      New chat
-                    </Button>
-                  */}
+                  <Button variant="outlined" startIcon={<AddCommentIcon />} onClick={handleNewChat} sx={{ textTransform: "none", flex: 1 }}>
+                    New chat
+                  </Button>
                   <Button variant="text" color="inherit" startIcon={<LogoutIcon />} onClick={signOutUser} sx={{ textTransform: "none" }}>
                     Sign out
                   </Button>
@@ -271,7 +288,7 @@ export default function ChatAssistantPage() {
                 Guest mode — chats are not saved. Sign in to keep your history.
               </Alert>
             )}
-            {!CHAT_API_URL && (
+            {CHAT_API_FALLBACKS.length === 0 && (
               <Alert severity="warning" sx={{ mb: 2 }}>
                 Chat API is not configured. Add <code>REACT_APP_CHAT_API_URL</code> to the frontend environment.
               </Alert>
@@ -290,7 +307,7 @@ export default function ChatAssistantPage() {
                         variant="outlined"
                         size="small"
                         onClick={() => handleSuggestedPrompt(prompt)}
-                        disabled={!CHAT_API_URL || busy}
+                        disabled={CHAT_API_FALLBACKS.length === 0 || busy}
                         sx={{ textTransform: "none", justifyContent: "flex-start" }}
                       >
                         {prompt}
@@ -332,12 +349,12 @@ export default function ChatAssistantPage() {
                 placeholder={user ? "Ask about skills, projects, work experience, or live demos..." : "Ask a question now, or sign in to save your chats..."}
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
-                disabled={!CHAT_API_URL || busy}
+                disabled={CHAT_API_FALLBACKS.length === 0 || busy}
               />
               <Button
                 variant="contained"
                 onClick={handleSendMessage}
-                disabled={!CHAT_API_URL || !draft.trim() || busy}
+                disabled={CHAT_API_FALLBACKS.length === 0 || !draft.trim() || busy}
                 sx={{ textTransform: "none", minWidth: { sm: 140 } }}
               >
                 {busy ? "Sending..." : "Send"}
