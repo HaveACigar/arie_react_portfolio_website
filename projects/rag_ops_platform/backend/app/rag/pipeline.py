@@ -18,16 +18,30 @@ PATTERN_QUERY_HINTS = (
     "summary",
 )
 
+UNIQUE_LIST_QUERY_HINTS = (
+    "unique",
+    "list",
+    "all",
+    "every",
+)
+
 
 def _select_top_k(question: str, source_filters: list[str]) -> int:
     top_k = settings.max_context_docs
     lowered = question.lower()
     has_pattern_intent = any(hint in lowered for hint in PATTERN_QUERY_HINTS)
+    has_unique_list_intent = any(hint in lowered for hint in UNIQUE_LIST_QUERY_HINTS)
 
     if has_pattern_intent and any(source in source_filters for source in ("nyc_311", "chicago_crimes")):
         top_k = max(top_k, 14)
     elif has_pattern_intent and "sec_companyfacts" in source_filters:
         top_k = max(top_k, 8)
+
+    if has_unique_list_intent and any(source in source_filters for source in ("nyc_311", "chicago_crimes")):
+        top_k = max(top_k, 18)
+
+    if len(source_filters) >= 2:
+        top_k = max(top_k, 16)
 
     return min(top_k, 25)
 

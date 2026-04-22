@@ -81,6 +81,13 @@ def _find_after_label(label: str, text: str) -> str | None:
     return value if value else None
 
 
+def _wants_unique_listing(question: str) -> bool:
+    lowered = question.lower()
+    return ("unique" in lowered and ("complaint" in lowered or "crime" in lowered)) or (
+        "list" in lowered and "complaint" in lowered
+    )
+
+
 def _summarize_nyc311(question: str, context_chunks: list[str], citations: list[Citation]) -> str:
     complaint_totals: dict[str, int] = defaultdict(int)
     complaint_boroughs: dict[str, set[str]] = defaultdict(set)
@@ -109,6 +116,30 @@ def _summarize_nyc311(question: str, context_chunks: list[str], citations: list[
 
     if not complaint_totals:
         return ""
+
+    if _wants_unique_listing(question):
+        unique_items = sorted(complaint_totals.items(), key=lambda item: item[0].lower())
+        lines: list[str] = [
+            f"Question: {question}",
+            "",
+            "Sources consulted: nyc_311",
+            "",
+            "Summary:",
+            f"Unique complaint categories found in retrieved evidence: {len(unique_items)}",
+            "",
+        ]
+
+        for i, (complaint, total) in enumerate(unique_items[:20], 1):
+            boroughs = ", ".join(sorted(complaint_boroughs[complaint]))
+            lines.append(f"{i}. {complaint}")
+            lines.append(f"   Observed complaints: {total}")
+            lines.append(f"   Boroughs: {boroughs}")
+            lines.append("")
+
+        if len(unique_items) > 20:
+            lines.append(f"...and {len(unique_items) - 20} more unique categories not shown.")
+
+        return "\n".join(lines)
 
     ranked = sorted(complaint_totals.items(), key=lambda item: item[1], reverse=True)
     top_items = ranked[:4]
