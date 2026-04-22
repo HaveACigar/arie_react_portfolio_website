@@ -175,10 +175,37 @@ export default function ChatAssistantPage() {
     setMessages((current) => [...current, { id: `local-${Date.now()}`, role: "user", content: outgoing }]);
 
     try {
-      const data = await publicFetch("/chat/public", {
-        method: "POST",
-        body: JSON.stringify({ message: outgoing }),
-      });
+      let data;
+      if (user) {
+        const token = await user.getIdToken();
+        data = await authorizedFetch("/chat", token, {
+          method: "POST",
+          body: JSON.stringify({
+            message: outgoing,
+            session_id: activeSessionId || undefined,
+          }),
+        });
+
+        if (data?.session_id) {
+          setActiveSessionId(data.session_id);
+          setSessions((current) => {
+            const existing = current.find((item) => item.id === data.session_id);
+            const nextItem = {
+              id: data.session_id,
+              title: existing?.title || outgoing.slice(0, 60) || "New chat",
+              updated_at: new Date().toISOString(),
+            };
+            const rest = current.filter((item) => item.id !== data.session_id);
+            return [nextItem, ...rest];
+          });
+        }
+      } else {
+        data = await publicFetch("/chat/public", {
+          method: "POST",
+          body: JSON.stringify({ message: outgoing }),
+        });
+      }
+
       setMessages((current) => [
         ...current,
         { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
