@@ -115,18 +115,22 @@ def _summarize_nyc311(question: str, context_chunks: list[str], citations: list[
 
     lines: list[str] = [
         f"Question: {question}",
+        "",
         "Sources consulted: nyc_311",
+        "",
         "Summary:",
-        "- The strongest recurring complaint categories in the retrieved evidence are listed below.",
-        "Top recurring categories:",
+        "The strongest recurring complaint categories in the retrieved evidence:",
+        "",
     ]
 
-    for complaint, total in top_items:
+    for i, (complaint, total) in enumerate(top_items, 1):
         boroughs = ", ".join(sorted(complaint_boroughs[complaint]))
         descriptor = complaint_descriptors[complaint][0] if complaint_descriptors[complaint] else "n/a"
-        lines.append(
-            f"- {complaint}: {total} complaint(s) across {boroughs}. Typical descriptor: {descriptor}."
-        )
+        lines.append(f"{i}. {complaint}")
+        lines.append(f"   Total: {total} complaint(s)")
+        lines.append(f"   Boroughs: {boroughs}")
+        lines.append(f"   Top descriptors: {descriptor}")
+        lines.append("")
 
     return "\n".join(lines)
 
@@ -151,8 +155,11 @@ def _summarize_chicago(question: str, context_chunks: list[str], citations: list
 
     return "\n".join([
         f"Question: {question}",
+        "",
         "Sources consulted: chicago_crimes",
+        "",
         "Summary:",
+        "",
         *findings[:4],
     ])
 
@@ -180,8 +187,11 @@ def _summarize_sec(question: str, context_chunks: list[str], citations: list[Cit
 
     return "\n".join([
         f"Question: {question}",
+        "",
         "Sources consulted: sec_companyfacts",
+        "",
         "Summary:",
+        "",
         *findings[:3],
     ])
 
@@ -201,8 +211,11 @@ def _summarize_generic(question: str, context_chunks: list[str], citations: list
     source_text = ", ".join(sources) if sources else "unknown"
     return "\n".join([
         f"Question: {question}",
+        "",
         f"Sources consulted: {source_text}",
+        "",
         "Summary:",
+        "",
         *findings[:5],
     ])
 

@@ -26,10 +26,12 @@ def parse_args() -> argparse.Namespace:
         default="nyc311,sec_companyfacts,chicago_crimes",
         help="Comma-separated sources: nyc311, sec_companyfacts, chicago_crimes",
     )
-    parser.add_argument("--nyc-days", type=int, default=30, help="NYC 311 lookback window in days")
-    parser.add_argument("--nyc-limit", type=int, default=2000, help="NYC 311 fetch limit")
-    parser.add_argument("--chicago-days", type=int, default=30, help="Chicago crime lookback window in days")
-    parser.add_argument("--chicago-limit", type=int, default=2000, help="Chicago crime fetch limit")
+    parser.add_argument("--nyc-days", type=int, default=365, help="NYC 311 lookback window in days")
+    parser.add_argument("--nyc-limit", type=int, default=50000, help="NYC 311 max total records (paginated)")
+    parser.add_argument("--nyc-page-size", type=int, default=50000, help="NYC 311 records per Socrata page")
+    parser.add_argument("--chicago-days", type=int, default=365, help="Chicago crime lookback window in days")
+    parser.add_argument("--chicago-limit", type=int, default=50000, help="Chicago crime max total records (paginated)")
+    parser.add_argument("--chicago-page-size", type=int, default=50000, help="Chicago crime records per Socrata page")
     parser.add_argument(
         "--sec-tickers",
         default="AAPL,MSFT,AMZN,TSLA,NVDA",
@@ -65,7 +67,7 @@ def main() -> None:
     docs: list[dict[str, str]] = []
 
     if "nyc311" in selected_sources:
-        nyc_rows = fetch_nyc_311(days=args.nyc_days, limit=args.nyc_limit, allow_insecure_ssl=args.allow_insecure_ssl)
+        nyc_rows = fetch_nyc_311(days=args.nyc_days, limit=args.nyc_limit, allow_insecure_ssl=args.allow_insecure_ssl, page_size=args.nyc_page_size)
         nyc_docs = wrangle_to_documents(records=nyc_rows, days=args.nyc_days)
         for doc in nyc_docs:
             doc["source"] = "nyc_311"
@@ -87,6 +89,7 @@ def main() -> None:
             days=args.chicago_days,
             limit=args.chicago_limit,
             allow_insecure_ssl=args.allow_insecure_ssl,
+            page_size=args.chicago_page_size,
         )
         chicago_docs = wrangle_chicago_docs(chicago_rows, days=args.chicago_days)
         docs.extend(chicago_docs)

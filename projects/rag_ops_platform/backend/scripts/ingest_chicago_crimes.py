@@ -21,8 +21,9 @@ CHICAGO_CRIME_ENDPOINT = "https://data.cityofchicago.org/resource/ijzp-q8t2.json
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Ingest real Chicago crimes data into the RAG API.")
     parser.add_argument("--api-base-url", default="http://localhost:8000", help="RAG API base URL")
-    parser.add_argument("--limit", type=int, default=2000, help="Max records to fetch")
-    parser.add_argument("--days", type=int, default=30, help="Lookback window in days")
+    parser.add_argument("--limit", type=int, default=50000, help="Max total records to fetch (paginated)")
+    parser.add_argument("--days", type=int, default=365, help="Lookback window in days")
+    parser.add_argument("--page-size", type=int, default=50000, help="Records per Socrata page")
     parser.add_argument(
         "--output",
         default="data/chicago_crimes_documents.json",
@@ -55,40 +56,55 @@ def _build_ssl_context(allow_insecure_ssl: bool) -> ssl.SSLContext:
         return ssl.create_default_context()
 
 
-def fetch_chicago_crimes(days: int, limit: int, allow_insecure_ssl: bool) -> list[dict[str, Any]]:
+def fetch_chicago_crimes(days: int, limit: int, allow_insecure_ssl: bool, page_size: int = 50000) -> list[dict[str, Any]]:
     since = (datetime.now(UTC) - timedelta(days=days)).strftime("%Y-%m-%dT%H:%M:%S")
-    params = {
-        "$select": ",".join(
-            [
-                "id",
-                "date",
-                "primary_type",
-                "description",
-                "location_description",
-                "arrest",
-                "domestic",
-                "district",
-                "beat",
-                "block",
-                "year",
-                "latitude",
-                "longitude",
-            ]
-        ),
-        "$where": f"date >= '{since}'",
-        "$order": "date DESC",
-        "$limit": str(limit),
-    }
+    select_cols = ",".join(
+        [
+            "id",
+            "date",
+            "primary_type",
+            "description",
+            "location_description",
+            "arrest",
+            "domestic",
+            "district",
+            "beat",
+            "block",
+            "year",
+            "latitude",
+            "longitude",
+        ]
+    )
+    ssl_ctx = _build_ssl_context(allow_insecure_ssl)
+    all_rows: list[dict[str, Any]] = []
+    offset = 0
+    batch_size = min(page_size, 50000)  # Socrata hard cap is 50 000 per request
 
-    url = f"{CHICAGO_CRIME_ENDPOINT}?{urlencode(params)}"
-    req = Request(url, headers={"Accept": "application/json"})
-    with urlopen(req, timeout=60, context=_build_ssl_context(allow_insecure_ssl)) as response:
-        payload = json.loads(response.read().decode("utf-8"))
+    while len(all_rows) < limit:
+        fetch_count = min(batch_size, limit - len(all_rows))
+        params = {
+            "$select": select_cols,
+            "$where": f"date >= '{since}'",
+            "$order": "date DESC",
+            "$limit": str(fetch_count),
+            "$offset": str(offset),
+        }
+        url = f"{CHICAGO_CRIME_ENDPOINT}?{urlencode(params)}"
+        req = Request(url, headers={"Accept": "application/json"})
+        with urlopen(req, timeout=120, context=ssl_ctx) as response:
+            page = json.loads(response.read().decode("utf-8"))
 
-    if not isinstance(payload, list):
-        raise RuntimeError("Chicago crimes API returned unexpected payload format.")
+        if not isinstance(page, list):
+            raise RuntimeError("Chicago crimes API returned unexpected payload format.")
 
-    return payload
+        all_rows.extend(page)
+        print(f"  Chicago crimes page offset={offset}: {len(page)} rows (total so far: {len(all_rows)})")
+
+        if len(page) < fetch_count:
+            break  # No more data available
+        offset += len(page)
+
+    return all_rows
 
 
 def wrangle_to_documents(records: list[dict[str, Any]], days: int) -> list[dict[str, str]]:
@@ -148,7 +164,7 @@ def wrangle_to_documents(records: list[dict[str, Any]], days: int) -> list[dict[
 
 def main() -> None:
     args = parse_args()
-    rows = fetch_chicago_crimes(days=args.days, limit=args.limit, allow_insecure_ssl=args.allow_insecure_ssl)
+    rows = fetch_chicago_crimes(days=args.days, limit=args.limit, allow_insecure_ssl=args.allow_insecure_ssl, page_size=args.page_size)
     docs = wrangle_to_documents(rows, days=args.days)
     write_documents(args.output, docs)
 
