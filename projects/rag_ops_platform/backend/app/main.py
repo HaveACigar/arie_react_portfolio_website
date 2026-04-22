@@ -1,4 +1,5 @@
 import json
+import re
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -80,8 +81,9 @@ def ask_stream(payload: AskRequest) -> StreamingResponse:
             yield _sse_event("done", {"blocked": True})
             return
 
-        for token in result.answer.split():
-            yield _sse_event("token", {"text": token + " "})
+        # Stream chunks with trailing whitespace preserved so the UI keeps newlines/indentation.
+        for token in re.findall(r"\S+\s*", result.answer):
+            yield _sse_event("token", {"text": token})
 
         yield _sse_event(
             "metadata",
