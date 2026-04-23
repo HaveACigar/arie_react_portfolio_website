@@ -59,11 +59,14 @@ export default function Skills() {
           gap: 3,
         }}
       >
-        {skills.map((group) => (
+        {skills.map((group, index) => (
           <Paper
             key={group.category}
             elevation={3}
             sx={{
+              animation: "staggerFade 520ms ease forwards",
+              animationDelay: `${index * 90}ms`,
+              opacity: 0,
               p: 3,
               borderRadius: 3.5,
               background: darkMode ? "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.82))" : "linear-gradient(145deg, rgba(248,250,252,0.94), rgba(240,249,255,0.85))",

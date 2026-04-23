@@ -50,6 +50,12 @@ export default function Projects() {
     DATA_SCIENCE_PRIORITY,
   );
 
+  const sectionBand = {
+    personal: darkMode ? "linear-gradient(90deg,#22d3ee,#38bdf8)" : "linear-gradient(90deg,#06b6d4,#0ea5e9)",
+    dataScience: darkMode ? "linear-gradient(90deg,#34d399,#10b981)" : "linear-gradient(90deg,#059669,#10b981)",
+    school: darkMode ? "linear-gradient(90deg,#f59e0b,#f97316)" : "linear-gradient(90deg,#d97706,#ea580c)",
+  };
+
   return (
     <Box
       className="projects-section modern-section"
@@ -103,11 +109,25 @@ export default function Projects() {
           mb: 8,
         }}
       >
-        {personalOnlyProjects.map((project) => (
+        {personalOnlyProjects.map((project, index) => (
           <Paper
             key={project.id}
             elevation={3}
             sx={{
+              position: "relative",
+              overflow: "hidden",
+              animation: "staggerFade 520ms ease forwards",
+              animationDelay: `${index * 75}ms`,
+              opacity: 0,
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 4,
+                background: sectionBand.personal,
+              },
               p: 3,
               borderRadius: 3.5,
               background: darkMode ? "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.82))" : "linear-gradient(145deg, rgba(248,250,252,0.94), rgba(240,249,255,0.85))",
@@ -198,11 +218,25 @@ export default function Projects() {
           mb: 3,
         }}
       >
-        {dataScienceProjects.map((project) => (
+        {dataScienceProjects.map((project, index) => (
           <Paper
             key={project.id}
             elevation={3}
             sx={{
+              position: "relative",
+              overflow: "hidden",
+              animation: "staggerFade 520ms ease forwards",
+              animationDelay: `${index * 75}ms`,
+              opacity: 0,
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 4,
+                background: sectionBand.dataScience,
+              },
               p: 3,
               borderRadius: 3.5,
               background: darkMode ? "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.82))" : "linear-gradient(145deg, rgba(248,250,252,0.94), rgba(240,249,255,0.85))",
@@ -280,11 +314,25 @@ export default function Projects() {
           mb: 3,
         }}
       >
-        {projects.map((project) => (
+        {projects.map((project, index) => (
           <Paper
             key={project.id}
             elevation={3}
             sx={{
+              position: "relative",
+              overflow: "hidden",
+              animation: "staggerFade 520ms ease forwards",
+              animationDelay: `${index * 75}ms`,
+              opacity: 0,
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 4,
+                background: sectionBand.school,
+              },
               p: 3,
               borderRadius: 3.5,
               background: darkMode ? "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.82))" : "linear-gradient(145deg, rgba(248,250,252,0.94), rgba(240,249,255,0.85))",

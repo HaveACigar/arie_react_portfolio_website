@@ -24,13 +24,36 @@ import ReactPortfolioPage from "./components/personalprojects/ReactPortfolioPage
 import SchoolProjectPage from "./components/schoolprojects/SchoolProjectPage";
 import FitnessLogRoutePage from "./components/personalprojects/FitnessLogRoutePage";
 import "./app.scss";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ThemeContext } from "./context";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 function App() {
   const theme = useContext(ThemeContext);
   const darkMode = theme.state.darkMode;
+
+  useEffect(() => {
+    const sections = document.querySelectorAll(".modern-section");
+    if (!sections.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+        rootMargin: "0px 0px -10% 0px",
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className={`app ${darkMode ? "theme-dark" : "theme-light"}`}>

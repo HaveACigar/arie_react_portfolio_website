@@ -62,6 +62,9 @@ export default function Experience({ filter }) {
             key={job.id}
             className="timeline-item"
             sx={{
+              animation: "staggerFade 540ms ease forwards",
+              animationDelay: `${index * 95}ms`,
+              opacity: 0,
               display: "flex",
               mb: 5,
               position: "relative",
