@@ -1,5 +1,5 @@
 import ContactMe from "./components/contact/ContactMe";
-import { BrowserRouter as Router, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import ChatAssistantPage from "./components/chat/ChatAssistantPage";
 import MastersProjects from './components/mastersprojects/MastersProjects';
 import Contact from "./components/contact/Contact";
@@ -28,9 +28,8 @@ import { useContext, useEffect } from "react";
 import { ThemeContext } from "./context";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
-function App() {
-  const theme = useContext(ThemeContext);
-  const darkMode = theme.state.darkMode;
+function ScrollRevealObserver() {
+  const location = useLocation();
 
   useEffect(() => {
     const sections = document.querySelectorAll(".modern-section");
@@ -51,14 +50,26 @@ function App() {
       }
     );
 
-    sections.forEach((section) => observer.observe(section));
+    sections.forEach((section) => {
+      section.classList.remove("is-visible");
+      observer.observe(section);
+    });
+
     return () => observer.disconnect();
-  }, []);
+  }, [location.pathname]);
+
+  return null;
+}
+
+function App() {
+  const theme = useContext(ThemeContext);
+  const darkMode = theme.state.darkMode;
 
   return (
     <div className={`app ${darkMode ? "theme-dark" : "theme-light"}`}>
       <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}>
         <Router>
+          <ScrollRevealObserver />
           <Routes>
           <Route path="/" element={
             <>
