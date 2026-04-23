@@ -256,7 +256,7 @@ export default function Intro() {
               color: darkMode ? "#90caf9" : "#1976d2",
             }}
           >
-            📊 Data Science & Analysis →
+            📊 Data Science & Analytics →
           </Button>
           <Button
             variant="text"

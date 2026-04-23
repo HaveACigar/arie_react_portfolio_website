@@ -124,11 +124,6 @@ export default function Topbar() {
                                 <img src="assets/github.png" alt="GitHub" style={{ width: 24, height: 24 }} />
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="HackerRank" arrow>
-                            <IconButton href="https://www.hackerrank.com/ariedekraker" target="_blank" rel="noopener" size="small" sx={{ '&:hover': { transform: 'translateY(-1px)' } }}>
-                                <img src="assets/hackerrank.png" alt="HackerRank" style={{ width: 24, height: 24 }} />
-                            </IconButton>
-                        </Tooltip>
                     </Stack>
                 </Stack>
 

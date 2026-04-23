@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Box, Typography, Chip, Paper } from "@mui/material";
+import { Box, Typography, Chip, Paper, Button } from "@mui/material";
 import { ThemeContext } from "../../context";
 import { skills } from "../../data";
 import "./skills.scss";
@@ -114,6 +114,15 @@ export default function Skills() {
             </Box>
           </Paper>
         ))}
+      </Box>
+
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 1.2, flexWrap: "wrap", mt: 3 }}>
+        <Button href="/data-science" variant="outlined" sx={{ textTransform: "none", fontWeight: 700 }}>
+          Data Science & Analytics Page
+        </Button>
+        <Button href="/software-engineering" variant="outlined" sx={{ textTransform: "none", fontWeight: 700 }}>
+          Software Engineering Page
+        </Button>
       </Box>
     </Box>
   );

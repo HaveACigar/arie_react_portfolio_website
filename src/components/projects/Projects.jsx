@@ -86,6 +86,14 @@ export default function Projects() {
       >
         Portfolio
       </Typography>
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 1.2, flexWrap: "wrap", mb: 3 }}>
+        <Button href="/data-science" variant="outlined" sx={{ textTransform: "none", fontWeight: 700 }}>
+          Data Science & Analytics Page
+        </Button>
+        <Button href="/software-engineering" variant="outlined" sx={{ textTransform: "none", fontWeight: 700 }}>
+          Software Engineering Page
+        </Button>
+      </Box>
       {/* ── Section 1: Personal Projects ── */}
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1, mb: 4 }}>
         <RocketLaunchIcon sx={{ fontSize: 32, color: accent }} />

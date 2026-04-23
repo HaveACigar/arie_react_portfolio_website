@@ -3,7 +3,7 @@ import { Box, Typography, Button, Chip, Paper } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CodeIcon from "@mui/icons-material/Code";
 import { ThemeContext } from "../../context";
-import { projects, skills, education } from "../../data";
+import { projects, skills, education, personalProjects } from "../../data";
 import Experience from "../experience/Experience";
 import "./specialtyPage.scss";
 
@@ -18,9 +18,17 @@ export default function SoftwareEngineeringPage() {
   const darkMode = theme.state.darkMode;
 
   const sweSkills = skills.filter((s) => SWE_SKILL_CATEGORIES.includes(s.category));
-  const sweProjects = projects.filter(
+  const schoolSoftwareProjects = projects.filter(
     (p) => p.category === "software-engineering" || p.category === "both"
   );
+  const featuredEngineeringProjects = personalProjects.filter(
+    (p) => ["arieai-assistant", "react-portfolio-website", "fitness-log-app", "rag-ops-platform"].includes(p.id)
+  );
+
+  const sweProjects = [
+    ...featuredEngineeringProjects,
+    ...schoolSoftwareProjects,
+  ];
 
   return (
     <Box
@@ -205,7 +213,7 @@ export default function SoftwareEngineeringPage() {
             >
               {sweProjects.map((project) => (
                 <Paper
-                  key={project.id}
+                  key={`${project.id}-${project.title}`}
                   elevation={2}
                   sx={{
                     p: 2.5,
@@ -229,7 +237,12 @@ export default function SoftwareEngineeringPage() {
                       <Chip key={t} label={t} size="small" sx={{ fontSize: "0.7rem", bgcolor: darkMode ? "#333" : "#e8f5e9", color: darkMode ? "#81c784" : "#2e7d32", border: darkMode ? "1px solid #4caf50" : "1px solid #a5d6a7" }} />
                     ))}
                   </Box>
-                  {project.link && (
+                  {project.route && (
+                    <Button href={project.route} size="small" sx={{ alignSelf: "flex-start", textTransform: "none", fontWeight: 600 }}>
+                      View Project →
+                    </Button>
+                  )}
+                  {!project.route && project.link && (
                     <Button href={project.link} target="_blank" rel="noopener noreferrer" size="small" sx={{ alignSelf: "flex-start", textTransform: "none", fontWeight: 600 }}>
                       View Project →
                     </Button>

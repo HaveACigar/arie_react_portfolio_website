@@ -3,7 +3,7 @@ import { Box, Typography, Button, Chip, Paper } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ScienceIcon from "@mui/icons-material/Science";
 import { ThemeContext } from "../../context";
-import { projects, skills, education } from "../../data";
+import { projects, skills, education, personalProjects } from "../../data";
 import Experience from "../experience/Experience";
 import "./specialtyPage.scss";
 
@@ -19,9 +19,17 @@ export default function DataSciencePage() {
   const darkMode = theme.state.darkMode;
 
   const dsSkills = skills.filter((s) => DS_SKILL_CATEGORIES.includes(s.category));
-  const dsProjects = projects.filter(
+  const schoolDataScienceProjects = projects.filter(
     (p) => p.category === "data-science" || p.category === "both"
   );
+  const featuredPersonalProjects = personalProjects.filter(
+    (p) => p.id === "rag-ops-platform" || p.id === "supervised-ml-pipeline" || p.id === "eda-visualization-dashboard"
+  );
+
+  const dsProjects = [
+    ...featuredPersonalProjects,
+    ...schoolDataScienceProjects,
+  ];
 
   return (
     <Box
@@ -60,7 +68,7 @@ export default function DataSciencePage() {
               mb: 1,
             }}
           >
-            Data Science & Analysis
+            Data Science & Analytics
           </Typography>
           <Typography
             variant="body1"
@@ -210,7 +218,7 @@ export default function DataSciencePage() {
         >
           {dsProjects.map((project) => (
             <Paper
-              key={project.id}
+              key={`${project.id}-${project.title}`}
               elevation={2}
               sx={{
                 p: 2.5,
@@ -237,7 +245,12 @@ export default function DataSciencePage() {
                   <Chip key={t} label={t} size="small" sx={{ fontSize: "0.7rem", bgcolor: darkMode ? "#333" : "#f3e5f5", color: darkMode ? "#ce93d8" : "#7b1fa2", border: darkMode ? "1px solid #9c27b0" : "1px solid #ce93d8" }} />
                 ))}
               </Box>
-              {project.link && (
+              {project.route && (
+                <Button href={project.route} size="small" sx={{ alignSelf: "flex-start", textTransform: "none", fontWeight: 600 }}>
+                  View Project →
+                </Button>
+              )}
+              {!project.route && project.link && (
                 <Button href={project.link} target="_blank" rel="noopener noreferrer" size="small" sx={{ alignSelf: "flex-start", textTransform: "none", fontWeight: 600 }}>
                   View Project →
                 </Button>

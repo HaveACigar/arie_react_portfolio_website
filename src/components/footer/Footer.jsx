@@ -140,25 +140,6 @@ export default function Footer() {
               />
             </IconButton>
           </Tooltip>
-          <Tooltip title="HackerRank" arrow>
-            <IconButton
-              href={personalInfo.hackerrank}
-              target="_blank"
-              rel="noopener"
-              size="small"
-              sx={{
-                bgcolor: darkMode ? "rgba(30,41,59,0.7)" : "rgba(241,245,249,0.9)",
-                border: darkMode ? "1px solid rgba(148,163,184,0.22)" : "1px solid rgba(148,163,184,0.26)",
-                "&:hover": { transform: "translateY(-1px)" },
-              }}
-            >
-              <img
-                src="assets/hackerrank.png"
-                alt="HackerRank"
-                style={{ width: 24, height: 24 }}
-              />
-            </IconButton>
-          </Tooltip>
         </Box>
       </Box>
 
