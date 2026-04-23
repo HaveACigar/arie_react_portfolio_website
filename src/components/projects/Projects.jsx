@@ -118,7 +118,6 @@ export default function Projects() {
               overflow: "hidden",
               animation: "staggerFade 520ms ease forwards",
               animationDelay: `${index * 75}ms`,
-              opacity: 0,
               "&::before": {
                 content: '""',
                 position: "absolute",
@@ -227,7 +226,6 @@ export default function Projects() {
               overflow: "hidden",
               animation: "staggerFade 520ms ease forwards",
               animationDelay: `${index * 75}ms`,
-              opacity: 0,
               "&::before": {
                 content: '""',
                 position: "absolute",
@@ -323,7 +321,6 @@ export default function Projects() {
               overflow: "hidden",
               animation: "staggerFade 520ms ease forwards",
               animationDelay: `${index * 75}ms`,
-              opacity: 0,
               "&::before": {
                 content: '""',
                 position: "absolute",

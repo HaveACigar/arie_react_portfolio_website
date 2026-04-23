@@ -129,7 +129,6 @@ export default function AboutMe() {
             sx={{
               animation: "staggerFade 520ms ease forwards",
               animationDelay: `${index * 90}ms`,
-              opacity: 0,
               textAlign: "center",
               p: 2,
               borderRadius: 3,
