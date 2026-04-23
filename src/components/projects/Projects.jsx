@@ -16,7 +16,7 @@ export default function Projects() {
 
   const accent = darkMode ? "#90caf9" : "#1976d2";
 
-  const PERSONAL_PRIORITY = ["react-portfolio-website", "fitness-log-app"];
+  const PERSONAL_PRIORITY = ["rag-ops-platform", "arieai-assistant", "react-portfolio-website", "fitness-log-app"];
   const DATA_SCIENCE_PRIORITY = [
     "rag-ops-platform",
     "eda-visualization-dashboard",
@@ -42,7 +42,7 @@ export default function Projects() {
   };
 
   const personalOnlyProjects = sortByPriority(
-    personalProjects.filter((project) => project.category !== "data-science"),
+    personalProjects.filter((project) => project.category !== "data-science" || project.id === "rag-ops-platform"),
     PERSONAL_PRIORITY,
   );
   const dataScienceProjects = sortByPriority(
