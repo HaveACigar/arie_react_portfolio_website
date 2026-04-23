@@ -15,8 +15,6 @@ export default function Projects() {
   const darkMode = theme.state.darkMode;
 
   const accent = darkMode ? "#90caf9" : "#1976d2";
-  const cardBg = darkMode ? "#2a2a2a" : "#fff";
-  const cardBorder = darkMode ? "1px solid #444" : "1px solid #e3f0ff";
 
   const PERSONAL_PRIORITY = ["react-portfolio-website", "fitness-log-app"];
   const DATA_SCIENCE_PRIORITY = [
@@ -54,22 +52,40 @@ export default function Projects() {
 
   return (
     <Box
-      className="projects-section"
+      className="projects-section modern-section"
       id="projects"
       sx={{
-        py: 8,
+        py: { xs: 7, md: 8 },
         px: { xs: 2, md: 6 },
         width: "100%",
         maxWidth: 1100,
         mx: "auto",
+        borderRadius: 4,
+        border: darkMode ? "1px solid rgba(148,163,184,0.24)" : "1px solid rgba(148,163,184,0.2)",
+        bgcolor: darkMode ? "rgba(15,23,42,0.62)" : "rgba(255,255,255,0.74)",
+        backdropFilter: "blur(10px)",
+        boxShadow: darkMode ? "0 18px 40px rgba(2,6,23,0.38)" : "0 16px 34px rgba(15,23,42,0.1)",
       }}
     >
+      <Typography
+        variant="overline"
+        align="center"
+        sx={{
+          display: "block",
+          letterSpacing: 2,
+          fontWeight: 700,
+          color: darkMode ? "#fcd34d" : "#b45309",
+          mb: 0.8,
+        }}
+      >
+        Portfolio
+      </Typography>
       {/* ── Section 1: Personal Projects ── */}
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 1, mb: 4 }}>
         <RocketLaunchIcon sx={{ fontSize: 32, color: accent }} />
         <Typography
           variant="h4"
-          sx={{ fontWeight: 700, color: accent, letterSpacing: 1 }}
+          sx={{ fontWeight: 800, color: darkMode ? "#e2e8f0" : "#0f172a", letterSpacing: -0.3 }}
         >
           My Personal Projects
         </Typography>
@@ -93,22 +109,22 @@ export default function Projects() {
             elevation={3}
             sx={{
               p: 3,
-              borderRadius: 3,
-              background: cardBg,
-              border: cardBorder,
+              borderRadius: 3.5,
+              background: darkMode ? "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.82))" : "linear-gradient(145deg, rgba(248,250,252,0.94), rgba(240,249,255,0.85))",
+              border: darkMode ? "1px solid rgba(148,163,184,0.22)" : "1px solid rgba(125,211,252,0.28)",
               display: "flex",
               flexDirection: "column",
               transition: "transform 0.2s, box-shadow 0.2s",
               "&:hover": {
                 transform: "translateY(-4px)",
                 boxShadow: darkMode
-                  ? "0 8px 24px rgba(144,202,249,0.12)"
-                  : "0 8px 24px rgba(25,118,210,0.12)",
+                  ? "0 12px 24px rgba(2,6,23,0.34)"
+                  : "0 12px 24px rgba(14,116,144,0.16)",
               },
             }}
           >
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 1 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: darkMode ? "#e0e0e0" : "#222", flex: 1, lineHeight: 1.3 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 700, color: darkMode ? "#f1f5f9" : "#0f172a", flex: 1, lineHeight: 1.3 }}>
                 {project.title}
               </Typography>
               <Chip
@@ -124,12 +140,12 @@ export default function Projects() {
             <Typography variant="subtitle2" sx={{ color: accent, fontWeight: 600, mb: 1 }}>
               {project.subtitle}
             </Typography>
-            <Typography variant="body2" sx={{ color: darkMode ? "#bbb" : "#555", mb: 2, lineHeight: 1.6, flex: 1 }}>
+            <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#334155", mb: 2, lineHeight: 1.6, flex: 1 }}>
               {project.description}
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.6, mb: 2 }}>
               {project.tech.map((t) => (
-                <Chip key={t} label={t} size="small" sx={{ fontWeight: 500, fontSize: "0.7rem", bgcolor: darkMode ? "#333" : "#f3e5f5", color: darkMode ? "#ce93d8" : "#7b1fa2", border: darkMode ? "1px solid #9c27b0" : "1px solid #ce93d8" }} />
+                <Chip key={t} label={t} size="small" sx={{ fontWeight: 500, fontSize: "0.7rem", bgcolor: darkMode ? "rgba(124,58,237,0.22)" : "rgba(243,232,255,0.85)", color: darkMode ? "#ddd6fe" : "#5b21b6", border: darkMode ? "1px solid rgba(167,139,250,0.38)" : "1px solid rgba(167,139,250,0.28)" }} />
               ))}
             </Box>
             <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
@@ -164,7 +180,7 @@ export default function Projects() {
         <ScienceIcon sx={{ fontSize: 32, color: accent }} />
         <Typography
           variant="h4"
-          sx={{ fontWeight: 700, color: accent, letterSpacing: 1 }}
+          sx={{ fontWeight: 800, color: darkMode ? "#e2e8f0" : "#0f172a", letterSpacing: -0.3 }}
         >
           My Data Science Projects
         </Typography>
@@ -188,22 +204,22 @@ export default function Projects() {
             elevation={3}
             sx={{
               p: 3,
-              borderRadius: 3,
-              background: cardBg,
-              border: cardBorder,
+              borderRadius: 3.5,
+              background: darkMode ? "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.82))" : "linear-gradient(145deg, rgba(248,250,252,0.94), rgba(240,249,255,0.85))",
+              border: darkMode ? "1px solid rgba(148,163,184,0.22)" : "1px solid rgba(125,211,252,0.28)",
               display: "flex",
               flexDirection: "column",
               transition: "transform 0.2s, box-shadow 0.2s",
               "&:hover": {
                 transform: "translateY(-4px)",
                 boxShadow: darkMode
-                  ? "0 8px 24px rgba(144,202,249,0.12)"
-                  : "0 8px 24px rgba(25,118,210,0.12)",
+                  ? "0 12px 24px rgba(2,6,23,0.34)"
+                  : "0 12px 24px rgba(14,116,144,0.16)",
               },
             }}
           >
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 1 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: darkMode ? "#e0e0e0" : "#222", flex: 1, lineHeight: 1.3 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: darkMode ? "#f1f5f9" : "#0f172a", flex: 1, lineHeight: 1.3 }}>
                 {project.title}
               </Typography>
               <Chip
@@ -219,12 +235,12 @@ export default function Projects() {
             <Typography variant="subtitle2" sx={{ color: accent, fontWeight: 600, mb: 1 }}>
               {project.subtitle}
             </Typography>
-            <Typography variant="body2" sx={{ color: darkMode ? "#bbb" : "#555", mb: 2, lineHeight: 1.6, flex: 1 }}>
+            <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#334155", mb: 2, lineHeight: 1.6, flex: 1 }}>
               {project.description}
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.6, mb: 2 }}>
               {project.tech.map((t) => (
-                <Chip key={t} label={t} size="small" sx={{ fontWeight: 500, fontSize: "0.7rem", bgcolor: darkMode ? "#333" : "#f3e5f5", color: darkMode ? "#ce93d8" : "#7b1fa2", border: darkMode ? "1px solid #9c27b0" : "1px solid #ce93d8" }} />
+                <Chip key={t} label={t} size="small" sx={{ fontWeight: 500, fontSize: "0.7rem", bgcolor: darkMode ? "rgba(124,58,237,0.22)" : "rgba(243,232,255,0.85)", color: darkMode ? "#ddd6fe" : "#5b21b6", border: darkMode ? "1px solid rgba(167,139,250,0.38)" : "1px solid rgba(167,139,250,0.28)" }} />
               ))}
             </Box>
             <Box sx={{ display: "flex", gap: 1.5 }}>
@@ -246,7 +262,7 @@ export default function Projects() {
         <SchoolIcon sx={{ fontSize: 32, color: accent }} />
         <Typography
           variant="h4"
-          sx={{ fontWeight: 700, color: accent, letterSpacing: 1 }}
+          sx={{ fontWeight: 800, color: darkMode ? "#e2e8f0" : "#0f172a", letterSpacing: -0.3 }}
         >
           My School Projects
         </Typography>
@@ -270,22 +286,22 @@ export default function Projects() {
             elevation={3}
             sx={{
               p: 3,
-              borderRadius: 3,
-              background: cardBg,
-              border: cardBorder,
+              borderRadius: 3.5,
+              background: darkMode ? "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.82))" : "linear-gradient(145deg, rgba(248,250,252,0.94), rgba(240,249,255,0.85))",
+              border: darkMode ? "1px solid rgba(148,163,184,0.22)" : "1px solid rgba(125,211,252,0.28)",
               display: "flex",
               flexDirection: "column",
               transition: "transform 0.2s, box-shadow 0.2s",
               "&:hover": {
                 transform: "translateY(-4px)",
                 boxShadow: darkMode
-                  ? "0 8px 24px rgba(144,202,249,0.12)"
-                  : "0 8px 24px rgba(25,118,210,0.12)",
+                  ? "0 12px 24px rgba(2,6,23,0.34)"
+                  : "0 12px 24px rgba(14,116,144,0.16)",
               },
             }}
           >
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 1 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: darkMode ? "#e0e0e0" : "#222", flex: 1, lineHeight: 1.3 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, color: darkMode ? "#f1f5f9" : "#0f172a", flex: 1, lineHeight: 1.3 }}>
                 {project.title}
               </Typography>
               <Chip
@@ -298,12 +314,12 @@ export default function Projects() {
                 }}
               />
             </Box>
-            <Typography variant="body2" sx={{ color: darkMode ? "#bbb" : "#555", mb: 2, lineHeight: 1.6, flex: 1 }}>
+            <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#334155", mb: 2, lineHeight: 1.6, flex: 1 }}>
               {project.description}
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.6, mb: 2 }}>
               {project.tech.map((t) => (
-                <Chip key={t} label={t} size="small" sx={{ fontWeight: 500, fontSize: "0.7rem", bgcolor: darkMode ? "#333" : "#f3e5f5", color: darkMode ? "#ce93d8" : "#7b1fa2", border: darkMode ? "1px solid #9c27b0" : "1px solid #ce93d8" }} />
+                <Chip key={t} label={t} size="small" sx={{ fontWeight: 500, fontSize: "0.7rem", bgcolor: darkMode ? "rgba(124,58,237,0.22)" : "rgba(243,232,255,0.85)", color: darkMode ? "#ddd6fe" : "#5b21b6", border: darkMode ? "1px solid rgba(167,139,250,0.38)" : "1px solid rgba(167,139,250,0.28)" }} />
               ))}
             </Box>
             <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>

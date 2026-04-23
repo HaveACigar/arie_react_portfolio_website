@@ -16,25 +16,43 @@ export default function AboutMe() {
 
   return (
     <Box
-      className="aboutMe"
+      className="aboutMe modern-section"
       id="aboutMe"
       sx={{
-        py: 6,
+        py: { xs: 6, md: 8 },
         px: { xs: 2, md: 6 },
         width: "100%",
-        maxWidth: 900,
+        maxWidth: 980,
         mx: "auto",
+        borderRadius: 4,
+        border: darkMode ? "1px solid rgba(148,163,184,0.24)" : "1px solid rgba(148,163,184,0.2)",
+        bgcolor: darkMode ? "rgba(15,23,42,0.62)" : "rgba(255,255,255,0.74)",
+        backdropFilter: "blur(10px)",
+        boxShadow: darkMode ? "0 18px 40px rgba(2,6,23,0.38)" : "0 16px 34px rgba(15,23,42,0.1)",
       }}
     >
+      <Typography
+        variant="overline"
+        align="center"
+        sx={{
+          display: "block",
+          letterSpacing: 2,
+          fontWeight: 700,
+          color: darkMode ? "#38bdf8" : "#0369a1",
+          mb: 0.5,
+        }}
+      >
+        Background
+      </Typography>
       <Typography
         variant="h4"
         align="center"
         gutterBottom
         sx={{
-          fontWeight: 700,
-          color: darkMode ? "#90caf9" : "#1976d2",
+          fontWeight: 800,
+          color: darkMode ? "#e2e8f0" : "#0f172a",
           mb: 3,
-          letterSpacing: 1,
+          letterSpacing: -0.4,
         }}
       >
         About Me
@@ -45,8 +63,8 @@ export default function AboutMe() {
         paragraph
         sx={{
           fontSize: "1.05rem",
-          lineHeight: 1.8,
-          color: darkMode ? "#ccc" : "#444",
+          lineHeight: 1.9,
+          color: darkMode ? "#cbd5e1" : "#334155",
           textAlign: "center",
           maxWidth: 750,
           mx: "auto",
@@ -64,8 +82,8 @@ export default function AboutMe() {
         paragraph
         sx={{
           fontSize: "1.05rem",
-          lineHeight: 1.8,
-          color: darkMode ? "#ccc" : "#444",
+          lineHeight: 1.9,
+          color: darkMode ? "#cbd5e1" : "#334155",
           textAlign: "center",
           maxWidth: 750,
           mx: "auto",
@@ -83,8 +101,8 @@ export default function AboutMe() {
         paragraph
         sx={{
           fontSize: "1.05rem",
-          lineHeight: 1.8,
-          color: darkMode ? "#ccc" : "#444",
+          lineHeight: 1.9,
+          color: darkMode ? "#cbd5e1" : "#334155",
           textAlign: "center",
           maxWidth: 750,
           mx: "auto",
@@ -111,17 +129,18 @@ export default function AboutMe() {
             sx={{
               textAlign: "center",
               p: 2,
-              borderRadius: 2,
-              background: darkMode ? "#2a2a2a" : "#f5f7fa",
-              border: darkMode ? "1px solid #444" : "1px solid #e3f0ff",
+              borderRadius: 3,
+              background: darkMode ? "linear-gradient(135deg, rgba(30,41,59,0.88), rgba(15,23,42,0.8))" : "linear-gradient(135deg, rgba(240,249,255,0.9), rgba(239,246,255,0.8))",
+              border: darkMode ? "1px solid rgba(148,163,184,0.22)" : "1px solid rgba(125,211,252,0.35)",
               minWidth: 130,
+              boxShadow: darkMode ? "0 10px 24px rgba(2,6,23,0.28)" : "0 8px 20px rgba(14,116,144,0.12)",
             }}
           >
             <Typography
               variant="h6"
               sx={{
                 fontWeight: 700,
-                color: darkMode ? "#90caf9" : "#1976d2",
+                color: darkMode ? "#7dd3fc" : "#0c4a6e",
                 fontSize: "1.1rem",
               }}
             >
@@ -129,7 +148,7 @@ export default function AboutMe() {
             </Typography>
             <Typography
               variant="caption"
-              sx={{ color: darkMode ? "#999" : "#888" }}
+              sx={{ color: darkMode ? "#94a3b8" : "#475569" }}
             >
               {m.desc}
             </Typography>

@@ -61,26 +61,50 @@ export default function Topbar() {
         <Box className="topbar"
             sx={{
                 width: '100%',
-                bgcolor: darkMode ? 'grey.900' : 'grey.100',
+                bgcolor: darkMode ? 'rgba(12, 20, 36, 0.74)' : 'rgba(255, 255, 255, 0.72)',
                 color: darkMode ? 'grey.100' : 'grey.900',
-                boxShadow: 2,
+                borderBottom: darkMode ? '1px solid rgba(148, 163, 184, 0.24)' : '1px solid rgba(148, 163, 184, 0.28)',
+                backdropFilter: 'blur(14px) saturate(145%)',
+                boxShadow: darkMode ? '0 10px 24px rgba(2, 6, 23, 0.45)' : '0 10px 24px rgba(15, 23, 42, 0.1)',
                 position: 'fixed',
                 zIndex: 1300,
             }}>
-            <Box className="wrapper" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: { xs: 1, md: 2 }, py: 1 }}>
+            <Box className="wrapper" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: { xs: 1.2, md: 3 }, py: 1.1 }}>
 
                 {/* Hamburger menu button */}
                 <IconButton
                     onClick={() => setDrawerOpen(true)}
                     size="small"
-                    sx={{ flexShrink: 0, color: darkMode ? 'grey.100' : 'grey.900' }}
+                    sx={{
+                        flexShrink: 0,
+                        color: darkMode ? 'grey.100' : 'grey.900',
+                        bgcolor: darkMode ? 'rgba(148, 163, 184, 0.13)' : 'rgba(15, 23, 42, 0.06)',
+                        border: darkMode ? '1px solid rgba(148, 163, 184, 0.22)' : '1px solid rgba(15, 23, 42, 0.08)',
+                        '&:hover': {
+                            bgcolor: darkMode ? 'rgba(148, 163, 184, 0.22)' : 'rgba(15, 23, 42, 0.12)',
+                        },
+                    }}
                     aria-label="Open navigation menu"
                 >
                     <MenuIcon />
                 </IconButton>
 
                 {/* Center content */}
-                <Stack direction="row" spacing={{ xs: 1, md: 3 }} alignItems="center" sx={{ flex: 1, justifyContent: 'center' }}>
+                <Stack
+                    direction="row"
+                    spacing={{ xs: 1, md: 3 }}
+                    alignItems="center"
+                    sx={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        borderRadius: 999,
+                        px: { xs: 0.8, md: 1.2 },
+                        py: 0.45,
+                        mx: 1,
+                        bgcolor: darkMode ? 'rgba(30, 41, 59, 0.45)' : 'rgba(248, 250, 252, 0.74)',
+                        border: darkMode ? '1px solid rgba(148, 163, 184, 0.16)' : '1px solid rgba(148, 163, 184, 0.24)',
+                    }}
+                >
                     <Stack direction="row" spacing={1} alignItems="center" className="itemContainer" sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <PersonIcon fontSize="small" />
                         <Typography variant="body2" noWrap>+1(734)945-3869</Typography>
@@ -91,17 +115,17 @@ export default function Topbar() {
                     </Stack>
                     <Stack direction="row" spacing={0} alignItems="center">
                         <Tooltip title="LinkedIn" arrow>
-                            <IconButton href="https://www.linkedin.com/in/arie-dekraker/" target="_blank" rel="noopener" size="small">
+                            <IconButton href="https://www.linkedin.com/in/arie-dekraker/" target="_blank" rel="noopener" size="small" sx={{ '&:hover': { transform: 'translateY(-1px)' } }}>
                                 <img src="assets/linkedin.png" alt="LinkedIn" style={{ width: 24, height: 24 }} />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="GitHub" arrow>
-                            <IconButton href="https://github.com/HaveACigar" target="_blank" rel="noopener" size="small">
+                            <IconButton href="https://github.com/HaveACigar" target="_blank" rel="noopener" size="small" sx={{ '&:hover': { transform: 'translateY(-1px)' } }}>
                                 <img src="assets/github.png" alt="GitHub" style={{ width: 24, height: 24 }} />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="HackerRank" arrow>
-                            <IconButton href="https://www.hackerrank.com/ariedekraker" target="_blank" rel="noopener" size="small">
+                            <IconButton href="https://www.hackerrank.com/ariedekraker" target="_blank" rel="noopener" size="small" sx={{ '&:hover': { transform: 'translateY(-1px)' } }}>
                                 <img src="assets/hackerrank.png" alt="HackerRank" style={{ width: 24, height: 24 }} />
                             </IconButton>
                         </Tooltip>
@@ -109,7 +133,18 @@ export default function Topbar() {
                 </Stack>
 
                 {/* Dark mode toggle */}
-                <IconButton onClick={handleClick} size="small" sx={{ bgcolor: darkMode ? 'grey.800' : 'grey.200', flexShrink: 0 }}>
+                <IconButton
+                    onClick={handleClick}
+                    size="small"
+                    sx={{
+                        bgcolor: darkMode ? 'rgba(30, 41, 59, 0.84)' : 'rgba(241, 245, 249, 0.9)',
+                        border: darkMode ? '1px solid rgba(148, 163, 184, 0.28)' : '1px solid rgba(148, 163, 184, 0.34)',
+                        flexShrink: 0,
+                        '&:hover': {
+                            bgcolor: darkMode ? 'rgba(51, 65, 85, 0.9)' : 'rgba(226, 232, 240, 0.92)',
+                        },
+                    }}
+                >
                     <img src={darkMode ? "assets/sun_icon.png" : "assets/moon_icon.png"} alt="toggleIcon" style={{ width: 22, height: 22 }} />
                 </IconButton>
             </Box>
@@ -122,8 +157,10 @@ export default function Topbar() {
                 PaperProps={{
                     sx: {
                         width: 260,
-                        bgcolor: darkMode ? "#1a1a1a" : "#fff",
+                        bgcolor: darkMode ? "rgba(15, 23, 42, 0.92)" : "rgba(255, 255, 255, 0.95)",
                         color: darkMode ? "#f5f5f5" : "#222",
+                        backdropFilter: "blur(14px)",
+                        borderRight: darkMode ? "1px solid rgba(148, 163, 184, 0.24)" : "1px solid rgba(148, 163, 184, 0.22)",
                     },
                 }}
             >

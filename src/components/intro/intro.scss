@@ -1,103 +1,73 @@
 @import "../../global.scss";
 
 .intro {
-    display: flex;
-    @include mobile{
-        flex-direction: column;
+    width: 100%;
+    position: relative;
+    isolation: isolate;
+    border-radius: 30px;
+    overflow: clip;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    background:
+        radial-gradient(circle at 92% 8%, rgba(14, 165, 233, 0.18), transparent 44%),
+        radial-gradient(circle at 8% 92%, rgba(251, 146, 60, 0.15), transparent 46%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(226, 232, 240, 0.58));
+    box-shadow: 0 20px 44px rgba(15, 23, 42, 0.12);
+    animation: introReveal 600ms ease-out;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(to right, rgba(148, 163, 184, 0.11) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(148, 163, 184, 0.11) 1px, transparent 1px);
+        background-size: 34px 34px;
+        pointer-events: none;
+        z-index: -1;
     }
 
-    .left{
-        flex: 0.4;
-        overflow: hidden;
-        @include mobile{
-            align-items: flex-start;
-        }
-
-        .imgContainer{
-            width: 1000px;
-            height: 1000px;
-
-            img{
-                height: 90%;
-                @include mobile{
-                    height: 37%;
-                    width: 37%;
-                }
-            }
-        }
+    .MuiAvatar-root {
+        width: clamp(120px, 16vw, 170px);
+        height: clamp(120px, 16vw, 170px);
+        box-shadow: 0 14px 34px rgba(2, 132, 199, 0.28);
     }
 
-    .right{
-        flex: 0.6;
-        position: relative;
-        background-color: rgb(255, 123, 0);
+    .MuiChip-root {
+        border-radius: 999px;
+        font-weight: 700;
+    }
 
-        .wrapper{
-            height: 90%;
-            width: 100%;
-            padding-left: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+    .MuiButton-contained {
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.24);
+    }
 
-            @include mobile{
-                padding-left: 0;
-                align-items: center;
-            }
-            h1{
-                font-size: 60px;
-                margin: 10px 0;
-                color: azure;
+    .ityped-cursor {
+        color: #0ea5e9;
+        animation: blink 1s infinite;
+    }
 
-                @include mobile{
-                    font-size: 40px;
-                }
-            }
-            h2{
-                font-size: 35px;
-                color: azure;
-            }
-            h3{
-                font-size: 30px;
-                color: azure;
-                @include mobile{
-                    font-size: 20px;
-                }
-                span{
-                    font-size: inherit;
-                    color: greenyellow;
-                }
+    @include mobile {
+        border-radius: 22px;
+    }
+}
 
-                .ityped-cursor{
-                    animation: blink 1s infinite;
-                }
+@keyframes introReveal {
+    from {
+        transform: translateY(14px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
 
-                @keyframes blink {
-                    50%{
-                        opacity: 1;
-                    }
-                    100%{
-                        opacity: 0;
-                    }
-                }
-            }
-            
-        }
-        a{
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-
-            img{
-                width: 50px;
-                animation: arrowBlink 2s infinite;
-            }
-
-            @keyframes arrowBlink {
-                100%{
-                    opacity: 0;
-                }
-            }
-        }
+@keyframes blink {
+    0%,
+    40% {
+        opacity: 1;
+    }
+    60%,
+    100% {
+        opacity: 0;
     }
 }

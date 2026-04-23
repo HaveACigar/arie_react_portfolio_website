@@ -10,25 +10,43 @@ export default function Skills() {
 
   return (
     <Box
-      className="skills-section"
+      className="skills-section modern-section"
       id="skills"
       sx={{
-        py: 8,
+        py: { xs: 7, md: 8 },
         px: { xs: 2, md: 6 },
         width: "100%",
         maxWidth: 1100,
         mx: "auto",
+        borderRadius: 4,
+        border: darkMode ? "1px solid rgba(148,163,184,0.24)" : "1px solid rgba(148,163,184,0.2)",
+        bgcolor: darkMode ? "rgba(15,23,42,0.62)" : "rgba(255,255,255,0.74)",
+        backdropFilter: "blur(10px)",
+        boxShadow: darkMode ? "0 18px 40px rgba(2,6,23,0.38)" : "0 16px 34px rgba(15,23,42,0.1)",
       }}
     >
+      <Typography
+        variant="overline"
+        align="center"
+        sx={{
+          display: "block",
+          letterSpacing: 2,
+          fontWeight: 700,
+          color: darkMode ? "#34d399" : "#047857",
+          mb: 0.8,
+        }}
+      >
+        Capabilities
+      </Typography>
       <Typography
         variant="h4"
         align="center"
         gutterBottom
         sx={{
-          fontWeight: 700,
-          color: darkMode ? "#90caf9" : "#1976d2",
+          fontWeight: 800,
+          color: darkMode ? "#e2e8f0" : "#0f172a",
           mb: 4,
-          letterSpacing: 1,
+          letterSpacing: -0.4,
         }}
       >
         Skills & Technologies
@@ -47,15 +65,15 @@ export default function Skills() {
             elevation={3}
             sx={{
               p: 3,
-              borderRadius: 3,
-              background: darkMode ? "#2a2a2a" : "#fff",
-              border: darkMode ? "1px solid #444" : "1px solid #e3f0ff",
+              borderRadius: 3.5,
+              background: darkMode ? "linear-gradient(145deg, rgba(30,41,59,0.92), rgba(15,23,42,0.82))" : "linear-gradient(145deg, rgba(248,250,252,0.94), rgba(240,249,255,0.85))",
+              border: darkMode ? "1px solid rgba(148,163,184,0.22)" : "1px solid rgba(125,211,252,0.28)",
               transition: "transform 0.2s, box-shadow 0.2s",
               "&:hover": {
                 transform: "translateY(-4px)",
                 boxShadow: darkMode
-                  ? "0 8px 24px rgba(144,202,249,0.12)"
-                  : "0 8px 24px rgba(25,118,210,0.12)",
+                  ? "0 12px 24px rgba(2,6,23,0.34)"
+                  : "0 12px 24px rgba(14,116,144,0.16)",
               },
             }}
           >
@@ -63,7 +81,7 @@ export default function Skills() {
               variant="subtitle1"
               sx={{
                 fontWeight: 700,
-                color: darkMode ? "#90caf9" : "#1976d2",
+                color: darkMode ? "#7dd3fc" : "#0c4a6e",
                 mb: 2,
                 fontSize: "1.05rem",
               }}
@@ -78,14 +96,14 @@ export default function Skills() {
                   size="small"
                   sx={{
                     fontWeight: 500,
-                    bgcolor: darkMode ? "#333" : "#e3f2fd",
-                    color: darkMode ? "#e0e0e0" : "#1565c0",
+                    bgcolor: darkMode ? "rgba(15,118,110,0.24)" : "rgba(236,253,245,0.85)",
+                    color: darkMode ? "#99f6e4" : "#065f46",
                     border: darkMode
-                      ? "1px solid #555"
-                      : "1px solid #bbdefb",
+                      ? "1px solid rgba(45,212,191,0.36)"
+                      : "1px solid rgba(16,185,129,0.28)",
                     "&:hover": {
-                      bgcolor: darkMode ? "#1976d2" : "#1976d2",
-                      color: "#fff",
+                      bgcolor: darkMode ? "rgba(15,118,110,0.38)" : "rgba(209,250,229,0.95)",
+                      color: darkMode ? "#ccfbf1" : "#064e3b",
                     },
                     transition: "all 0.2s",
                   }}

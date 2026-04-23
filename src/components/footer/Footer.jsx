@@ -13,13 +13,14 @@ export default function Footer() {
   return (
     <Box
       component="footer"
-      className="site-footer"
+      className="site-footer modern-section"
       sx={{
         py: 4,
         px: { xs: 2, md: 6 },
         mt: 4,
-        borderTop: darkMode ? "1px solid #444" : "1px solid #e0e0e0",
-        background: darkMode ? "#1a1a1a" : "#f5f7fa",
+        borderTop: darkMode ? "1px solid rgba(148,163,184,0.24)" : "1px solid rgba(148,163,184,0.3)",
+        background: darkMode ? "rgba(15,23,42,0.68)" : "rgba(255,255,255,0.76)",
+        backdropFilter: "blur(10px)",
         width: "100%",
       }}
     >
@@ -39,15 +40,15 @@ export default function Footer() {
           <Typography
             variant="h6"
             sx={{
-              fontWeight: 700,
-              color: darkMode ? "#90caf9" : "#1976d2",
+              fontWeight: 800,
+              color: darkMode ? "#e2e8f0" : "#0f172a",
             }}
           >
             {personalInfo.name}
           </Typography>
           <Typography
             variant="body2"
-            sx={{ color: darkMode ? "#aaa" : "#666" }}
+            sx={{ color: darkMode ? "#94a3b8" : "#475569" }}
           >
             {personalInfo.title}
           </Typography>
@@ -67,12 +68,12 @@ export default function Footer() {
             <PhoneIcon
               sx={{
                 fontSize: 18,
-                color: darkMode ? "#aaa" : "#666",
+                color: darkMode ? "#94a3b8" : "#475569",
               }}
             />
             <Typography
               variant="body2"
-              sx={{ color: darkMode ? "#ccc" : "#444" }}
+              sx={{ color: darkMode ? "#cbd5e1" : "#334155" }}
             >
               {personalInfo.phone}
             </Typography>
@@ -89,7 +90,7 @@ export default function Footer() {
               component="a"
               href={`mailto:${personalInfo.email}`}
               sx={{
-                color: darkMode ? "#90caf9" : "#1976d2",
+                color: darkMode ? "#7dd3fc" : "#0369a1",
                 textDecoration: "none",
                 "&:hover": { textDecoration: "underline" },
               }}
@@ -107,6 +108,11 @@ export default function Footer() {
               target="_blank"
               rel="noopener"
               size="small"
+              sx={{
+                bgcolor: darkMode ? "rgba(30,41,59,0.7)" : "rgba(241,245,249,0.9)",
+                border: darkMode ? "1px solid rgba(148,163,184,0.22)" : "1px solid rgba(148,163,184,0.26)",
+                "&:hover": { transform: "translateY(-1px)" },
+              }}
             >
               <img
                 src="assets/linkedin.png"
@@ -121,6 +127,11 @@ export default function Footer() {
               target="_blank"
               rel="noopener"
               size="small"
+              sx={{
+                bgcolor: darkMode ? "rgba(30,41,59,0.7)" : "rgba(241,245,249,0.9)",
+                border: darkMode ? "1px solid rgba(148,163,184,0.22)" : "1px solid rgba(148,163,184,0.26)",
+                "&:hover": { transform: "translateY(-1px)" },
+              }}
             >
               <img
                 src="assets/github.png"
@@ -135,6 +146,11 @@ export default function Footer() {
               target="_blank"
               rel="noopener"
               size="small"
+              sx={{
+                bgcolor: darkMode ? "rgba(30,41,59,0.7)" : "rgba(241,245,249,0.9)",
+                border: darkMode ? "1px solid rgba(148,163,184,0.22)" : "1px solid rgba(148,163,184,0.26)",
+                "&:hover": { transform: "translateY(-1px)" },
+              }}
             >
               <img
                 src="assets/hackerrank.png"
@@ -153,7 +169,7 @@ export default function Footer() {
           display: "block",
           textAlign: "center",
           mt: 3,
-          color: darkMode ? "#666" : "#999",
+          color: darkMode ? "#64748b" : "#64748b",
         }}
       >
         &copy; {new Date().getFullYear()} {personalInfo.name}. All rights

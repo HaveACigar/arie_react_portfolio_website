@@ -33,21 +33,14 @@ function App() {
   const darkMode = theme.state.darkMode;
 
   return (
-    <div className="app" style={{
-      color: darkMode ? "#f5f5f5" : "#222",
-      background: darkMode
-        ? "#222"
-        : "linear-gradient(135deg, #f8fafc 0%, #e3f0ff 100%)",
-      minHeight: '100vh',
-      transition: 'background 0.4s',
-    }}>
+    <div className={`app ${darkMode ? "theme-dark" : "theme-light"}`}>
       <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}>
         <Router>
           <Routes>
           <Route path="/" element={
             <>
               <Topbar/>
-              <div className="sections" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', position: 'relative', paddingTop: 80, paddingBottom: 0 }}>
+              <div className="sections home-sections">
                 <Intro/>
                 <FeaturedProject/>
                 <AboutMe/>
