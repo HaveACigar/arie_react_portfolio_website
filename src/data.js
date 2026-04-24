@@ -473,9 +473,9 @@ export const personalProjects = [
     title: "EDA & Visualization Dashboard",
     subtitle: "Data Cleaning, Statistical Analysis & Interactive Visualization",
     description:
-      "End-to-end exploratory data analysis on a synthetically generated Global Health dataset " +
-      "containing 12+ categories of data quality issues. Demonstrates a full wrangling pipeline " +
-      "(mixed types, inconsistent naming, impossible values, duplicates, scattered nulls) " +
+      "End-to-end exploratory data analysis on merged real-world World Bank health and economic indicators " +
+      "containing substantial data quality and integration challenges. Demonstrates a full wrangling pipeline " +
+      "(aggregate-entity filtering, sparse coverage, mixed null markers, naming inconsistencies, type coercion) " +
       "followed by statistical analysis and an interactive Streamlit dashboard with 9 sections.",
     tech: [
       "Python", "Pandas", "NumPy", "Plotly", "Streamlit",
@@ -493,11 +493,11 @@ export const personalProjects = [
     // Route within the portfolio website for the detailed project page
     route: "/personal-projects/eda-visualization-dashboard",
     highlights: [
-      "Cleaned 12+ categories of data quality issues in a 7-step automated pipeline",
+      "Cleaned real merged indicator data by removing aggregate entities and normalizing country-year records",
       "Built 8 reusable Plotly chart types (heatmaps, scatter + OLS, box plots, ranked bars, etc.)",
       "Streamlit dashboard with 9 interactive sections covering full EDA workflow",
       "World Bank-style income group classification with group comparison analysis",
-      "46 countries across 24 years (2000–2023) with 11 health & economic indicators",
+      "215 countries across 1960–2025 with 10 health & economic indicators",
     ],
   },
   // Future personal projects will be added here as they are completed:
@@ -668,7 +668,7 @@ export const personalProjects = [
     title: "A/B Testing & Statistical Inference",
     subtitle: "Experiment Design, Hypothesis Testing & Causal Decision Support",
     description:
-      "End-to-end experiment analysis workflow on a simulated product test with treatment/control cohorts, " +
+      "End-to-end experiment analysis workflow on real marketing campaign response data with treatment/control cohorts, " +
       "conversion lift estimation, significance testing, confidence intervals, power curves, and segment-level heterogeneity analysis. " +
       "The Streamlit app presents statistical findings in a business-facing format suitable for product decisions.",
     tech: [
@@ -687,7 +687,7 @@ export const personalProjects = [
     liveDemo: "https://ab-testing-statistical-inference-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/ab-testing-statistical-inference",
     highlights: [
-      "40,000-user synthetic experiment with realistic device, geography, and member-status segments",
+      "Built on a real direct-marketing campaign dataset with customer-level response outcomes",
       "Two-proportion z-test, confidence interval for lift, and relative/absolute uplift metrics",
       "Power analysis and minimum sample-size calculations for experiment readiness",
       "Segmented lift analysis across device, geography, and lifecycle cohorts",
@@ -699,7 +699,7 @@ export const personalProjects = [
     title: "SQL & Data Engineering Pipeline",
     subtitle: "Data Modeling, Incremental ETL & Analytical Reporting Layers",
     description:
-      "Warehouse-style analytics pipeline that ingests raw ecommerce-style customer and order data, cleans it in staging, " +
+      "Warehouse-style analytics pipeline that ingests raw ecommerce customer and order data (Olist public marketplace dataset), cleans it in staging, " +
       "builds fact and dimension tables, and publishes mart tables for KPI reporting. " +
       "Implemented in DuckDB with SQL transformations and surfaced through a Streamlit operations dashboard.",
     tech: [
@@ -719,7 +719,7 @@ export const personalProjects = [
     route: "/personal-projects/sql-data-engineering-pipeline",
     highlights: [
       "Raw, staging, dimension, fact, and mart layers built explicitly in SQL",
-      "Injected data-quality problems such as duplicates, null revenue, and invalid quantities then repaired in staging",
+      "Resolved real-world data-quality issues such as duplicates, null revenue fields, and invalid quantities in staging",
       "KPI marts for monthly revenue, active customers, order volume, and segment performance",
       "Operational data-quality test results surfaced directly in the dashboard",
       "Warehouse file persisted in DuckDB for fast local analytics and reproducible transformations",
@@ -730,7 +730,7 @@ export const personalProjects = [
     title: "ML Model Deployment (MLOps)",
     subtitle: "Model Serving, Drift Monitoring & CI/CD for Inference Systems",
     description:
-      "Production-style FastAPI inference service serving a churn-like binary classifier with health checks, schema validation, batch scoring, and lightweight feature-drift reporting. " +
+      "Production-style FastAPI inference service serving a binary classifier trained on the UCI Adult Income dataset, with health checks, schema validation, batch scoring, and lightweight feature-drift reporting. " +
       "The model is trained at build time, versioned as an artifact, and exposed through Cloud Run with documented REST endpoints.",
     tech: [
       "Python", "FastAPI", "Pandas", "Scikit-learn", "Docker",
@@ -749,7 +749,7 @@ export const personalProjects = [
     route: "/personal-projects/ml-model-deployment",
     highlights: [
       "FastAPI endpoints for `/predict`, `/batch-predict`, `/health`, `/metrics`, and `/drift`",
-      "Synthetic churn-style reference dataset and trained logistic regression artifact serialized with joblib",
+      "UCI Adult Income reference dataset and trained logistic regression artifact serialized with joblib",
       "Lightweight drift summary comparing live payload means against reference feature distributions",
       "HTML landing page plus autogenerated OpenAPI docs for recruiter-friendly inspection",
       "Cloud Run deployment pattern that mirrors real inference-service delivery workflows",
@@ -760,7 +760,7 @@ export const personalProjects = [
     title: "Big Data & Cloud Analytics",
     subtitle: "Distributed Processing, Cloud Warehousing & Production-Scale KPIs",
     description:
-      "Cloud-style event analytics pipeline over a large synthetic clickstream dataset written as partitioned Parquet and queried with DuckDB. " +
+      "Cloud-style event analytics pipeline over real public NYC Taxi trip records written as partitioned Parquet and queried with DuckDB. " +
       "The project demonstrates warehouse-style KPI marts, country/platform/product rollups, event-funnel analysis, and partition-aware analytics patterns suitable for cloud-scale reporting stacks.",
     tech: [
       "Python", "DuckDB", "Pandas", "PyArrow", "SQL",
@@ -778,7 +778,7 @@ export const personalProjects = [
     liveDemo: "https://big-data-cloud-analytics-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/big-data-cloud-analytics",
     highlights: [
-      "250,000 synthetic product events written as hive-partitioned Parquet by date and country",
+      "Large-scale NYC Taxi trip records transformed into partitioned Parquet for fast analytical scans",
       "Warehouse-style daily KPI marts for events, users, sessions, purchases, and revenue",
       "Treemap breakdowns for country, platform, and product-category performance",
       "Event funnel analysis plus data-quality checks for partition coverage and revenue integrity",

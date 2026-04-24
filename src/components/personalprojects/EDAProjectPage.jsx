@@ -37,14 +37,14 @@ export default function EDAProjectPage() {
 
   // ── Data quality issues tackled — shown as a visual checklist ──
   const dataQualityIssues = [
-    "Inconsistent country names (casing, typos, aliases, extra whitespace)",
-    "Mixed types in numeric columns ($1,234 strings, N/A, commas)",
-    "Negative values in health metrics (physically impossible)",
-    "Injected outliers (life expectancy 120–200 years)",
-    "~3% duplicate rows requiring deduplication",
-    "~8% NaN values scattered across all indicator columns",
-    "5 different date formats in a single column",
-    "Leading/trailing whitespace in column names",
+    "Aggregate entities mixed with countries (regional and income rollups)",
+    "Sparse and uneven indicator coverage across years and countries",
+    "Mixed null markers and string/object values in numeric fields",
+    "Country naming inconsistencies and alias normalization",
+    "Invalid country code rows requiring filtering",
+    "Out-of-range and impossible values requiring sanity checks",
+    "Duplicate country-year rows after multi-indicator merges",
+    "Leading/trailing whitespace and schema inconsistencies in raw fields",
   ];
 
   // ── Dashboard sections for the overview ──
@@ -176,8 +176,8 @@ export default function EDAProjectPage() {
           Data Quality Issues Tackled
         </Typography>
         <Typography variant="body2" sx={{ color: darkMode ? "#bbb" : "#555", mb: 2 }}>
-          The raw dataset was intentionally designed with real-world data quality
-          problems to demonstrate comprehensive wrangling skills:
+          The raw dataset is merged from real World Bank indicators and contains
+          practical data quality issues that require comprehensive wrangling:
         </Typography>
         <Paper
           elevation={2}
