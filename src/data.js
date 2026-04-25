@@ -500,6 +500,46 @@ export const personalProjects = [
       "215 countries across 1960–2025 with 10 health & economic indicators",
     ],
   },
+  {
+    id: "snowflake-finance-ai-command-center",
+    title: "Snowflake Finance AI Command Center",
+    subtitle: "Finance KPI Marts, Renewal Risk Scoring & AI-Ready Executive Narratives",
+    description:
+      "Snowflake-style finance analytics project tailored to finance analytics and AI roles. " +
+      "The first version models subscription billing, collections, expansion/contraction, and renewal pressure into layered SQL marts, " +
+      "then surfaces ARR, NRR, DSO, open A/R, account-level risk scoring, and AI-ready executive summaries in an interactive app.",
+    tech: [
+      "SQL", "Python", "SQLite", "Pandas", "Streamlit",
+      "Plotly", "Window Functions", "Finance KPIs", "Snowflake SQL Patterns",
+    ],
+    skillsShowcased: [
+      "Finance Analytics",
+      "Analytics Engineering",
+      "Executive KPI Modeling",
+      "AI Workflow Design",
+    ],
+    recruiterSignals: [
+      "Demonstrates direct ownership of finance-facing KPI definitions such as ARR, NRR, DSO, and collections exposure.",
+      "Shows warehouse-style thinking with explicit silver and mart layers that can be ported cleanly to Snowflake schemas.",
+      "Includes AI-ready outputs built from curated marts rather than raw tables, which is the right pattern for trustworthy finance copilots.",
+    ],
+    deliverables: [
+      "Port the local SQL marts to actual Snowflake DDL/DML with task-ready warehouse naming conventions.",
+      "Add analyst-facing variance decomposition views for revenue bridge and forecast-vs-actual review.",
+      "Layer in a finance copilot workflow that answers KPI questions from the curated mart outputs.",
+    ],
+    status: "In Progress",
+    category: "data-science",
+    github: "https://github.com/HaveACigar/arie_react_portfolio_website/tree/main/projects/snowflake_finance_ai_command_center",
+    route: "/personal-projects/snowflake-finance-ai-command-center",
+    highlights: [
+      "Generates subscription finance events across accounts, regions, segments, renewals, and collections behavior",
+      "Builds silver and gold SQL layers for ARR, NRR, gross retention, logo churn, open A/R, and DSO",
+      "Scores account-level renewal risk using adoption, collections latency, support load, and near-term renewal windows",
+      "Produces an AI-ready executive brief from curated KPI marts rather than ungoverned raw tables",
+      "Structured intentionally as a Snowflake-style finance analytics starter project for recruiter review",
+    ],
+  },
   // Future personal projects will be added here as they are completed:
   // { id: "supervised-ml-pipeline", title: "Supervised ML: Prediction Pipeline", ... },  // DONE ↓
   {
