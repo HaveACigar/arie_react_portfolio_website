@@ -42,6 +42,8 @@ export default function SnowflakeFinanceAIPage() {
   const theme = useContext(ThemeContext);
   const darkMode = theme.state.darkMode;
   const project = personalProjects.find((item) => item.id === "snowflake-finance-ai-command-center");
+  const liveDemoUrl = process.env.REACT_APP_SNOWFLAKE_FINANCE_DEMO_URL?.trim()
+    || (typeof window !== "undefined" && window.location.hostname === "localhost" ? "http://localhost:8512" : "");
 
   if (!project) {
     return (
@@ -109,6 +111,17 @@ export default function SnowflakeFinanceAIPage() {
             >
               View Source
             </Button>
+            {liveDemoUrl && (
+              <Button
+                href={liveDemoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outlined"
+                sx={{ textTransform: "none", fontWeight: 600 }}
+              >
+                Open Live App
+              </Button>
+            )}
             <Chip
               label={project.status}
               sx={{
@@ -120,6 +133,49 @@ export default function SnowflakeFinanceAIPage() {
             />
           </Box>
         </Box>
+
+        <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+          Live App
+        </Typography>
+        <Paper elevation={2} sx={{ p: 2, borderRadius: 3, background: cardBg, border: cardBorder, mb: 5 }}>
+          {liveDemoUrl ? (
+            <Box
+              component="iframe"
+              title="Snowflake Finance AI Command Center Live App"
+              src={`${liveDemoUrl}${liveDemoUrl.includes("?") ? "&" : "?"}embed=true`}
+              sx={{
+                width: "100%",
+                height: { xs: 560, md: 760 },
+                border: 0,
+                borderRadius: 2,
+                background: darkMode ? "#111" : "#fff",
+              }}
+            />
+          ) : (
+            <>
+              <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#475569", lineHeight: 1.7, mb: 2 }}>
+                This project runs as a separate Streamlit service. In local development, this page automatically embeds
+                the app when it is running on port 8512. In deployed environments, set `REACT_APP_SNOWFLAKE_FINANCE_DEMO_URL`
+                to a public Streamlit URL.
+              </Typography>
+              <Box
+                component="pre"
+                sx={{
+                  m: 0,
+                  p: 2,
+                  overflowX: "auto",
+                  borderRadius: 2,
+                  bgcolor: darkMode ? "#0f172a" : "#eff6ff",
+                  color: darkMode ? "#e2e8f0" : "#1e3a8a",
+                  fontSize: "0.85rem",
+                }}
+              >
+{`cd ~/Documents/arie_react_portfolio_website/projects/snowflake_finance_ai_command_center
+/Users/arie/Documents/arie_react_portfolio_website/.venv/bin/streamlit run app.py --server.port 8512`}
+              </Box>
+            </>
+          )}
+        </Paper>
 
         <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
           Architecture Diagram
