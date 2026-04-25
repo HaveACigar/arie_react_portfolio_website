@@ -42,6 +42,7 @@ export default function SnowflakeFinanceAIPage() {
   const theme = useContext(ThemeContext);
   const darkMode = theme.state.darkMode;
   const project = personalProjects.find((item) => item.id === "snowflake-finance-ai-command-center");
+  const liveDemoUrl = project?.liveDemo;
 
   if (!project) {
     return (
@@ -109,6 +110,17 @@ export default function SnowflakeFinanceAIPage() {
             >
               View Source
             </Button>
+            {liveDemoUrl && (
+              <Button
+                href={liveDemoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outlined"
+                sx={{ textTransform: "none", fontWeight: 600 }}
+              >
+                Open Live App
+              </Button>
+            )}
             <Chip
               label={project.status}
               sx={{
@@ -120,6 +132,30 @@ export default function SnowflakeFinanceAIPage() {
             />
           </Box>
         </Box>
+
+        <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+          Live App
+        </Typography>
+        <Paper elevation={2} sx={{ p: 2, borderRadius: 3, background: cardBg, border: cardBorder, mb: 5 }}>
+          {liveDemoUrl ? (
+            <Box
+              component="iframe"
+              title="Snowflake Finance AI Command Center Live App"
+              src={`${liveDemoUrl}${liveDemoUrl.includes("?") ? "&" : "?"}embed=true`}
+              sx={{
+                width: "100%",
+                height: { xs: 560, md: 760 },
+                border: 0,
+                borderRadius: 2,
+                background: darkMode ? "#111" : "#fff",
+              }}
+            />
+          ) : (
+            <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#475569", lineHeight: 1.7 }}>
+              A public demo URL will appear here once the Streamlit app is deployed.
+            </Typography>
+          )}
+        </Paper>
 
         <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
           Architecture Diagram

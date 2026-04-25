@@ -531,6 +531,7 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/arie_react_portfolio_website/tree/main/projects/snowflake_finance_ai_command_center",
+    liveDemo: "https://snowflake-finance-ai-command-center-1044248854820.us-central1.run.app",
     route: "/personal-projects/snowflake-finance-ai-command-center",
     architectureFlow: [
       {
