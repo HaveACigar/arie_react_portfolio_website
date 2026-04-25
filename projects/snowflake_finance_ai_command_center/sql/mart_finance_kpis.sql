@@ -26,6 +26,10 @@ SELECT
     ROUND(CASE WHEN prior_period_mrr = 0 THEN 100 ELSE ((prior_period_mrr - churned_revenue - contraction_revenue) / prior_period_mrr) * 100 END, 2) AS gross_revenue_retention_pct,
     ROUND(CASE WHEN active_accounts = 0 THEN 0 ELSE (churned_accounts * 100.0 / active_accounts) END, 2) AS logo_churn_pct,
     active_accounts,
-    churned_accounts
+    churned_accounts,
+    ROUND(expansion_revenue * 12.0, 2) AS expansion_arr,
+    ROUND(contraction_revenue * 12.0, 2) AS contraction_arr,
+    ROUND(churned_revenue * 12.0, 2) AS churned_arr,
+    ROUND(prior_period_mrr * 12.0, 2) AS prior_arr
 FROM monthly
 ORDER BY month

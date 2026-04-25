@@ -100,29 +100,86 @@ def generate_billing_events(seed: int = 21, account_count: int = 180) -> pd.Data
     return pd.DataFrame(rows)
 
 
-def generate_finance_forecast(kpi_months: list[str], seed: int = 21) -> pd.DataFrame:
+def generate_finance_forecast(billing_events: pd.DataFrame, seed: int = 21) -> pd.DataFrame:
+    """Generate driver-based forecast by projecting account-level MRR forward."""
     rng = np.random.default_rng(seed + 101)
-    rows: list[dict] = []
-    arr_base = 24_000_000.0
-
-    for month_idx, month in enumerate(kpi_months):
-        seasonality = 1.0 + 0.012 * np.sin(month_idx / 2.0)
-        planned_arr = arr_base * seasonality * (1 + month_idx * 0.004)
-        planned_collections = planned_arr / 12.0 * float(rng.uniform(0.90, 0.95))
-        planned_open_ar = planned_arr / 12.0 * float(rng.uniform(0.05, 0.10))
-        planned_nrr = float(rng.uniform(96.0, 105.0))
-
-        rows.append(
-            {
-                "month": month,
-                "forecast_arr": round(planned_arr, 2),
-                "forecast_collected_cash": round(planned_collections, 2),
-                "forecast_open_ar": round(planned_open_ar, 2),
-                "forecast_nrr_pct": round(planned_nrr, 2),
-            }
-        )
-
-    return pd.DataFrame(rows)
+    months = sorted(billing_events["month"].unique().tolist())
+    
+    # Historical averages for planning assumptions
+    expansion_avg = billing_events.groupby("account_id")["expansion_amount"].sum().mean()
+    contraction_avg = billing_events.groupby("account_id")["contraction_amount"].sum().mean()
+    churn_events = billing_events[billing_events["churn_flag"] == 1].shape[0]
+    churn_rate_base = churn_events / max(1, billing_events[["account_id", "month"]].drop_duplicates().shape[0]) * 12
+    
+    # Segment-specific collection rates (based on observed patterns)
+    segment_collection_rates = {
+        "SMB": 0.94,
+        "Mid-Market": 0.97,
+        "Enterprise": 0.99
+    }
+    
+    forecast_rows = []
+    for month_idx, month in enumerate(months):
+        # Get accounts active in this month
+        month_accounts = billing_events[billing_events["month"] == month].copy()
+        
+        total_forecast_arr = 0.0
+        total_forecast_cash = 0.0
+        total_forecast_ar = 0.0
+        nrr_numerator = 0.0
+        prior_mrr_sum = 0.0
+        churned_mrr = 0.0
+        expansion_mrr = 0.0
+        contraction_mrr = 0.0
+        
+        for _, account in month_accounts.iterrows():
+            segment = account["segment"]
+            prior_mrr = account.get("prior_mrr", account["mrr"])
+            current_mrr = account["mrr"]
+            
+            # Planned movement for this account
+            expansion_factor = (expansion_avg / max(1, current_mrr)) if current_mrr > 0 else 0.012
+            contraction_factor = (contraction_avg / max(1, current_mrr)) if current_mrr > 0 else 0.008
+            
+            planned_expansion = current_mrr * expansion_factor * float(rng.uniform(0.6, 1.4))
+            planned_contraction = current_mrr * contraction_factor * float(rng.uniform(0.5, 1.2))
+            
+            # Adjust churn for delinquent accounts
+            churn_prob = churn_rate_base + (0.01 if account.get("days_late", 0) > 10 else 0.0)
+            churn_prob = float(np.clip(churn_prob, 0.0, 1.0))
+            
+            planned_mrr = current_mrr * (1.0 - churn_prob) + planned_expansion - planned_contraction
+            
+            # Collections forecast
+            collection_rate = segment_collection_rates.get(segment, 0.95) * float(rng.uniform(0.92, 1.01))
+            monthly_invoice = planned_mrr / 12.0
+            forecasted_cash = monthly_invoice * collection_rate
+            forecasted_ar = monthly_invoice * (1.0 - collection_rate)
+            
+            total_forecast_arr += planned_mrr * 12.0
+            total_forecast_cash += forecasted_cash
+            total_forecast_ar += forecasted_ar
+            
+            # NRR calculation components
+            if prior_mrr > 0:
+                nrr_numerator += (current_mrr - (current_mrr * churn_prob) - planned_contraction + planned_expansion)
+                prior_mrr_sum += current_mrr
+                churned_mrr += current_mrr * churn_prob
+                expansion_mrr += planned_expansion
+                contraction_mrr += planned_contraction
+        
+        # Aggregate forecast for month
+        forecast_nrr = ((nrr_numerator / prior_mrr_sum) * 100.0 if prior_mrr_sum > 0 else 100.0)
+        
+        forecast_rows.append({
+            "month": month,
+            "forecast_arr": round(total_forecast_arr, 2),
+            "forecast_collected_cash": round(total_forecast_cash, 2),
+            "forecast_open_ar": round(total_forecast_ar, 2),
+            "forecast_nrr_pct": round(forecast_nrr, 2),
+        })
+    
+    return pd.DataFrame(forecast_rows)
 
 
 def _account_risk_summary(risk_df: pd.DataFrame) -> str:
@@ -173,7 +230,7 @@ def run_finance_copilot(question: str, kpi_df: pd.DataFrame, risk_df: pd.DataFra
 
 def build_demo_frames(seed: int = 21) -> dict[str, pd.DataFrame]:
     billing_events = generate_billing_events(seed=seed)
-    forecast_plan = generate_finance_forecast(sorted(billing_events["month"].unique().tolist()), seed=seed)
+    forecast_plan = generate_finance_forecast(billing_events, seed=seed)
     conn = sqlite3.connect(":memory:")
     try:
         billing_events.to_sql("billing_events", conn, index=False, if_exists="replace")

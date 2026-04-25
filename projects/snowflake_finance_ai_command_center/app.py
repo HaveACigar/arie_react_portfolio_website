@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import plotly.graph_objects as go
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -85,6 +86,80 @@ with tabs[0]:
             title="Retention and Churn Trends",
         )
         st.plotly_chart(rates, use_container_width=True)
+
+    # Revenue Waterfall - showing expansion/contraction/churn drivers
+    waterfall_data = kpis.tail(12).copy()
+    waterfall_rows = []
+    
+    for idx, row in waterfall_data.iterrows():
+        waterfall_rows.append({
+            "month": pd.to_datetime(row["month"]).strftime("%b '%y"),
+            "measure": "absolute",
+            "value": row["prior_arr"] if idx == waterfall_data.index[0] else 0,
+            "name": "Prior ARR" if idx == waterfall_data.index[0] else "",
+            "is_start": idx == waterfall_data.index[0],
+        })
+        
+        if row["expansion_arr"] > 0:
+            waterfall_rows.append({
+                "month": pd.to_datetime(row["month"]).strftime("%b '%y"),
+                "measure": "relative",
+                "value": row["expansion_arr"],
+                "name": f"Expansion: ${row['expansion_arr']:,.0f}",
+                "is_start": False,
+            })
+        
+        if row["contraction_arr"] > 0:
+            waterfall_rows.append({
+                "month": pd.to_datetime(row["month"]).strftime("%b '%y"),
+                "measure": "relative",
+                "value": -row["contraction_arr"],
+                "name": f"Contraction: ${row['contraction_arr']:,.0f}",
+                "is_start": False,
+            })
+        
+        if row["churned_arr"] > 0:
+            waterfall_rows.append({
+                "month": pd.to_datetime(row["month"]).strftime("%b '%y"),
+                "measure": "relative",
+                "value": -row["churned_arr"],
+                "name": f"Churn: ${row['churned_arr']:,.0f}",
+                "is_start": False,
+            })
+        
+        waterfall_rows.append({
+            "month": pd.to_datetime(row["month"]).strftime("%b '%y"),
+            "measure": "total",
+            "value": row["arr"],
+            "name": "Current ARR",
+            "is_start": False,
+        })
+    
+    waterfall_df = pd.DataFrame(waterfall_rows)
+    
+    # Group by month and create waterfall for latest month
+    latest_month_str = pd.to_datetime(latest["month"]).strftime("%b '%y")
+    latest_waterfall = waterfall_df[waterfall_df["month"] == latest_month_str].copy()
+    
+    if not latest_waterfall.empty:
+        fig = go.Figure(go.Waterfall(
+            x=latest_waterfall["name"],
+            y=latest_waterfall["value"],
+            measure=latest_waterfall["measure"],
+            connector={"line": {"color": "rgba(0, 150, 255, 0.5)"}},
+            increasing={"marker": {"color": "rgba(76, 175, 80, 0.8)"}},
+            decreasing={"marker": {"color": "rgba(244, 67, 54, 0.8)"}},
+            totals={"marker": {"color": "rgba(66, 133, 244, 0.8)"}},
+            textposition="outside",
+            texttemplate="$%{y:,.0f}",
+        ))
+        fig.update_layout(
+            title=f"ARR Waterfall - {latest_month_str}",
+            showlegend=False,
+            template="plotly_dark",
+            height=500,
+        )
+        st.plotly_chart(fig, use_container_width=True)
 
     st.dataframe(kpis.tail(6), use_container_width=True, hide_index=True)
 

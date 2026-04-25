@@ -41,6 +41,7 @@ SELECT
     expansion_amount,
     contraction_amount,
     churn_flag,
+    CAST((julianday(renewal_date) - julianday(month)) AS INTEGER) AS days_to_renewal,
     CASE
         WHEN date(renewal_date) <= date(month, '+90 day') THEN 1
         ELSE 0
