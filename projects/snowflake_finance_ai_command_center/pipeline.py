@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import sqlite3
 
 import numpy as np
@@ -193,38 +194,149 @@ def _account_risk_summary(risk_df: pd.DataFrame) -> str:
     return "; ".join(items)
 
 
-def run_finance_copilot(question: str, kpi_df: pd.DataFrame, risk_df: pd.DataFrame, variance_df: pd.DataFrame) -> str:
+def _money(value: float) -> str:
+    return f"${value:,.0f}"
+
+
+def _variance_driver_summary(latest_var: pd.Series) -> str:
+    drivers = [
+        ("ARR", float(latest_var["arr_variance"]), "higher is favorable"),
+        ("Cash", float(latest_var["cash_variance"]), "higher is favorable"),
+        ("Open A/R", float(latest_var["ar_variance"]), "lower is favorable"),
+    ]
+    drivers.sort(key=lambda x: abs(x[1]), reverse=True)
+    parts: list[str] = []
+    for name, value, rule in drivers[:3]:
+        if name == "Open A/R":
+            status = "favorable" if value <= 0 else "unfavorable"
+        else:
+            status = "favorable" if value >= 0 else "unfavorable"
+        parts.append(f"{name} variance {_money(value)} ({status}; {rule})")
+    return "; ".join(parts)
+
+
+def _renewal_bucket_summary(risk_df: pd.DataFrame) -> str:
+    buckets = {
+        "due/past": int((risk_df["days_to_renewal"] <= 0).sum()),
+        "0-30d": int(((risk_df["days_to_renewal"] > 0) & (risk_df["days_to_renewal"] <= 30)).sum()),
+        "31-60d": int(((risk_df["days_to_renewal"] > 30) & (risk_df["days_to_renewal"] <= 60)).sum()),
+        "61-90d": int(((risk_df["days_to_renewal"] > 60) & (risk_df["days_to_renewal"] <= 90)).sum()),
+    }
+    return ", ".join([f"{label}: {count}" for label, count in buckets.items()])
+
+
+def _segment_region_diagnostics(events_df: pd.DataFrame) -> str:
+    latest_month = events_df["month"].max()
+    latest_events = events_df[events_df["month"] == latest_month].copy()
+    latest_events["open_ar"] = latest_events["billed_amount"] - latest_events["collected_amount"]
+
+    segment = (
+        latest_events.groupby("segment", as_index=False)
+        .agg(
+            billed=("billed_amount", "sum"),
+            collected=("collected_amount", "sum"),
+            open_ar=("open_ar", "sum"),
+            arr=("mrr", lambda s: float(s.sum() * 12.0)),
+        )
+    )
+    segment["cash_rate"] = np.where(segment["billed"] > 0, segment["collected"] / segment["billed"], 0.0)
+
+    region = (
+        latest_events.groupby("region", as_index=False)
+        .agg(
+            billed=("billed_amount", "sum"),
+            collected=("collected_amount", "sum"),
+            open_ar=("open_ar", "sum"),
+            arr=("mrr", lambda s: float(s.sum() * 12.0)),
+        )
+    )
+    region["cash_rate"] = np.where(region["billed"] > 0, region["collected"] / region["billed"], 0.0)
+
+    worst_segment = segment.sort_values("cash_rate", ascending=True).iloc[0]
+    highest_ar_region = region.sort_values("open_ar", ascending=False).iloc[0]
+    return (
+        f"Weakest collection segment is {worst_segment['segment']} (cash conversion {worst_segment['cash_rate'] * 100:.1f}%, "
+        f"open A/R {_money(float(worst_segment['open_ar']))}). "
+        f"Largest open A/R region is {highest_ar_region['region']} at {_money(float(highest_ar_region['open_ar']))}."
+    )
+
+
+def run_finance_copilot(
+    question: str,
+    kpi_df: pd.DataFrame,
+    risk_df: pd.DataFrame,
+    variance_df: pd.DataFrame,
+    events_df: pd.DataFrame | None = None,
+) -> str:
     q = question.lower()
+
+    def has_any(terms: list[str]) -> bool:
+        for term in terms:
+            if " " in term or "/" in term:
+                if term in q:
+                    return True
+            else:
+                if re.search(rf"\b{re.escape(term)}\b", q):
+                    return True
+        return False
+
     latest = kpi_df.iloc[-1]
     latest_var = variance_df.iloc[-1]
-    top_risk = risk_df.head(5)
+    top_risk = risk_df.sort_values("risk_score", ascending=False).head(5)
+    late_accounts = risk_df[risk_df["days_late"] >= 10].sort_values("open_ar", ascending=False).head(3)
+    renewal_summary = _renewal_bucket_summary(risk_df)
+    variance_summary = _variance_driver_summary(latest_var)
+    late_account_text = "; ".join(
+        [
+            f"{row.account_name} (open A/R {_money(float(row.open_ar))}, {int(row.days_late)} days late)"
+            for row in late_accounts.itertuples()
+        ]
+    )
+    segment_region_note = _segment_region_diagnostics(events_df) if events_df is not None else ""
 
-    if any(word in q for word in ["dso", "collections", "a/r", "ar"]):
-        return (
-            f"Collections view: DSO is {latest['dso_days']:.1f} days with open A/R at ${latest['open_ar']:,.0f}. "
-            f"Against plan, open A/R variance is ${latest_var['ar_variance']:,.0f} and cash variance is "
-            f"${latest_var['cash_variance']:,.0f}. Prioritize late accounts in the risk mart where days_late >= 10."
-        )
-
-    if any(word in q for word in ["renewal", "risk", "churn", "retention"]):
+    if has_any(["renewal", "risk", "churn", "retention"]):
         return (
             f"Renewal risk view: logo churn is {latest['logo_churn_pct']:.2f}% and NRR is {latest['nrr_pct']:.2f}%. "
             f"Top enterprise exposures: {_account_risk_summary(top_risk)}. "
-            "Recommend account reviews for low adoption plus near-term renewal windows."
+            f"Renewal buckets -> {renewal_summary}. "
+            "Recommend immediate outreach for due/past and 0-30 day renewals with low adoption or late collections."
         )
 
-    if any(word in q for word in ["variance", "forecast", "plan", "actual", "bridge"]):
+    if has_any(["variance", "forecast", "plan", "actual", "bridge", "driver"]):
         return (
-            f"Forecast variance view: ARR variance is ${latest_var['arr_variance']:,.0f}, "
+            f"Forecast variance view: ARR variance is {_money(float(latest_var['arr_variance']))}, "
             f"NRR variance is {latest_var['nrr_variance_pct']:.2f} percentage points, and "
-            f"cash variance is ${latest_var['cash_variance']:,.0f}. "
-            "Use the variance bridge mart to separate expansion/contraction/churn movement from collections timing."
+            f"cash variance is {_money(float(latest_var['cash_variance']))}. "
+            f"Ranked drivers: {variance_summary}. "
+            "Use the waterfall to isolate expansion uplift vs contraction/churn drag."
+        )
+
+    if has_any(["segment", "region", "geo", "market"]):
+        if not segment_region_note:
+            return "Segment and region diagnostics require event-level data context, which is not loaded."
+        return f"Segment/region drilldown: {segment_region_note}"
+
+    if has_any(["dso", "collections", "a/r", "ar"]):
+        return (
+            f"Collections view: DSO is {latest['dso_days']:.1f} days with open A/R at ${latest['open_ar']:,.0f}. "
+            f"Against plan, open A/R variance is {_money(float(latest_var['ar_variance']))} and cash variance is "
+            f"{_money(float(latest_var['cash_variance']))}. "
+            f"Top delinquent accounts: {late_account_text}. "
+            f"{segment_region_note}"
+        )
+
+    if has_any(["top", "priority", "prioritize", "accounts"]):
+        return (
+            f"Priority account queue (risk-first): {_account_risk_summary(top_risk)}. "
+            f"Collections triage accounts: {late_account_text}. "
+            f"Renewal buckets -> {renewal_summary}."
         )
 
     return (
         f"Executive summary: ARR ${latest['arr']:,.0f}, NRR {latest['nrr_pct']:.2f}%, DSO {latest['dso_days']:.1f} days, "
         f"open A/R ${latest['open_ar']:,.0f}. Top risk account is {top_risk.iloc[0]['account_name']} "
-        f"(risk {top_risk.iloc[0]['risk_score']:.1f}). Ask about collections, renewal risk, or forecast variance for a focused answer."
+        f"(risk {top_risk.iloc[0]['risk_score']:.1f}). "
+        f"Top variance drivers: {variance_summary}. Ask about collections, renewal risk, segment/region, or forecast variance for a focused answer."
     )
 
 

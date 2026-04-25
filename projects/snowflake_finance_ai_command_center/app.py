@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import plotly.graph_objects as go
 import pandas as pd
+import numpy as np
 import plotly.express as px
 import streamlit as st
 
@@ -19,6 +20,16 @@ st.set_page_config(
 @st.cache_data
 def load_frames() -> dict[str, pd.DataFrame]:
     return build_demo_frames()
+
+
+def _favorable_label(metric_name: str, variance_value: float) -> str:
+    if metric_name == "ar":
+        return "Favorable" if variance_value <= 0 else "Unfavorable"
+    return "Favorable" if variance_value >= 0 else "Unfavorable"
+
+
+def _delta_color(metric_name: str) -> str:
+    return "inverse" if metric_name == "ar" else "normal"
 
 
 frames = load_frames()
@@ -51,14 +62,30 @@ m3.metric("Open A/R", f"${latest['open_ar']:,.0f}")
 m4.metric("DSO", f"{latest['dso_days']:.1f} days")
 
 m5, m6, m7 = st.columns(3)
-m5.metric("ARR vs Forecast", f"${latest_var['arr_variance']:,.0f}")
-m6.metric("Cash vs Forecast", f"${latest_var['cash_variance']:,.0f}")
-m7.metric("A/R vs Forecast", f"${latest_var['ar_variance']:,.0f}")
+m5.metric(
+    "ARR vs Forecast",
+    f"${latest_var['arr_variance']:,.0f}",
+    delta=f"{latest_var['arr_variance']:+,.0f} ({_favorable_label('arr', latest_var['arr_variance'])})",
+    delta_color=_delta_color("arr"),
+)
+m6.metric(
+    "Cash vs Forecast",
+    f"${latest_var['cash_variance']:,.0f}",
+    delta=f"{latest_var['cash_variance']:+,.0f} ({_favorable_label('cash', latest_var['cash_variance'])})",
+    delta_color=_delta_color("cash"),
+)
+m7.metric(
+    "A/R vs Forecast",
+    f"${latest_var['ar_variance']:,.0f}",
+    delta=f"{latest_var['ar_variance']:+,.0f} ({_favorable_label('ar', latest_var['ar_variance'])})",
+    delta_color=_delta_color("ar"),
+)
 
 tabs = st.tabs([
     "Executive KPIs",
     "Variance Bridge",
     "Account Risk",
+    "Segment & Region Drilldown",
     "AI Brief",
     "Finance Copilot",
     "Source Sample",
@@ -206,6 +233,63 @@ with tabs[2]:
     st.plotly_chart(risk_plot, use_container_width=True)
 
 with tabs[3]:
+    st.markdown("### Segment and Region Performance Drilldown")
+    latest_month = events["month"].max()
+    latest_events = events[events["month"] == latest_month].copy()
+    latest_events["open_ar"] = latest_events["billed_amount"] - latest_events["collected_amount"]
+
+    agg_dim = st.radio("Drilldown Dimension", ["segment", "region"], horizontal=True)
+    metric_options = ["arr", "collected_cash", "open_ar", "dso_days", "logo_churn_pct"]
+    selected_metric = st.selectbox("Primary Metric", metric_options, index=0)
+
+    grouped = (
+        latest_events.groupby(agg_dim, as_index=False)
+        .agg(
+            accounts=("account_id", "nunique"),
+            arr=("mrr", lambda s: float(s.sum() * 12.0)),
+            billed_revenue=("billed_amount", "sum"),
+            collected_cash=("collected_amount", "sum"),
+            open_ar=("open_ar", "sum"),
+            churned_accounts=("churn_flag", "sum"),
+        )
+    )
+    grouped["dso_days"] = np.where(
+        grouped["billed_revenue"] > 0,
+        (grouped["open_ar"] / grouped["billed_revenue"]) * 30.0,
+        0.0,
+    )
+    grouped["logo_churn_pct"] = np.where(
+        grouped["accounts"] > 0,
+        (grouped["churned_accounts"] / grouped["accounts"]) * 100.0,
+        0.0,
+    )
+
+    chart = px.bar(
+        grouped.sort_values(selected_metric, ascending=False),
+        x=agg_dim,
+        y=selected_metric,
+        color=agg_dim,
+        template="plotly_dark",
+        title=f"Latest Month {selected_metric} by {agg_dim.title()}",
+        text_auto=True,
+    )
+    st.plotly_chart(chart, use_container_width=True)
+
+    cross = (
+        latest_events.groupby(["segment", "region"], as_index=False)
+        .agg(
+            accounts=("account_id", "nunique"),
+            arr=("mrr", lambda s: float(s.sum() * 12.0)),
+            collected_cash=("collected_amount", "sum"),
+            open_ar=("open_ar", "sum"),
+        )
+        .sort_values("arr", ascending=False)
+    )
+    st.dataframe(grouped, use_container_width=True, hide_index=True)
+    st.markdown("#### Segment x Region Matrix")
+    st.dataframe(cross, use_container_width=True, hide_index=True)
+
+with tabs[4]:
     st.markdown("### AI-Ready Executive Narrative")
     st.info(build_ai_brief(kpis, risks))
     st.code(
@@ -216,21 +300,21 @@ Return: executive summary, top 5 accounts to review, and recommended analyst fol
         language="text",
     )
 
-with tabs[4]:
+with tabs[5]:
     st.markdown("### Finance Copilot (Curated Mart Grounding)")
     prompt = st.text_input(
         "Ask a finance analytics question",
         placeholder="Why is cash below forecast this month and which accounts should we review first?",
     )
     if st.button("Generate Answer", type="primary"):
-        answer = run_finance_copilot(prompt, kpis, risks, variance)
+        answer = run_finance_copilot(prompt, kpis, risks, variance, events)
         st.success(answer)
 
     st.markdown("**Suggested prompts**")
-    st.markdown("- Explain forecast variance for ARR, cash, and A/R this month")
-    st.markdown("- Which renewals are most at risk and why?")
-    st.markdown("- How should finance prioritize collections follow-up?")
+    st.markdown("- Explain the top variance drivers this month and what moved ARR most")
+    st.markdown("- Which renewals are most at risk in 0-30, 31-60, and 61-90 day buckets?")
+    st.markdown("- Which segment or region is driving collections underperformance?")
 
-with tabs[5]:
+with tabs[6]:
     st.markdown("### Billing Event Sample")
     st.dataframe(events.head(25), use_container_width=True, hide_index=True)
