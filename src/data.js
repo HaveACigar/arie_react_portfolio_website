@@ -532,6 +532,28 @@ export const personalProjects = [
     category: "data-science",
     github: "https://github.com/HaveACigar/arie_react_portfolio_website/tree/main/projects/snowflake_finance_ai_command_center",
     route: "/personal-projects/snowflake-finance-ai-command-center",
+    architectureFlow: [
+      {
+        stage: "Bronze",
+        layer: "Raw Inputs",
+        detail: "Billing events and forecast plan land as source-aligned tables.",
+      },
+      {
+        stage: "Silver",
+        layer: "Account Monthly",
+        detail: "Windowed transformations standardize MRR movement, open A/R, and renewal windows.",
+      },
+      {
+        stage: "Gold",
+        layer: "Finance Marts",
+        detail: "KPI mart, variance bridge, and account risk mart power leadership reporting.",
+      },
+      {
+        stage: "AI",
+        layer: "Finance Copilot",
+        detail: "Copilot responses are grounded only on curated mart outputs for reliable narratives.",
+      },
+    ],
     highlights: [
       "Generates subscription finance events across accounts, regions, segments, renewals, and collections behavior",
       "Builds silver and gold SQL layers for ARR, NRR, gross retention, logo churn, open A/R, and DSO",

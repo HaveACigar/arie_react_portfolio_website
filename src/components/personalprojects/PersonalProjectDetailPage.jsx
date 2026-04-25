@@ -166,6 +166,46 @@ export default function PersonalProjectDetailPage() {
           </>
         )}
 
+        {project.architectureFlow && (
+          <>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+              Architecture Flow
+            </Typography>
+            <Paper elevation={2} sx={{ p: 3, borderRadius: 3, background: cardBg, border: cardBorder, mb: 5 }}>
+              <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 1.5, alignItems: "stretch" }}>
+                {project.architectureFlow.map((step, index) => (
+                  <Box key={step.stage} sx={{ display: "flex", alignItems: "stretch", flex: 1 }}>
+                    <Box
+                      sx={{
+                        flex: 1,
+                        p: 2,
+                        borderRadius: 2,
+                        border: darkMode ? "1px solid #475569" : "1px solid #bfdbfe",
+                        bgcolor: darkMode ? "rgba(30,41,59,0.65)" : "rgba(239,246,255,0.9)",
+                      }}
+                    >
+                      <Typography variant="caption" sx={{ fontWeight: 700, color: accent, letterSpacing: 0.3 }}>
+                        {step.stage}
+                      </Typography>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, mt: 0.4, mb: 0.8, color: darkMode ? "#e2e8f0" : "#1e293b" }}>
+                        {step.layer}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#475569", lineHeight: 1.55 }}>
+                        {step.detail}
+                      </Typography>
+                    </Box>
+                    {index < project.architectureFlow.length - 1 && (
+                      <Typography sx={{ alignSelf: "center", px: 1, color: accent, fontWeight: 700, display: { xs: "none", md: "block" } }}>
+                        -&gt;
+                      </Typography>
+                    )}
+                  </Box>
+                ))}
+              </Box>
+            </Paper>
+          </>
+        )}
+
         {project.recruiterSignals && (
           <>
             <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
