@@ -19,6 +19,7 @@ import PersonalProjects from "./components/personalprojects/PersonalProjects";
 import EDAProjectPage from "./components/personalprojects/EDAProjectPage";
 import ChurnPredictionPage from "./components/personalprojects/ChurnPredictionPage";
 import RagOpsPlatformPage from "./components/personalprojects/RagOpsPlatformPage";
+import SnowflakeFinanceAIPage from "./components/personalprojects/SnowflakeFinanceAIPage";
 import PersonalProjectDetailPage from "./components/personalprojects/PersonalProjectDetailPage";
 import ReactPortfolioPage from "./components/personalprojects/ReactPortfolioPage";
 import SchoolProjectPage from "./components/schoolprojects/SchoolProjectPage";
@@ -175,6 +176,13 @@ function App() {
             <>
               <Topbar/>
               <RagOpsPlatformPage />
+              <Footer/>
+            </>
+          } />
+          <Route path="/personal-projects/snowflake-finance-ai-command-center" element={
+            <>
+              <Topbar/>
+              <SnowflakeFinanceAIPage />
               <Footer/>
             </>
           } />
