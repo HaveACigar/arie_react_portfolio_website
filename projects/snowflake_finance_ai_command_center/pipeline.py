@@ -100,22 +100,99 @@ def generate_billing_events(seed: int = 21, account_count: int = 180) -> pd.Data
     return pd.DataFrame(rows)
 
 
+def generate_finance_forecast(kpi_months: list[str], seed: int = 21) -> pd.DataFrame:
+    rng = np.random.default_rng(seed + 101)
+    rows: list[dict] = []
+    arr_base = 24_000_000.0
+
+    for month_idx, month in enumerate(kpi_months):
+        seasonality = 1.0 + 0.012 * np.sin(month_idx / 2.0)
+        planned_arr = arr_base * seasonality * (1 + month_idx * 0.004)
+        planned_collections = planned_arr / 12.0 * float(rng.uniform(0.90, 0.95))
+        planned_open_ar = planned_arr / 12.0 * float(rng.uniform(0.05, 0.10))
+        planned_nrr = float(rng.uniform(96.0, 105.0))
+
+        rows.append(
+            {
+                "month": month,
+                "forecast_arr": round(planned_arr, 2),
+                "forecast_collected_cash": round(planned_collections, 2),
+                "forecast_open_ar": round(planned_open_ar, 2),
+                "forecast_nrr_pct": round(planned_nrr, 2),
+            }
+        )
+
+    return pd.DataFrame(rows)
+
+
+def _account_risk_summary(risk_df: pd.DataFrame) -> str:
+    enterprise = risk_df[risk_df["segment"] == "Enterprise"].head(3)
+    if enterprise.empty:
+        return "No enterprise accounts are currently in the top-risk set."
+    items = [
+        f"{row.account_name} (risk {row.risk_score:.1f}, open A/R ${row.open_ar:,.0f})"
+        for row in enterprise.itertuples()
+    ]
+    return "; ".join(items)
+
+
+def run_finance_copilot(question: str, kpi_df: pd.DataFrame, risk_df: pd.DataFrame, variance_df: pd.DataFrame) -> str:
+    q = question.lower()
+    latest = kpi_df.iloc[-1]
+    latest_var = variance_df.iloc[-1]
+    top_risk = risk_df.head(5)
+
+    if any(word in q for word in ["dso", "collections", "a/r", "ar"]):
+        return (
+            f"Collections view: DSO is {latest['dso_days']:.1f} days with open A/R at ${latest['open_ar']:,.0f}. "
+            f"Against plan, open A/R variance is ${latest_var['ar_variance']:,.0f} and cash variance is "
+            f"${latest_var['cash_variance']:,.0f}. Prioritize late accounts in the risk mart where days_late >= 10."
+        )
+
+    if any(word in q for word in ["renewal", "risk", "churn", "retention"]):
+        return (
+            f"Renewal risk view: logo churn is {latest['logo_churn_pct']:.2f}% and NRR is {latest['nrr_pct']:.2f}%. "
+            f"Top enterprise exposures: {_account_risk_summary(top_risk)}. "
+            "Recommend account reviews for low adoption plus near-term renewal windows."
+        )
+
+    if any(word in q for word in ["variance", "forecast", "plan", "actual", "bridge"]):
+        return (
+            f"Forecast variance view: ARR variance is ${latest_var['arr_variance']:,.0f}, "
+            f"NRR variance is {latest_var['nrr_variance_pct']:.2f} percentage points, and "
+            f"cash variance is ${latest_var['cash_variance']:,.0f}. "
+            "Use the variance bridge mart to separate expansion/contraction/churn movement from collections timing."
+        )
+
+    return (
+        f"Executive summary: ARR ${latest['arr']:,.0f}, NRR {latest['nrr_pct']:.2f}%, DSO {latest['dso_days']:.1f} days, "
+        f"open A/R ${latest['open_ar']:,.0f}. Top risk account is {top_risk.iloc[0]['account_name']} "
+        f"(risk {top_risk.iloc[0]['risk_score']:.1f}). Ask about collections, renewal risk, or forecast variance for a focused answer."
+    )
+
+
 def build_demo_frames(seed: int = 21) -> dict[str, pd.DataFrame]:
     billing_events = generate_billing_events(seed=seed)
+    forecast_plan = generate_finance_forecast(sorted(billing_events["month"].unique().tolist()), seed=seed)
     conn = sqlite3.connect(":memory:")
     try:
         billing_events.to_sql("billing_events", conn, index=False, if_exists="replace")
+        forecast_plan.to_sql("forecast_plan", conn, index=False, if_exists="replace")
         conn.execute("DROP TABLE IF EXISTS silver_account_monthly")
         conn.execute("CREATE TABLE silver_account_monthly AS " + _load_sql("silver_account_monthly.sql"))
         conn.execute("DROP TABLE IF EXISTS mart_finance_kpis")
         conn.execute("CREATE TABLE mart_finance_kpis AS " + _load_sql("mart_finance_kpis.sql"))
+        conn.execute("DROP TABLE IF EXISTS mart_finance_variance_bridge")
+        conn.execute("CREATE TABLE mart_finance_variance_bridge AS " + _load_sql("mart_finance_variance_bridge.sql"))
         conn.execute("DROP TABLE IF EXISTS mart_account_risk")
         conn.execute("CREATE TABLE mart_account_risk AS " + _load_sql("mart_account_risk.sql"))
 
         frames = {
             "billing_events": pd.read_sql_query("SELECT * FROM billing_events", conn),
+            "forecast_plan": pd.read_sql_query("SELECT * FROM forecast_plan ORDER BY month", conn),
             "silver_account_monthly": pd.read_sql_query("SELECT * FROM silver_account_monthly", conn),
             "mart_finance_kpis": pd.read_sql_query("SELECT * FROM mart_finance_kpis ORDER BY month", conn),
+            "mart_finance_variance_bridge": pd.read_sql_query("SELECT * FROM mart_finance_variance_bridge ORDER BY month", conn),
             "mart_account_risk": pd.read_sql_query("SELECT * FROM mart_account_risk ORDER BY risk_score DESC, account_name", conn),
         }
         return frames

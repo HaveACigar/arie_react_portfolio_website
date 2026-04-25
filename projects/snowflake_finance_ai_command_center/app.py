@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from pipeline import build_ai_brief, build_demo_frames
+from pipeline import build_ai_brief, build_demo_frames, run_finance_copilot
 
 
 st.set_page_config(
@@ -23,8 +23,10 @@ def load_frames() -> dict[str, pd.DataFrame]:
 frames = load_frames()
 kpis = frames["mart_finance_kpis"].copy()
 risks = frames["mart_account_risk"].copy()
+variance = frames["mart_finance_variance_bridge"].copy()
 events = frames["billing_events"].copy()
 latest = kpis.iloc[-1]
+latest_var = variance.iloc[-1]
 
 
 st.title("❄️ Snowflake Finance AI Command Center")
@@ -47,7 +49,19 @@ m2.metric("NRR", f"{latest['nrr_pct']:.1f}%")
 m3.metric("Open A/R", f"${latest['open_ar']:,.0f}")
 m4.metric("DSO", f"{latest['dso_days']:.1f} days")
 
-tabs = st.tabs(["Executive KPIs", "Account Risk", "AI Brief", "Source Sample"])
+m5, m6, m7 = st.columns(3)
+m5.metric("ARR vs Forecast", f"${latest_var['arr_variance']:,.0f}")
+m6.metric("Cash vs Forecast", f"${latest_var['cash_variance']:,.0f}")
+m7.metric("A/R vs Forecast", f"${latest_var['ar_variance']:,.0f}")
+
+tabs = st.tabs([
+    "Executive KPIs",
+    "Variance Bridge",
+    "Account Risk",
+    "AI Brief",
+    "Finance Copilot",
+    "Source Sample",
+])
 
 with tabs[0]:
     left, right = st.columns(2)
@@ -75,6 +89,32 @@ with tabs[0]:
     st.dataframe(kpis.tail(6), use_container_width=True, hide_index=True)
 
 with tabs[1]:
+    left, right = st.columns(2)
+    with left:
+        variance_plot = px.bar(
+            variance,
+            x="month",
+            y=["arr_variance", "cash_variance", "ar_variance"],
+            barmode="group",
+            template="plotly_dark",
+            title="Forecast vs Actual Variance Bridge",
+        )
+        st.plotly_chart(variance_plot, use_container_width=True)
+
+    with right:
+        nrr_plot = px.line(
+            variance,
+            x="month",
+            y=["nrr_pct", "forecast_nrr_pct"],
+            markers=True,
+            template="plotly_dark",
+            title="NRR Actual vs Forecast",
+        )
+        st.plotly_chart(nrr_plot, use_container_width=True)
+
+    st.dataframe(variance.tail(8), use_container_width=True, hide_index=True)
+
+with tabs[2]:
     st.markdown("### Highest-Risk Accounts")
     st.dataframe(risks.head(15), use_container_width=True, hide_index=True)
 
@@ -90,7 +130,7 @@ with tabs[1]:
     )
     st.plotly_chart(risk_plot, use_container_width=True)
 
-with tabs[2]:
+with tabs[3]:
     st.markdown("### AI-Ready Executive Narrative")
     st.info(build_ai_brief(kpis, risks))
     st.code(
@@ -101,6 +141,21 @@ Return: executive summary, top 5 accounts to review, and recommended analyst fol
         language="text",
     )
 
-with tabs[3]:
+with tabs[4]:
+    st.markdown("### Finance Copilot (Curated Mart Grounding)")
+    prompt = st.text_input(
+        "Ask a finance analytics question",
+        placeholder="Why is cash below forecast this month and which accounts should we review first?",
+    )
+    if st.button("Generate Answer", type="primary"):
+        answer = run_finance_copilot(prompt, kpis, risks, variance)
+        st.success(answer)
+
+    st.markdown("**Suggested prompts**")
+    st.markdown("- Explain forecast variance for ARR, cash, and A/R this month")
+    st.markdown("- Which renewals are most at risk and why?")
+    st.markdown("- How should finance prioritize collections follow-up?")
+
+with tabs[5]:
     st.markdown("### Billing Event Sample")
     st.dataframe(events.head(25), use_container_width=True, hide_index=True)

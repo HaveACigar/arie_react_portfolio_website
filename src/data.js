@@ -509,8 +509,8 @@ export const personalProjects = [
       "The first version models subscription billing, collections, expansion/contraction, and renewal pressure into layered SQL marts, " +
       "then surfaces ARR, NRR, DSO, open A/R, account-level risk scoring, and AI-ready executive summaries in an interactive app.",
     tech: [
-      "SQL", "Python", "SQLite", "Pandas", "Streamlit",
-      "Plotly", "Window Functions", "Finance KPIs", "Snowflake SQL Patterns",
+      "SQL", "Snowflake SQL", "Python", "SQLite", "Pandas", "Streamlit",
+      "Plotly", "Window Functions", "Streams & Tasks", "Finance KPIs",
     ],
     skillsShowcased: [
       "Finance Analytics",
@@ -524,19 +524,21 @@ export const personalProjects = [
       "Includes AI-ready outputs built from curated marts rather than raw tables, which is the right pattern for trustworthy finance copilots.",
     ],
     deliverables: [
-      "Port the local SQL marts to actual Snowflake DDL/DML with task-ready warehouse naming conventions.",
-      "Add analyst-facing variance decomposition views for revenue bridge and forecast-vs-actual review.",
-      "Layer in a finance copilot workflow that answers KPI questions from the curated mart outputs.",
+      "Add scenario planning inputs so finance can compare base, upside, and downside forecast tracks.",
+      "Persist copilot conversation logs and answer quality metrics for governance and tuning.",
+      "Deploy the app as a public recruiter demo with role-based views for finance leadership vs analysts.",
     ],
-    status: "In Progress",
+    status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/arie_react_portfolio_website/tree/main/projects/snowflake_finance_ai_command_center",
     route: "/personal-projects/snowflake-finance-ai-command-center",
     highlights: [
       "Generates subscription finance events across accounts, regions, segments, renewals, and collections behavior",
       "Builds silver and gold SQL layers for ARR, NRR, gross retention, logo churn, open A/R, and DSO",
+      "Includes Snowflake-ready DDL plus stream/task orchestration scripts for warehouse-native operations",
+      "Adds a forecast-vs-actual variance bridge mart for ARR, cash, A/R, and NRR decomposition",
       "Scores account-level renewal risk using adoption, collections latency, support load, and near-term renewal windows",
-      "Produces an AI-ready executive brief from curated KPI marts rather than ungoverned raw tables",
+      "Provides a finance copilot tab that answers KPI questions using curated mart outputs only",
       "Structured intentionally as a Snowflake-style finance analytics starter project for recruiter review",
     ],
   },
