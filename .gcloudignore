@@ -17,3 +17,10 @@ README.md
 # Local-only job tailoring app and generated docs
 local_apps/
 private_job_docs/
+
+# Local development and portfolio sub-project folders
+.venv/
+projects/
+resume/
+scripts/
+.githooks/
