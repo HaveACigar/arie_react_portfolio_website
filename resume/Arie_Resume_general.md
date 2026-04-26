@@ -49,3 +49,4 @@ Data Analyst and Applied ML Scientist with 5+ years of experience delivering ana
 **Bachelor of Science, Computer Science** | Eastern Michigan University | Sep 2015 - Apr 2019
 
 
+

@@ -1,7 +1,7 @@
-import { useContext } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
-  Box, Typography, Paper, Chip, Button, Divider,
+  Box, Typography, Paper, Chip, Button, Divider, TextField,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ScienceIcon from "@mui/icons-material/Science";
@@ -17,6 +17,43 @@ export default function PersonalProjectDetailPage() {
   const darkMode = theme.state.darkMode;
 
   const project = personalProjects.find((item) => item.id === projectId);
+  const isAgenticCopilotProject = project?.id === "agentic-claims-communication-copilot";
+  const [scenario, setScenario] = useState("FNOL status and policy question");
+  const [customerMessage, setCustomerMessage] = useState(
+    "Hi, I filed a claim yesterday and need to confirm status and whether rental coverage is included."
+  );
+
+  const workflowPreview = useMemo(() => {
+    const lower = customerMessage.toLowerCase();
+    const highUrgency = /(injury|attorney|lawsuit|fraud|escalate|urgent)/.test(lower);
+    const hasCoverageQuestion = /(coverage|covered|policy|deductible|rental)/.test(lower);
+    const hasStatusQuestion = /(status|update|claim|filed|progress)/.test(lower);
+
+    const intent = hasCoverageQuestion && hasStatusQuestion
+      ? "Claim Status + Coverage Clarification"
+      : hasCoverageQuestion
+        ? "Coverage Clarification"
+        : hasStatusQuestion
+          ? "Claim Status Inquiry"
+          : "General Service Inquiry";
+
+    const riskLevel = highUrgency ? "High" : "Standard";
+    const route = highUrgency ? "Senior Adjuster + Agent Handoff" : "Copilot Assisted Response";
+
+    return {
+      intent,
+      riskLevel,
+      route,
+      steps: [
+        `Triage intent for scenario: ${scenario}`,
+        "Retrieve claim context, policy terms, and communication history",
+        "Generate grounded draft response with explicit confidence and source references",
+        highUrgency
+          ? "Escalate to human reviewer with priority tag and rationale"
+          : "Run policy compliance checks and queue agent review",
+      ],
+    };
+  }, [customerMessage, scenario]);
 
   if (!project) {
     return (
@@ -239,6 +276,57 @@ export default function PersonalProjectDetailPage() {
                   </Typography>
                   <Typography variant="body2" sx={{ color: darkMode ? "#ccc" : "#444", lineHeight: 1.6 }}>
                     {item}
+                  </Typography>
+                </Box>
+              ))}
+            </Paper>
+          </>
+        )}
+
+        {isAgenticCopilotProject && (
+          <>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+              Interactive Workflow Simulator
+            </Typography>
+            <Paper elevation={2} sx={{ p: 3, borderRadius: 3, background: cardBg, border: cardBorder, mb: 5 }}>
+              <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#475569", mb: 2, lineHeight: 1.6 }}>
+                This on-page simulator demonstrates the agentic triage and routing pattern used in the project narrative.
+              </Typography>
+
+              <Box sx={{ display: "grid", gap: 2, mb: 3 }}>
+                <TextField
+                  label="Scenario"
+                  value={scenario}
+                  onChange={(event) => setScenario(event.target.value)}
+                  fullWidth
+                  size="small"
+                />
+                <TextField
+                  label="Customer Message"
+                  value={customerMessage}
+                  onChange={(event) => setCustomerMessage(event.target.value)}
+                  fullWidth
+                  multiline
+                  minRows={3}
+                />
+              </Box>
+
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
+                <Chip label={`Intent: ${workflowPreview.intent}`} sx={{ fontWeight: 700 }} />
+                <Chip label={`Risk: ${workflowPreview.riskLevel}`} sx={{ fontWeight: 700 }} color={workflowPreview.riskLevel === "High" ? "warning" : "success"} />
+                <Chip label={`Route: ${workflowPreview.route}`} sx={{ fontWeight: 700 }} color="primary" />
+              </Box>
+
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: accent, mb: 1 }}>
+                Workflow Steps
+              </Typography>
+              {workflowPreview.steps.map((step, index) => (
+                <Box key={step} sx={{ display: "flex", alignItems: "flex-start", gap: 1.2, mb: 1 }}>
+                  <Typography variant="body2" sx={{ color: accent, fontWeight: 700, minWidth: 20 }}>
+                    {index + 1}.
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: darkMode ? "#e2e8f0" : "#334155", lineHeight: 1.55 }}>
+                    {step}
                   </Typography>
                 </Box>
               ))}
