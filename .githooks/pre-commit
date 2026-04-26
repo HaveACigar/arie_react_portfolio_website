@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+printf "\n[resume-sync] Updating resume from portfolio data...\n"
+
+npm run sync:resume >/dev/null
+
+# Stage regenerated resume artifacts automatically.
+git add resume/Arie_Resume_general.md public/Arie_Resume_general.pdf 2>/dev/null || true
+
+printf "[resume-sync] Resume sync complete.\n\n"

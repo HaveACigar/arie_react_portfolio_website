@@ -25,7 +25,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sync:resume": "node scripts/sync-resume-from-portfolio.cjs",
+    "setup:hooks": "git config core.hooksPath .githooks"
   },
   "eslintConfig": {
     "extends": [

@@ -29,17 +29,23 @@ Data Analyst and Applied ML Scientist with 5+ years of experience delivering ana
 - Built Jenkins CI/CD pipelines to accelerate release velocity and improve production quality.
 
 ## PROJECTS
-**Agentic Claims Communication Copilot (Applied AI Workflow Platform)**
-- Designed an agentic workflow for communication triage, grounded response drafting, decision support, and escalation handoff across high-volume service scenarios.
-- Implemented Python orchestration with SQL-backed interaction logs and automated quality reporting to track completion rate, failure modes, and escalation precision.
+**LLM RAG Ops Platform**
+- Supports two retrieval modes: local TF-IDF by default with optional pgvector + embeddings for production-style semantic search
+- Streams answers over SSE and returns routing metadata so the UI can show how each question was source-filtered
+- Tech: Python, FastAPI, OpenAI, pgvector, Scikit-learn, Docker, LangSmith
 
-**Snowflake Finance AI Command Center**
-- Built Snowflake-style Bronze/Silver/Gold finance marts modeling ARR, NRR, DSO, open A/R, forecast variance, and renewal risk.
-- Delivered KPI dashboards, variance bridge analysis, and a metric-grounded finance copilot.
+**Supervised ML: Churn Prediction Pipeline**
+- 4 models compared via 5-fold stratified CV: Logistic Regression, Random Forest, Gradient Boosting, XGBoost
+- Full sklearn Pipeline with ColumnTransformer — zero data leakage guaranteed during cross-validation
+- Tech: Python, Scikit-learn, XGBoost, SHAP, Pandas, Plotly, Streamlit
 
-**A/B Testing and Statistical Inference**
-- Developed experiment analysis workflows with lift, significance testing, confidence intervals, and power analysis.
+**Agentic Claims Communication Copilot**
+- Designed an end-to-end agentic workflow that handles intent triage, context retrieval, draft generation, and human escalation paths
+- Implemented Python orchestration and SQL-backed interaction logging to support replayable debugging and operational traceability
+- Tech: Python, SQL, Streamlit, Pandas, Plotly, LLM API Patterns, Workflow Orchestration
 
 ## EDUCATION
 **Master of Data Science and Analytics (Data Science specialization), GPA: 3.9** | University of Calgary | Sep 2023 - Dec 2024  
 **Bachelor of Science, Computer Science** | Eastern Michigan University | Sep 2015 - Apr 2019
+
+

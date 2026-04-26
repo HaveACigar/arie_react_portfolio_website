@@ -48,6 +48,31 @@ npm run build
 
 Creates an optimized production build in the `build/` folder.
 
+## Auto-Sync Resume From Portfolio
+
+The resume source `resume/Arie_Resume_general.md` can be auto-updated from `src/data.js` so the `PROJECTS` section always highlights the most technical projects aligned with your current role.
+
+### One-time setup
+
+```bash
+npm run setup:hooks
+```
+
+This enables the tracked git hook in `.githooks/pre-commit`.
+
+### Manual sync
+
+```bash
+npm run sync:resume
+```
+
+What it does:
+- scores and selects top technical projects from `personalProjects` in `src/data.js`
+- rewrites the `## PROJECTS` section in `resume/Arie_Resume_general.md`
+- regenerates `public/Arie_Resume_general.pdf` (if `pandoc` is available)
+
+After setup, the sync runs automatically before each commit.
+
 ## Deployment
 
 See [GCP_DEPLOY.md](GCP_DEPLOY.md) for full deployment instructions to Google Cloud App Engine.
