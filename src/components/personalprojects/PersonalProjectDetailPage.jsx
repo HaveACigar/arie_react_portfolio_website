@@ -18,6 +18,10 @@ export default function PersonalProjectDetailPage() {
 
   const project = personalProjects.find((item) => item.id === projectId);
   const isAgenticCopilotProject = project?.id === "agentic-claims-communication-copilot";
+  const [draftScenario, setDraftScenario] = useState("FNOL status and policy question");
+  const [draftCustomerMessage, setDraftCustomerMessage] = useState(
+    "Hi, I filed a claim yesterday and need to confirm status and whether rental coverage is included."
+  );
   const [scenario, setScenario] = useState("FNOL status and policy question");
   const [customerMessage, setCustomerMessage] = useState(
     "Hi, I filed a claim yesterday and need to confirm status and whether rental coverage is included."
@@ -292,23 +296,41 @@ export default function PersonalProjectDetailPage() {
               <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#475569", mb: 2, lineHeight: 1.6 }}>
                 This on-page simulator demonstrates the agentic triage and routing pattern used in the project narrative.
               </Typography>
+              <Typography variant="body2" sx={{ color: darkMode ? "#94a3b8" : "#64748b", mb: 2, lineHeight: 1.6 }}>
+                Enter a scenario and customer message, then click Run Simulation to update Intent, Risk, and Route.
+                Keywords like "injury", "lawsuit", or "fraud" drive the High risk path.
+              </Typography>
 
               <Box sx={{ display: "grid", gap: 2, mb: 3 }}>
                 <TextField
                   label="Scenario"
-                  value={scenario}
-                  onChange={(event) => setScenario(event.target.value)}
+                  value={draftScenario}
+                  onChange={(event) => setDraftScenario(event.target.value)}
                   fullWidth
                   size="small"
                 />
                 <TextField
                   label="Customer Message"
-                  value={customerMessage}
-                  onChange={(event) => setCustomerMessage(event.target.value)}
+                  value={draftCustomerMessage}
+                  onChange={(event) => setDraftCustomerMessage(event.target.value)}
                   fullWidth
                   multiline
                   minRows={3}
                 />
+                <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
+                  <Button
+                    variant="contained"
+                    sx={{ textTransform: "none", fontWeight: 700 }}
+                    onClick={() => {
+                      setScenario(draftScenario.trim() || "General service inquiry");
+                      setCustomerMessage(
+                        draftCustomerMessage.trim() || "Customer is asking for claim help and policy clarification."
+                      );
+                    }}
+                  >
+                    Run Simulation
+                  </Button>
+                </Box>
               </Box>
 
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
