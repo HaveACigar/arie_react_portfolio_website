@@ -35,3 +35,7 @@ projects/rag_ops_platform/backend/data/
 # GCP deployment (contains Firebase config values)
 GCP_DEPLOY.md
 .gcloudignore
+
+# Local-only job tailoring workspace
+private_job_docs/
+local_apps/job_tailor_assistant/

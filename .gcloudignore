@@ -13,3 +13,7 @@ coverage/
 *.log
 .DS_Store
 README.md
+
+# Local-only job tailoring app and generated docs
+local_apps/
+private_job_docs/

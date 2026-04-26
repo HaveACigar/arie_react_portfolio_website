@@ -565,6 +565,69 @@ export const personalProjects = [
       "Structured intentionally as a Snowflake-style finance analytics starter project for recruiter review",
     ],
   },
+  {
+    id: "agentic-claims-communication-copilot",
+    title: "Agentic Claims Communication Copilot",
+    subtitle: "Applied AI Workflow Platform for Triage, Drafting, and Decision Support",
+    description:
+      "Applied AI project narrative focused on customer communication workflows in an insurance-style environment. " +
+      "It demonstrates agentic orchestration patterns for intent triage, context retrieval, response drafting, " +
+      "decision support, and human handoff while emphasizing production-minded quality checks, reporting, and reliability.",
+    tech: [
+      "Python", "SQL", "Streamlit", "Pandas", "Plotly",
+      "LLM API Patterns", "Workflow Orchestration", "Evaluation Harness", "GitHub", "PR Workflows",
+    ],
+    skillsShowcased: [
+      "Applied AI Engineering",
+      "Agentic Workflow Design",
+      "Production Reliability Patterns",
+      "Reporting Automation",
+    ],
+    recruiterSignals: [
+      "Shows practical workflow engineering beyond single-prompt demos by separating retrieval, reasoning, tool calls, and escalation paths.",
+      "Demonstrates Python and SQL fluency in the same solution through orchestration services, evaluation datasets, and operational reporting layers.",
+      "Frames AI work with measurable quality signals (completion rate, escalation precision, and workflow failure categories) instead of generic model output screenshots.",
+    ],
+    deliverables: [
+      "Expand evaluation coverage with scenario packs for policy updates, claims status, and document-driven requests.",
+      "Add configurable policy rules and confidence thresholds to improve deterministic routing behavior.",
+      "Publish a reusable operations report template for weekly quality reviews and stakeholder readouts.",
+    ],
+    status: "In Progress",
+    category: "data-science",
+    github: "https://github.com/HaveACigar/arie_react_portfolio_website",
+    route: "/personal-projects/agentic-claims-communication-copilot",
+    architectureFlow: [
+      {
+        stage: "Intake",
+        layer: "Request Triage",
+        detail: "Incoming chat/email/voice transcripts are classified by intent, urgency, and required workflow path.",
+      },
+      {
+        stage: "Context",
+        layer: "Retrieval + Rules",
+        detail: "Grounding context and policy-style rules are pulled before generation to constrain output quality.",
+      },
+      {
+        stage: "Action",
+        layer: "Agentic Orchestration",
+        detail: "Workflow engine coordinates drafting, decision support prompts, and tool-style steps with explicit checks.",
+      },
+      {
+        stage: "Governance",
+        layer: "Evaluation + Reporting",
+        detail: "Outcome logs power quality scorecards, failure taxonomy reporting, and iterative workflow tuning.",
+      },
+    ],
+    highlights: [
+      "Designed an end-to-end agentic workflow that handles intent triage, context retrieval, draft generation, and human escalation paths",
+      "Implemented Python orchestration and SQL-backed interaction logging to support replayable debugging and operational traceability",
+      "Added evaluation checks for task completion, unsupported assertions, and escalation precision across scenario-based test sets",
+      "Built reporting automation outputs for recurring quality reviews, including pass/fail summaries and top workflow failure modes",
+      "Structured collaboration workflow in Git with review-ready prompt, logic, and evaluation updates tied to reproducible test results",
+      "Mapped operational metrics to business-facing signals such as exception volume, handling-time bands, and quality trend movement",
+    ],
+  },
   // Future personal projects will be added here as they are completed:
   // { id: "supervised-ml-pipeline", title: "Supervised ML: Prediction Pipeline", ... },  // DONE ↓
   {

@@ -23,7 +23,11 @@ export default function DataSciencePage() {
     (p) => p.category === "data-science" || p.category === "both"
   );
   const featuredPersonalProjects = personalProjects.filter(
-    (p) => p.id === "rag-ops-platform" || p.id === "supervised-ml-pipeline" || p.id === "eda-visualization-dashboard"
+    (p) =>
+      p.id === "rag-ops-platform" ||
+      p.id === "agentic-claims-communication-copilot" ||
+      p.id === "supervised-ml-pipeline" ||
+      p.id === "eda-visualization-dashboard"
   );
 
   const dsProjects = [

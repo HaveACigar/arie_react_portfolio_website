@@ -19,6 +19,7 @@ export default function Projects() {
   const PERSONAL_PRIORITY = ["rag-ops-platform", "arieai-assistant", "react-portfolio-website", "fitness-log-app"];
   const DATA_SCIENCE_PRIORITY = [
     "rag-ops-platform",
+    "agentic-claims-communication-copilot",
     "snowflake-finance-ai-command-center",
     "eda-visualization-dashboard",
     "supervised-ml-pipeline",
