@@ -626,7 +626,10 @@ export const personalProjects = [
       "Built reporting automation outputs for recurring quality reviews, including pass/fail summaries and top workflow failure modes",
       "Structured collaboration workflow in Git with review-ready prompt, logic, and evaluation updates tied to reproducible test results",
       "Mapped operational metrics to business-facing signals such as exception volume, handling-time bands, and quality trend movement",
-    ],
+    
+      "Extension for PwC AI Engineer / Data Scientist, AI Senior Associate: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",
+      "Extension for GM Sr Data Scientist, CRM: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",
+      "Extension for Snowflake Data Analytics & AI - Finance Analytics: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",],
   },
   // Future personal projects will be added here as they are completed:
   // { id: "supervised-ml-pipeline", title: "Supervised ML: Prediction Pipeline", ... },  // DONE ↓

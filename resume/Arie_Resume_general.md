@@ -29,6 +29,11 @@ Data Analyst and Applied ML Scientist with 5+ years of experience delivering ana
 - Built Jenkins CI/CD pipelines to accelerate release velocity and improve production quality.
 
 ## PROJECTS
+**Agentic Claims Communication Copilot**
+- Designed an end-to-end agentic workflow that handles intent triage, context retrieval, draft generation, and human escalation paths
+- Implemented Python orchestration and SQL-backed interaction logging to support replayable debugging and operational traceability
+- Tech: Python, SQL, Streamlit, Pandas, Plotly, LLM API Patterns, Workflow Orchestration
+
 **LLM RAG Ops Platform**
 - Supports two retrieval modes: local TF-IDF by default with optional pgvector + embeddings for production-style semantic search
 - Streams answers over SSE and returns routing metadata so the UI can show how each question was source-filtered
@@ -39,14 +44,10 @@ Data Analyst and Applied ML Scientist with 5+ years of experience delivering ana
 - Full sklearn Pipeline with ColumnTransformer — zero data leakage guaranteed during cross-validation
 - Tech: Python, Scikit-learn, XGBoost, SHAP, Pandas, Plotly, Streamlit
 
-**Agentic Claims Communication Copilot**
-- Designed an end-to-end agentic workflow that handles intent triage, context retrieval, draft generation, and human escalation paths
-- Implemented Python orchestration and SQL-backed interaction logging to support replayable debugging and operational traceability
-- Tech: Python, SQL, Streamlit, Pandas, Plotly, LLM API Patterns, Workflow Orchestration
-
 ## EDUCATION
 **Master of Data Science and Analytics (Data Science specialization), GPA: 3.9** | University of Calgary | Sep 2023 - Dec 2024  
 **Bachelor of Science, Computer Science** | Eastern Michigan University | Sep 2015 - Apr 2019
+
 
 
 
