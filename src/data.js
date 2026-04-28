@@ -664,7 +664,8 @@ export const personalProjects = [
       "Models pre-trained at Docker build time and serialized to disk — instant startup in Cloud Run",
       "Interactive churn predictor with per-prediction SHAP feature contribution breakdown",
       "Class imbalance handled via class_weight='balanced' and XGBoost scale_pos_weight",
-    ],
+    
+      "Extension for Delta Operations Research Scientist: Extend Supervised ML: Churn Prediction Pipeline with a role-specific workflow focused on python; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",],
   },
   {
     id: "nlp-text-analytics",
