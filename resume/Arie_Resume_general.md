@@ -4,7 +4,7 @@ fontsize: 10pt
 ---
 
 # Arie DeKraker
-Dearborn, MI | (734) 945-3869 | ariedekraker@gmail.com | linkedin.com/in/arie-dekraker | arieswebsite.com
+(734) 945-3869 | ariedekraker@gmail.com | linkedin.com/in/arie-dekraker | arieswebsite.com
 
 ## SUMMARY
 Data Analyst and Applied ML Scientist with 5+ years of experience delivering analytics, machine learning, and software solutions. Strong background in SQL and Python, with hands-on experience in Snowflake-style warehousing, finance KPI modeling, experimentation, and cloud data delivery.
@@ -47,6 +47,7 @@ Data Analyst and Applied ML Scientist with 5+ years of experience delivering ana
 ## EDUCATION
 **Master of Data Science and Analytics (Data Science specialization), GPA: 3.9** | University of Calgary | Sep 2023 - Dec 2024  
 **Bachelor of Science, Computer Science** | Eastern Michigan University | Sep 2015 - Apr 2019
+
 
 
 

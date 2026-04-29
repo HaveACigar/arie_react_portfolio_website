@@ -372,7 +372,8 @@ export const personalProjects = [
       "EmailJS integration for contact form — sends email directly to the site owner",
       "Responsive grid layouts via MUI sx props with xs/sm/md breakpoints",
       "Centralized data architecture — all content driven from a single data.js file",
-    ],
+    
+      "Extension for United Senior Data Scientist - Operations Research: Extend React Portfolio Website with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",],
   },
   {
     id: "fitness-log-app",
@@ -490,6 +491,7 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/eda-visualization-dashboard",
+    liveDemo: "https://eda-visualization-dashboard-v7z4vnunqa-uc.a.run.app",
     // Route within the portfolio website for the detailed project page
     route: "/personal-projects/eda-visualization-dashboard",
     highlights: [
@@ -656,6 +658,7 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/supervised-ml-pipeline",
+    liveDemo: "https://supervised-ml-pipeline-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/supervised-ml-pipeline",
     highlights: [
       "4 models compared via 5-fold stratified CV: Logistic Regression, Random Forest, Gradient Boosting, XGBoost",
@@ -690,6 +693,7 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/nlp-text-analytics",
+    liveDemo: "https://nlp-text-analytics-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/nlp-text-analytics",
     highlights: [
       "7-step text cleaning pipeline: lowercase, HTML removal, URL stripping, non-alpha filter, stopword removal, short-token pruning",
@@ -722,6 +726,7 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/deep-learning-image-classifier",
+    liveDemo: "https://deep-learning-image-classifier-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/deep-learning-image-classifier",
     highlights: [
       "Transfer learning with pretrained MobileNetV3-small; frozen feature extractor and retrained classifier head",
@@ -877,7 +882,42 @@ export const personalProjects = [
     status: "Complete",
     category: "data-science",
     github: "https://github.com/HaveACigar/ml-model-deployment",
-    liveDemo: "https://ml-model-deployment-v7z4vnunqa-uc.a.run.app",
+    liveDemo: "https://ml-model-deployment-v7z4vnunqa-uc.a.run.app/docs",
+    apiBaseUrl: "https://ml-model-deployment-v7z4vnunqa-uc.a.run.app",
+    liveDemoLabel: "Open API Docs",
+    hideEmbed: true,
+    apiEndpoints: [
+      { path: "/docs", description: "interactive OpenAPI docs" },
+      { path: "/health", description: "service health check" },
+      { path: "/metrics", description: "basic service metrics" },
+      { path: "/drift", description: "live payload drift summary" },
+    ],
+    samplePayload: {
+      monthly_spend: 149.0,
+      tenure_months: 8,
+      support_tickets: 3,
+      logins_last_30d: 11,
+      discount_ratio: 0.15,
+      payment_failures: 1,
+    },
+    predictEndpoint: "/predict",
+    outcomeCards: [
+      {
+        title: "Inference Service",
+        value: "Live on Cloud Run",
+        detail: "FastAPI classifier endpoint supports single and batch scoring with schema validation.",
+      },
+      {
+        title: "Model Monitoring",
+        value: "Drift Endpoint Enabled",
+        detail: "Feature distribution checks are exposed through `/drift` for ongoing data-quality monitoring.",
+      },
+      {
+        title: "Operational Readiness",
+        value: "Docs + Health + Metrics",
+        detail: "Recruiters can inspect OpenAPI docs and observability endpoints without local setup.",
+      },
+    ],
     route: "/personal-projects/ml-model-deployment",
     highlights: [
       "FastAPI endpoints for `/predict`, `/batch-predict`, `/health`, `/metrics`, and `/drift`",
