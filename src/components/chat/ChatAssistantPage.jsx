@@ -96,29 +96,6 @@ async function consumeSSEStream(response, onDelta, onSessionId) {
   }
 }
 
-async function publicFetch(path, options = {}) {
-  const { response, baseUrl, attempts } = await fetchWithApiFallback(path, {
-    ...options,
-    headers: { "Content-Type": "application/json", ...(options.headers || {}) },
-  });
-
-  if (!response.ok) {
-    let message = `Request failed with status ${response.status}`;
-    try {
-      const body = await response.json();
-      if (body?.detail) message = body.detail;
-    } catch {
-      const text = await response.text();
-      if (text) message = text;
-    }
-    const err = new Error(message);
-    err.diagnostic = { path, method: options?.method || "GET", baseUrl, status: response.status, attempts };
-    throw err;
-  }
-
-  return response.json();
-}
-
 async function authorizedFetch(path, token, options = {}) {
   const { response, baseUrl, attempts } = await fetchWithApiFallback(path, {
     ...options,
