@@ -130,7 +130,14 @@ async function authorizedFetch(path, token, options = {}) {
   });
 
   if (!response.ok) {
-    const message = await parseErrorResponse(response);
+    let message = `Request failed with status ${response.status}`;
+    try {
+      const body = await response.json();
+      if (body?.detail) message = body.detail;
+    } catch {
+      const text = await response.text();
+      if (text) message = text;
+    }
     const err = new Error(message);
     err.diagnostic = { path, method: options?.method || "GET", baseUrl, status: response.status, attempts };
     throw err;
