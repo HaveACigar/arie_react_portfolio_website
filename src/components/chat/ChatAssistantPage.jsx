@@ -51,16 +51,49 @@ async function fetchWithApiFallback(path, options = {}) {
   throw networkError;
 }
 
-async function parseErrorResponse(response) {
-  let message = `Request failed with status ${response.status}`;
-  try {
-    const body = await response.json();
-    if (body?.detail) message = body.detail;
-  } catch {
-    const text = await response.text();
-    if (text) message = text;
+async function streamWithApiFallback(path, options = {}) {
+  let lastError = null;
+  for (const baseUrl of CHAT_API_FALLBACKS) {
+    try {
+      const response = await fetch(`${baseUrl}${path}`, {
+        ...options,
+        headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+      });
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Request failed with status ${response.status}: ${text}`);
+      }
+      return response;
+    } catch (err) {
+      lastError = err;
+    }
   }
-  return message;
+  throw lastError || new Error("NetworkError when attempting to fetch resource.");
+}
+
+async function consumeSSEStream(response, onDelta, onSessionId) {
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const parts = buffer.split("\n\n");
+    buffer = parts.pop();
+    for (const part of parts) {
+      if (!part.startsWith("data: ")) continue;
+      const raw = part.slice(6).trim();
+      if (raw === "[DONE]") return;
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed.session_id && onSessionId) onSessionId(parsed.session_id);
+        if (parsed.delta) onDelta(parsed.delta);
+      } catch {
+        // ignore malformed SSE line
+      }
+    }
+  }
 }
 
 async function publicFetch(path, options = {}) {
@@ -70,7 +103,14 @@ async function publicFetch(path, options = {}) {
   });
 
   if (!response.ok) {
-    const message = await parseErrorResponse(response);
+    let message = `Request failed with status ${response.status}`;
+    try {
+      const body = await response.json();
+      if (body?.detail) message = body.detail;
+    } catch {
+      const text = await response.text();
+      if (text) message = text;
+    }
     const err = new Error(message);
     err.diagnostic = { path, method: options?.method || "GET", baseUrl, status: response.status, attempts };
     throw err;
@@ -174,45 +214,61 @@ export default function ChatAssistantPage() {
     setNotice("");
     setMessages((current) => [...current, { id: `local-${Date.now()}`, role: "user", content: outgoing }]);
 
+    // Append an empty assistant message immediately so the user sees it populate
+    const assistantId = `assistant-${Date.now()}`;
+    setMessages((current) => [...current, { id: assistantId, role: "assistant", content: "" }]);
+
     try {
-      let data;
       if (user) {
         const token = await user.getIdToken();
-        data = await authorizedFetch("/chat", token, {
+        const response = await streamWithApiFallback("/chat/stream", {
           method: "POST",
-          body: JSON.stringify({
-            message: outgoing,
-            session_id: activeSessionId || undefined,
-          }),
+          headers: { Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ message: outgoing, session_id: activeSessionId || undefined }),
         });
 
-        if (data?.session_id) {
-          setActiveSessionId(data.session_id);
-          setSessions((current) => {
-            const existing = current.find((item) => item.id === data.session_id);
-            const nextItem = {
-              id: data.session_id,
-              title: existing?.title || outgoing.slice(0, 60) || "New chat",
-              updated_at: new Date().toISOString(),
-            };
-            const rest = current.filter((item) => item.id !== data.session_id);
-            return [nextItem, ...rest];
-          });
-        }
+        await consumeSSEStream(
+          response,
+          (delta) => {
+            setMessages((current) => {
+              const copy = [...current];
+              const last = copy[copy.length - 1];
+              copy[copy.length - 1] = { ...last, content: last.content + delta };
+              return copy;
+            });
+          },
+          (sessionId) => {
+            setActiveSessionId(sessionId);
+            setSessions((current) => {
+              const existing = current.find((item) => item.id === sessionId);
+              const nextItem = {
+                id: sessionId,
+                title: existing?.title || outgoing.slice(0, 60) || "New chat",
+                updated_at: new Date().toISOString(),
+              };
+              return [nextItem, ...current.filter((item) => item.id !== sessionId)];
+            });
+          },
+        );
       } else {
-        data = await publicFetch("/chat/public", {
+        const response = await streamWithApiFallback("/chat/public/stream", {
           method: "POST",
           body: JSON.stringify({ message: outgoing }),
         });
-      }
 
-      setMessages((current) => [
-        ...current,
-        { id: `assistant-${Date.now()}`, role: "assistant", content: data.answer || "No response returned." },
-      ]);
+        await consumeSSEStream(response, (delta) => {
+          setMessages((current) => {
+            const copy = [...current];
+            const last = copy[copy.length - 1];
+            copy[copy.length - 1] = { ...last, content: last.content + delta };
+            return copy;
+          });
+        });
+      }
     } catch (err) {
-      setError(formatFetchError("Unable to send your message right now.", err));
-      setMessages((current) => current.slice(0, -1));
+      const message = err?.message || "Unknown error";
+      setError(`Unable to send your message right now. ${message}`.trim());
+      setMessages((current) => current.slice(0, -2)); // remove user + empty assistant
       setDraft(outgoing);
     } finally {
       setBusy(false);
@@ -360,7 +416,12 @@ export default function ChatAssistantPage() {
                       <Typography variant="caption" sx={{ fontWeight: 700, display: "block", mb: 0.5 }}>
                         {message.role === "user" ? "You" : "ArieAI"}
                       </Typography>
-                      <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>{message.content}</Typography>
+                      <Typography variant="body2" sx={{ whiteSpace: "pre-wrap" }}>
+                        {message.content}
+                        {busy && message.role === "assistant" && message.content === "" && (
+                          <Box component="span" sx={{ display: "inline-block", width: 8, height: "1em", bgcolor: "text.secondary", borderRadius: 0.5, animation: "blink 1s step-end infinite", "@keyframes blink": { "0%, 100%": { opacity: 1 }, "50%": { opacity: 0 } } }} />
+                        )}
+                      </Typography>
                     </Box>
                   ))}
                 </Stack>
@@ -384,7 +445,7 @@ export default function ChatAssistantPage() {
                 disabled={CHAT_API_FALLBACKS.length === 0 || !draft.trim() || busy}
                 sx={{ textTransform: "none", minWidth: { sm: 140 } }}
               >
-                {busy ? "Sending..." : "Send"}
+                {busy ? "Responding…" : "Send"}
               </Button>
             </Stack>
           </Paper>

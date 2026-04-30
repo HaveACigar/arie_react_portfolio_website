@@ -17,10 +17,10 @@ export default function Intro() {
       backDelay: 1500,
       backSpeed: 60,
       strings: [
-        "Intermediate Data Analyst",
-        "ML Practitioner",
+        "Senior Data Analyst",
+        "Applied ML Scientist",
         "Full Stack Engineer",
-        "Problem Solver",
+        "AI Systems Builder",
       ],
     });
   }, []);
@@ -111,7 +111,7 @@ export default function Intro() {
               border: darkMode ? "1px solid rgba(110, 231, 183, 0.25)" : "1px solid rgba(16, 185, 129, 0.16)",
             }}
           >
-            <Box>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
               <Chip
                 icon={<PsychologyAltIcon />}
                 label="Featured Build"
@@ -134,7 +134,20 @@ export default function Intro() {
               color="success"
               startIcon={<PsychologyAltIcon />}
               href="/personal-projects/rag-ops-platform"
-              sx={{ fontWeight: 700, px: 3, py: 1.2, borderRadius: 2, whiteSpace: "nowrap" }}
+              sx={{
+                fontWeight: 700,
+                px: 2.5,
+                py: 1,
+                borderRadius: 2,
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+                width: { xs: "100%", md: "auto" },
+                alignSelf: { xs: "stretch", md: "center" },
+                "& .MuiButton-startIcon": {
+                  marginLeft: 0,
+                  marginRight: 0.75,
+                },
+              }}
             >
               Explore RAG Project
             </Button>
@@ -153,7 +166,7 @@ export default function Intro() {
               border: darkMode ? "1px solid rgba(144, 202, 249, 0.25)" : "1px solid rgba(25, 118, 210, 0.15)",
             }}
           >
-            <Box>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
               <Chip
                 icon={<SmartToyIcon />}
                 label="New AI Assistant"
@@ -176,7 +189,20 @@ export default function Intro() {
               color="primary"
               startIcon={<SmartToyIcon />}
               href="/assistant"
-              sx={{ fontWeight: 700, px: 3, py: 1.2, borderRadius: 2, whiteSpace: "nowrap" }}
+              sx={{
+                fontWeight: 700,
+                px: 2.5,
+                py: 1,
+                borderRadius: 2,
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+                width: { xs: "100%", md: "auto" },
+                alignSelf: { xs: "stretch", md: "center" },
+                "& .MuiButton-startIcon": {
+                  marginLeft: 0,
+                  marginRight: 0.75,
+                },
+              }}
             >
               Open AI Assistant
             </Button>

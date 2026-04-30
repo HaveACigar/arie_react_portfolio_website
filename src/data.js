@@ -1,7 +1,7 @@
 // ── Personal Info ──
 export const personalInfo = {
   name: "Arie DeKraker",
-  title: "Intermediate Data Analyst",
+  title: "Senior Data Analyst & Applied ML Scientist",
   phone: "(734) 945-3869",
   email: "ariedekraker@gmail.com",
   linkedin: "https://www.linkedin.com/in/arie-dekraker/",
@@ -373,7 +373,7 @@ export const personalProjects = [
       "Responsive grid layouts via MUI sx props with xs/sm/md breakpoints",
       "Centralized data architecture — all content driven from a single data.js file",
     
-      "Extension for United Senior Data Scientist - Operations Research: Extend React Portfolio Website with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",],
+      "Extension for Zillow Data Scientist II: Extend React Portfolio Website with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",],
   },
   {
     id: "fitness-log-app",
@@ -631,7 +631,8 @@ export const personalProjects = [
     
       "Extension for PwC AI Engineer / Data Scientist, AI Senior Associate: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",
       "Extension for GM Sr Data Scientist, CRM: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",
-      "Extension for Snowflake Data Analytics & AI - Finance Analytics: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",],
+      "Extension for Snowflake Data Analytics & AI - Finance Analytics: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",
+      "Extension for Zillow Data Scientist II: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",],
   },
   // Future personal projects will be added here as they are completed:
   // { id: "supervised-ml-pipeline", title: "Supervised ML: Prediction Pipeline", ... },  // DONE ↓
@@ -860,7 +861,9 @@ export const personalProjects = [
       "KPI marts for monthly revenue, active customers, order volume, and segment performance",
       "Operational data-quality test results surfaced directly in the dashboard",
       "Warehouse file persisted in DuckDB for fast local analytics and reproducible transformations",
-    ],
+    
+      "Extension for Zillow Data Scientist II: Extend SQL & Data Engineering Pipeline with a role-specific workflow focused on experimentation and causal inference; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",
+      "Extension for Zillow Senior Data Scientist: Extend SQL & Data Engineering Pipeline with a role-specific workflow focused on experimentation and causal inference; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",],
   },
   {
     id: "ml-model-deployment",

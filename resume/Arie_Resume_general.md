@@ -1,32 +1,35 @@
----
-geometry: margin=0.6in
-fontsize: 10pt
----
-
 # Arie DeKraker
 (734) 945-3869 | ariedekraker@gmail.com | linkedin.com/in/arie-dekraker | arieswebsite.com
 
 ## SUMMARY
-Data Analyst and Applied ML Scientist with 5+ years of experience delivering analytics, machine learning, and software solutions. Strong background in SQL and Python, with hands-on experience in Snowflake-style warehousing, finance KPI modeling, experimentation, and cloud data delivery.
+Data and analytics professional with a Master's specialization in Data Science and 5+ years of experience building AI-assisted analytics workflows, Python/SQL pipelines, and production applications for business stakeholders. Experienced in converting complex KPI questions into automated tooling and executive-ready insights.
 
 ## SKILLS
-**Data and Warehousing:** Snowflake, SQL, BigQuery, Dataform, ETL/ELT, Data Modeling, Data Quality  
-**Analytics and Experimentation:** Forecasting, A/B Testing, DOE, Statistical Inference, KPI Modeling (ARR, NRR, DSO, A/R)  
-**ML and AI:** Python (Pandas, NumPy, scikit-learn), XGBoost, Deep Learning, Generative AI, RAG  
-**Cloud and BI:** GCP, Terraform, Tekton, Cloud Data Fusion, Docker, CI/CD, Power BI, Looker, Tableau
+**Programming:** Python (NumPy, Pandas, Plotly), SQL, R, JavaScript
+**SQL & Analytics Engineering:** CTEs, Window Functions, Incremental Pipeline Patterns, KPI Reporting Models
+**AI Workflow Development:** AI-Assisted Dev, Prompt Engineering, Workflow Automation, LLM Eval
+**AI & Machine Learning:** Scikit-learn, TensorFlow, Deep Learning, NLP, Generative AI, A/B Testing, DOE
+**LLM & Quantitative:** RAG Architectures, Semantic Search, VectorDBs, Causal Inference
+**MLOps & Cloud:** GCP, BigQuery, Dataform, Docker, Kubernetes, Git, GitHub Actions
+**Data & Visualization:** Streamlit, Power BI, Data Studio, Tableau, Matplotlib, ggplot2, Actionable Visualizations
 
 ## EXPERIENCE
-**Data Analyst / Applied ML Scientist, DnA Team - Subscriptions Platform** | **Ford Motor Company** | May 2024 - Present
-- Deployed deep learning churn models with MLOps workflows, improving inference reliability and producing executive-facing prescriptive insights.
-- Built tiered data quality and governance workflows in Dataform and Cloud Data Fusion, standardizing ingestion, cleansing, and downstream analytics consumption.
-- Maintained infrastructure-as-code and CI/CD workflows with Terraform and Tekton to improve delivery reliability across data and ML assets.
-- Led A/B testing and DOE initiatives for subscription features, translating experiment outcomes into recommendations for senior stakeholders.
-- Managed ML workflows across Promotions, Rewards, Payments, Charging, and Core Metrics; built Looker and Power BI assets and trained teams on self-service analytics.
+**Data Analyst / Applied ML Scientist — DnA Team, Subscriptions Platform** | **Ford Motor Company, USA** | May 2024 – Present
+- Led the design and scalable deployment of predictive Deep Learning models for subscription churn forecasting, utilizing MLOps workflows for high-uptime inference and delivering prescriptive analytics to executive partners.
+- Designed and implemented a data quality and governance framework in Dataform and Cloud Data Fusion, standardizing data ingestion and cleaning to ensure accuracy and completeness for scalable ML systems and recurring KPI reporting.
+- Built and maintained analytics pipelines in BigQuery/Dataform to support recurring subscription performance analysis, scenario comparisons, and executive-ready reporting.
+- Built Power BI dashboards on BigQuery datasets for subscriptions KPI tracking, then extended selected reporting workflows into Data Studio for broader self-service consumption.
+- Led team adoption of Power BI and Dataform best practices through enablement sessions and hands-on mentoring, improving reporting consistency and analyst velocity.
+- Led the implementation of A/B testing and Design of Experiments (DOE) methodologies for key product features, providing strategic, data-driven recommendations to senior business and finance-adjacent partners.
 
-**Software Engineer, Loyalty Team - Rewards Platform** | **Ford Motor Company** | Sep 2019 - Jul 2023
-- Engineered RESTful APIs for FordPass and LincolnWay handling 20M+ monthly requests with 99.999% uptime.
-- Optimized Kafka streaming pipelines for high-volume, real-time data services.
-- Built Jenkins CI/CD pipelines to accelerate release velocity and improve production quality.
+**Software Engineer — Loyalty Team, Rewards Platform** | **Ford Motor Company, USA** | Sep 2019 – Jul 2023
+- Engineered RESTful APIs for FordPass & LincolnWay, handling 20M+ monthly requests with 99.999% uptime.
+- Optimized streaming data pipelines using Apache Kafka for high-volume, real-time data services.
+- Built robust CI/CD pipelines in Jenkins to accelerate feature deployment and ensure high-quality production code.
+
+## EDUCATION
+**Master of Data Science and Analytics — Data Science specialization (3.9 GPA)** | University of Calgary, Canada | Sep 2023 – Dec 2024
+**Bachelor of Science, Computer Science** | Eastern Michigan University, USA | Sep 2015 – Apr 2019
 
 ## PROJECTS
 **Agentic Claims Communication Copilot**
@@ -43,15 +46,5 @@ Data Analyst and Applied ML Scientist with 5+ years of experience delivering ana
 - 4 models compared via 5-fold stratified CV: Logistic Regression, Random Forest, Gradient Boosting, XGBoost
 - Full sklearn Pipeline with ColumnTransformer — zero data leakage guaranteed during cross-validation
 - Tech: Python, Scikit-learn, XGBoost, SHAP, Pandas, Plotly, Streamlit
-
-## EDUCATION
-**Master of Data Science and Analytics (Data Science specialization), GPA: 3.9** | University of Calgary | Sep 2023 - Dec 2024  
-**Bachelor of Science, Computer Science** | Eastern Michigan University | Sep 2015 - Apr 2019
-
-
-
-
-
-
 
 

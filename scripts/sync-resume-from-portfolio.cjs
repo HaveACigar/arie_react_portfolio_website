@@ -173,14 +173,17 @@ function syncResumeMarkdown() {
   const projectsSection = buildProjectsSection(topProjects);
 
   const startTag = "## PROJECTS";
-  const endTag = "## EDUCATION";
 
   const startIndex = resume.indexOf(startTag);
-  const endIndex = resume.indexOf(endTag);
-
-  if (startIndex === -1 || endIndex === -1 || endIndex <= startIndex) {
+  if (startIndex === -1) {
     throw new Error("Could not find PROJECTS/EDUCATION sections in resume markdown.");
   }
+  // Find the next ## heading after PROJECTS, or use end of file
+  const afterProjects = resume.slice(startIndex + startTag.length);
+  const nextHeadingMatch = afterProjects.match(/\n## /);
+  const endIndex = nextHeadingMatch
+    ? startIndex + startTag.length + nextHeadingMatch.index
+    : resume.length;
 
   const before = resume.slice(0, startIndex).trimEnd();
   const after = resume.slice(endIndex).trimStart();
