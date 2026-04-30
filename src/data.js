@@ -1,7 +1,7 @@
 // ── Personal Info ──
 export const personalInfo = {
   name: "Arie DeKraker",
-  title: "Senior Data Analyst & Applied ML Scientist",
+  title: "Intermediate Data Analyst",
   phone: "(734) 945-3869",
   email: "ariedekraker@gmail.com",
   linkedin: "https://www.linkedin.com/in/arie-dekraker/",
@@ -461,12 +461,9 @@ export const personalProjects = [
     github: "https://github.com/HaveACigar/arie_react_portfolio_website",
     route: "/personal-projects/rag-ops-platform",
     highlights: [
-      "Supports two retrieval modes: local TF-IDF by default with optional pgvector + embeddings for production-style semantic search",
-      "Streams answers over SSE and returns routing metadata so the UI can show how each question was source-filtered",
-      "Ingests messy real-world public data including NYC 311, SEC CompanyFacts, and Chicago crime data",
-      "Auto-routes user questions to the most relevant source set before retrieval, reducing noise and improving answer grounding",
-      "Includes heuristic evals, an LLM-as-judge endpoint, and optional LangSmith-compatible tracing for observability",
-      "Ships with backend tests, a demo frontend, Docker/Make targets, and source-specific ingestion scripts",
+      "Source-aware routing shows leadership exactly which data domain drove each answer, making governance and audit conversations concrete instead of theoretical.",
+      "Evaluation scorecards expose where grounded-answer quality drops by source, so roadmap investment can be prioritized by business risk rather than anecdotal feedback.",
+      "Streaming responses and guardrailed generation improve perceived reliability in live demos, which is critical for stakeholder trust in production AI workflows.",
     ],
   },
   {
@@ -495,11 +492,9 @@ export const personalProjects = [
     // Route within the portfolio website for the detailed project page
     route: "/personal-projects/eda-visualization-dashboard",
     highlights: [
-      "Cleaned real merged indicator data by removing aggregate entities and normalizing country-year records",
-      "Built 8 reusable Plotly chart types (heatmaps, scatter + OLS, box plots, ranked bars, etc.)",
-      "Streamlit dashboard with 9 interactive sections covering full EDA workflow",
-      "World Bank-style income group classification with group comparison analysis",
-      "215 countries across 1960–2025 with 10 health & economic indicators",
+      "Cross-country benchmarking shows outcome gaps are concentrated in a small set of income-tier and infrastructure combinations, helping stakeholders target interventions instead of spreading budgets evenly.",
+      "Trend decomposition reveals multiple regions with GDP growth but weaker health-outcome movement, signaling execution and policy-delivery gaps rather than pure funding gaps.",
+      "Data-quality normalization materially changes country rankings, demonstrating why governance controls should be treated as a board-level risk and not just a technical cleanup task.",
     ],
   },
   {
@@ -558,13 +553,9 @@ export const personalProjects = [
       },
     ],
     highlights: [
-      "Generates subscription finance events across accounts, regions, segments, renewals, and collections behavior",
-      "Builds silver and gold SQL layers for ARR, NRR, gross retention, logo churn, open A/R, and DSO",
-      "Includes Snowflake-ready DDL plus stream/task orchestration scripts for warehouse-native operations",
-      "Adds a forecast-vs-actual variance bridge mart for ARR, cash, A/R, and NRR decomposition",
-      "Scores account-level renewal risk using adoption, collections latency, support load, and near-term renewal windows",
-      "Provides a finance copilot tab that answers KPI questions using curated mart outputs only",
-      "Structured intentionally as a Snowflake-style finance analytics starter project for recruiter review",
+      "ARR growth analysis shows expansion is concentrated in a narrower account cohort than topline numbers imply, surfacing concentration risk that leadership can proactively hedge.",
+      "DSO and open-A/R trend views pinpoint where collections friction is absorbing working capital, giving finance a direct operating lever beyond revenue growth.",
+      "Renewal-risk scoring isolates accounts where support pressure and payment latency overlap, enabling earlier interventions before risk converts into churn.",
     ],
   },
   {
@@ -622,17 +613,10 @@ export const personalProjects = [
       },
     ],
     highlights: [
-      "Designed an end-to-end agentic workflow that handles intent triage, context retrieval, draft generation, and human escalation paths",
-      "Implemented Python orchestration and SQL-backed interaction logging to support replayable debugging and operational traceability",
-      "Added evaluation checks for task completion, unsupported assertions, and escalation precision across scenario-based test sets",
-      "Built reporting automation outputs for recurring quality reviews, including pass/fail summaries and top workflow failure modes",
-      "Structured collaboration workflow in Git with review-ready prompt, logic, and evaluation updates tied to reproducible test results",
-      "Mapped operational metrics to business-facing signals such as exception volume, handling-time bands, and quality trend movement",
-    
-      "Extension for PwC AI Engineer / Data Scientist, AI Senior Associate: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",
-      "Extension for GM Sr Data Scientist, CRM: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",
-      "Extension for Snowflake Data Analytics & AI - Finance Analytics: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",
-      "Extension for Zillow Data Scientist II: Extend Agentic Claims Communication Copilot with a role-specific workflow focused on python, sql; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",],
+      "Intent-mix analysis shows a limited set of request types drives most escalations, giving operations a focused path to automate the highest-friction work first.",
+      "Quality scorecards expose where unsupported assertions cluster by scenario, enabling governance teams to harden prompts and rules where customer risk is highest.",
+      "Escalation timing analysis demonstrates that early handoff on high-risk cases reduces downstream rework and improves end-to-end handling consistency.",
+    ],
   },
   // Future personal projects will be added here as they are completed:
   // { id: "supervised-ml-pipeline", title: "Supervised ML: Prediction Pipeline", ... },  // DONE ↓
@@ -662,14 +646,10 @@ export const personalProjects = [
     liveDemo: "https://supervised-ml-pipeline-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/supervised-ml-pipeline",
     highlights: [
-      "4 models compared via 5-fold stratified CV: Logistic Regression, Random Forest, Gradient Boosting, XGBoost",
-      "Full sklearn Pipeline with ColumnTransformer — zero data leakage guaranteed during cross-validation",
-      "SHAP TreeExplainer on XGBoost: mean |SHAP| bar chart + beeswarm summary plot",
-      "Models pre-trained at Docker build time and serialized to disk — instant startup in Cloud Run",
-      "Interactive churn predictor with per-prediction SHAP feature contribution breakdown",
-      "Class imbalance handled via class_weight='balanced' and XGBoost scale_pos_weight",
-    
-      "Extension for Delta Operations Research Scientist: Extend Supervised ML: Churn Prediction Pipeline with a role-specific workflow focused on python; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",],
+      "Risk segmentation shows churn is concentrated in low-tenure customers with repeated support interaction, giving retention teams a concrete intervention cohort.",
+      "Explainability outputs show engagement and service-friction signals dominate demographics, helping leadership prioritize product and service actions over broad discounting.",
+      "Threshold analysis in the app clarifies the precision-recall tradeoff, enabling executives to set intervention policy based on budget and capacity constraints.",
+    ],
   },
   {
     id: "nlp-text-analytics",
@@ -697,12 +677,9 @@ export const personalProjects = [
     liveDemo: "https://nlp-text-analytics-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/nlp-text-analytics",
     highlights: [
-      "7-step text cleaning pipeline: lowercase, HTML removal, URL stripping, non-alpha filter, stopword removal, short-token pruning",
-      "TF-IDF (10K features, bigrams) + Logistic Regression sentiment classifier with 5-fold CV and ROC curve evaluation",
-      "Both NMF and LDA topic models (10 topics each) with interactive word charts and representative document retrieval",
-      "Sentence-level semantic search using all-MiniLM-L6-v2 embeddings — finds thematically similar reviews beyond keyword overlap",
-      "Live sentiment demo: type any text and get a model prediction with confidence score",
-      "Models pre-trained at Docker build time; artifacts serialized with joblib for instant Streamlit startup",
+      "Topic modeling separates criticism themes into distinct operational buckets (for example, writing quality vs execution quality), enabling clearer ownership for action planning.",
+      "Sentiment and confidence views expose where public perception is most polarized, helping stakeholders distinguish niche backlash from broad-market risk.",
+      "Semantic search surfaces recurring complaint patterns that keyword dashboards miss, improving how leadership prioritizes product and content improvements.",
     ],
   },
   {
@@ -730,11 +707,9 @@ export const personalProjects = [
     liveDemo: "https://deep-learning-image-classifier-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/deep-learning-image-classifier",
     highlights: [
-      "Transfer learning with pretrained MobileNetV3-small; frozen feature extractor and retrained classifier head",
-      "Trained on 12,000-image subset with separate validation split for fast iterative experimentation",
-      "Interactive diagnostics dashboard with epoch-level train/validation curves and full 10-class confusion matrix",
-      "Live upload inference with top-5 predicted classes and probability visualization",
-      "Model artifact pre-trained at Docker build time for fast Cloud Run startup",
+      "Confusion-matrix diagnostics reveal which visually similar classes create most misclassification cost, guiding targeted data-collection strategy.",
+      "Top-5 probability spread highlights low-confidence predictions suitable for human review, improving trust and risk control in operational use.",
+      "Learning-curve behavior demonstrates where transfer learning quickly captures baseline value and where additional data/augmentation is needed for material gains.",
     ],
   },
   {
@@ -761,12 +736,9 @@ export const personalProjects = [
     liveDemo: "https://time-series-forecasting-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/time-series-forecasting",
     highlights: [
-      "12-month walk-forward holdout evaluation (no random split leakage) with side-by-side predictions",
-      "Model benchmark table with MAE, RMSE, and sMAPE across Seasonal Naive, Holt-Winters, and XGBoost",
-      "Lag feature engineering (1,2,3,6,12 months) plus month/quarter/trend predictors for boosting model",
-      "24-month forward forecast with interactive overlay of all three model trajectories",
-      "XGBoost feature-importance chart surfacing which lag/calendar features drive predictions",
-      "Artifacts pre-trained at Docker build time for fast startup in production",
+      "Backtesting shows where simple seasonal baselines remain competitive, helping leadership avoid unnecessary model complexity when business conditions are stable.",
+      "Error spikes align with regime-shift windows, signaling when retraining or scenario overrides are operationally necessary.",
+      "Side-by-side forecast trajectories quantify planning sensitivity by model class, improving confidence intervals for capacity and budget planning.",
     ],
   },
   {
@@ -793,12 +765,9 @@ export const personalProjects = [
     liveDemo: "https://recommendation-system-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/recommendation-system",
     highlights: [
-      "MovieLens latest-small dataset powering popularity, content, and collaborative recommendation flows",
-      "Bayesian weighted-rating baseline to prevent low-volume titles from dominating top charts",
-      "TF-IDF similarity on titles + genres for content-based 'find similar movies' recommendations",
-      "NMF matrix factorization over the user-item matrix for personalized top-N ranking",
-      "Offline Precision@10 evaluation using a per-user temporal holdout",
-      "Interactive app tabs for top movies, similar titles, and user-level recommendations",
+      "Bayesian ranking prevents sparse-rating titles from distorting leaderboard decisions, creating a more defensible top-content strategy.",
+      "Collaborative recommendations improve personalization depth but expose cold-start catalog risk, clarifying where editorial fallback logic is required.",
+      "Content-similarity flows increase long-tail discoverability, supporting revenue diversification beyond blockbuster concentration.",
     ],
   },
   {
@@ -825,11 +794,9 @@ export const personalProjects = [
     liveDemo: "https://ab-testing-statistical-inference-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/ab-testing-statistical-inference",
     highlights: [
-      "Built on a real direct-marketing campaign dataset with customer-level response outcomes",
-      "Two-proportion z-test, confidence interval for lift, and relative/absolute uplift metrics",
-      "Power analysis and minimum sample-size calculations for experiment readiness",
-      "Segmented lift analysis across device, geography, and lifecycle cohorts",
-      "Business-facing charts that separate statistical significance from practical significance",
+      "Lift dashboards separate statistical significance from business significance, preventing rollouts that are mathematically significant but financially weak.",
+      "Power curves show how under-sized tests can create false confidence, giving product and finance teams a clear readiness gate before launch decisions.",
+      "Segment-level treatment effects reveal where impact is concentrated, enabling targeted rollout strategy instead of one-size-fits-all deployment.",
     ],
   },
   {
@@ -856,14 +823,10 @@ export const personalProjects = [
     liveDemo: "https://sql-data-engineering-pipeline-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/sql-data-engineering-pipeline",
     highlights: [
-      "Raw, staging, dimension, fact, and mart layers built explicitly in SQL",
-      "Resolved real-world data-quality issues such as duplicates, null revenue fields, and invalid quantities in staging",
-      "KPI marts for monthly revenue, active customers, order volume, and segment performance",
-      "Operational data-quality test results surfaced directly in the dashboard",
-      "Warehouse file persisted in DuckDB for fast local analytics and reproducible transformations",
-    
-      "Extension for Zillow Data Scientist II: Extend SQL & Data Engineering Pipeline with a role-specific workflow focused on experimentation and causal inference; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",
-      "Extension for Zillow Senior Data Scientist: Extend SQL & Data Engineering Pipeline with a role-specific workflow focused on experimentation and causal inference; Add explicit evaluation checks and reporting outputs tied to target stakeholder decisions",],
+      "Data-quality remediation materially shifts KPI baselines, demonstrating how governance decisions directly affect executive reporting outcomes.",
+      "Mart-level revenue and customer views identify which cohorts drive volatility, improving where leadership focuses pricing and retention levers.",
+      "Layered raw-to-mart lineage gives stakeholders traceable KPI provenance, reducing reconciliation friction between analytics and business teams.",
+    ],
   },
   {
     id: "ml-model-deployment",
@@ -923,11 +886,9 @@ export const personalProjects = [
     ],
     route: "/personal-projects/ml-model-deployment",
     highlights: [
-      "FastAPI endpoints for `/predict`, `/batch-predict`, `/health`, `/metrics`, and `/drift`",
-      "UCI Adult Income reference dataset and trained logistic regression artifact serialized with joblib",
-      "Lightweight drift summary comparing live payload means against reference feature distributions",
-      "HTML landing page plus autogenerated OpenAPI docs for recruiter-friendly inspection",
-      "Cloud Run deployment pattern that mirrors real inference-service delivery workflows",
+      "Drift-monitoring views provide early warning when live input behavior diverges from training assumptions, enabling action before model quality degrades.",
+      "Batch scoring exposes concentrated high-risk segments, helping operations prioritize interventions where impact is highest.",
+      "Service health and metrics endpoints make model performance an operational KPI, not just a notebook result, which aligns with enterprise reliability expectations.",
     ],
   },
   {
@@ -953,11 +914,9 @@ export const personalProjects = [
     liveDemo: "https://big-data-cloud-analytics-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/big-data-cloud-analytics",
     highlights: [
-      "Large-scale NYC Taxi trip records transformed into partitioned Parquet for fast analytical scans",
-      "Warehouse-style daily KPI marts for events, users, sessions, purchases, and revenue",
-      "Treemap breakdowns for country, platform, and product-category performance",
-      "Event funnel analysis plus data-quality checks for partition coverage and revenue integrity",
-      "Demonstrates partition-aware analytics patterns similar to cloud warehouse workloads",
+      "Geo-temporal demand concentration analysis shows a small set of zones and hours drive disproportionate trip volume, informing capacity and pricing strategy.",
+      "Trip-value and distance mix trends reveal where operational load is growing faster than unit economics, highlighting margin pressure risks.",
+      "Partition-aware marts improve decision latency for daily KPI review, enabling leadership to act on near-real-time shifts rather than retrospective summaries.",
     ],
   },
 ];
