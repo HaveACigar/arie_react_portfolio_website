@@ -9,6 +9,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { ThemeContext } from "../../context";
 import { personalProjects } from "../../data";
+import EmbeddedAppFrame from "./EmbeddedAppFrame";
 import "./personalProjects.scss";
 
 /**
@@ -33,7 +34,7 @@ export default function EDAProjectPage() {
   const accent = darkMode ? "#90caf9" : "#1976d2";
   const cardBg = darkMode ? "#2a2a2a" : "#fff";
   const cardBorder = darkMode ? "1px solid #444" : "1px solid #e3f0ff";
-  const dashboardUrl = process.env.REACT_APP_EDA_DASHBOARD_URL;
+  const dashboardUrl = project.liveDemo || process.env.REACT_APP_EDA_DASHBOARD_URL;
 
   // ── Data quality issues tackled — shown as a visual checklist ──
   const dataQualityIssues = [
@@ -171,6 +172,44 @@ export default function EDAProjectPage() {
           ))}
         </Paper>
 
+        {project.datasetStory && (
+          <>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+              Dataset Upgrade Path
+            </Typography>
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 2, mb: 5 }}>
+              <Paper elevation={2} sx={{ p: 2.5, borderRadius: 3, background: cardBg, border: cardBorder }}>
+                <Typography variant="caption" sx={{ color: accent, fontWeight: 700, letterSpacing: 0.2 }}>
+                  Current Dataset
+                </Typography>
+                <Typography variant="subtitle1" sx={{ mt: 0.6, fontWeight: 800, color: darkMode ? "#f1f5f9" : "#0f172a" }}>
+                  {project.datasetStory.current.name}
+                </Typography>
+                <Typography variant="body2" sx={{ mt: 0.8, color: darkMode ? "#cbd5e1" : "#475569", lineHeight: 1.55 }}>
+                  {project.datasetStory.current.why}
+                </Typography>
+                <Button href={project.datasetStory.current.url} target="_blank" rel="noopener noreferrer" size="small" sx={{ mt: 1.4, textTransform: "none", fontWeight: 700 }}>
+                  View Source
+                </Button>
+              </Paper>
+              <Paper elevation={2} sx={{ p: 2.5, borderRadius: 3, background: cardBg, border: cardBorder }}>
+                <Typography variant="caption" sx={{ color: accent, fontWeight: 700, letterSpacing: 0.2 }}>
+                  Next Dataset Challenge
+                </Typography>
+                <Typography variant="subtitle1" sx={{ mt: 0.6, fontWeight: 800, color: darkMode ? "#f1f5f9" : "#0f172a" }}>
+                  {project.datasetStory.next.name}
+                </Typography>
+                <Typography variant="body2" sx={{ mt: 0.8, color: darkMode ? "#cbd5e1" : "#475569", lineHeight: 1.55 }}>
+                  {project.datasetStory.next.why}
+                </Typography>
+                <Button href={project.datasetStory.next.url} target="_blank" rel="noopener noreferrer" size="small" sx={{ mt: 1.4, textTransform: "none", fontWeight: 700 }}>
+                  View Source
+                </Button>
+              </Paper>
+            </Box>
+          </>
+        )}
+
         {/* ── Data Quality Challenges ── */}
         <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
           Data Quality Issues Tackled
@@ -210,17 +249,10 @@ export default function EDAProjectPage() {
               mb: 5,
             }}
           >
-            <Box
-              component="iframe"
+            <EmbeddedAppFrame
               title="EDA Dashboard"
               src={`${dashboardUrl}${dashboardUrl.includes("?") ? "&" : "?"}embed=true`}
-              sx={{
-                width: "100%",
-                height: { xs: 500, md: 700 },
-                border: 0,
-                borderRadius: 2,
-                background: darkMode ? "#111" : "#fff",
-              }}
+              darkMode={darkMode}
             />
           </Paper>
         ) : (
@@ -229,9 +261,8 @@ export default function EDAProjectPage() {
             sx={{ p: 3, borderRadius: 3, background: cardBg, border: cardBorder, mb: 5 }}
           >
             <Typography variant="body2" sx={{ color: darkMode ? "#bbb" : "#555", lineHeight: 1.7, mb: 2 }}>
-              Dashboard embed is ready. Add a deployed Streamlit URL using
-              <strong> REACT_APP_EDA_DASHBOARD_URL </strong>
-              to render the live dashboard directly on this page.
+              The dashboard URL is not configured for this build, so the live preview is unavailable.
+              You can still open the project repository and run or deploy the app directly.
             </Typography>
             <Button
               href={project.github}

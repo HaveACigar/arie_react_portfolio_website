@@ -9,6 +9,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { ThemeContext } from "../../context";
 import { personalProjects } from "../../data";
+import EmbeddedAppFrame from "./EmbeddedAppFrame";
 import "./personalProjects.scss";
 
 export default function PersonalProjectDetailPage() {
@@ -18,6 +19,10 @@ export default function PersonalProjectDetailPage() {
 
   const project = personalProjects.find((item) => item.id === projectId);
   const isAgenticCopilotProject = project?.id === "agentic-claims-communication-copilot";
+  const [predInputs, setPredInputs] = useState(() => project?.samplePayload ? { ...project.samplePayload } : {});
+  const [predResult, setPredResult] = useState(null);
+  const [predLoading, setPredLoading] = useState(false);
+  const [predError, setPredError] = useState(null);
   const [draftScenario, setDraftScenario] = useState("FNOL status and policy question");
   const [draftCustomerMessage, setDraftCustomerMessage] = useState(
     "Hi, I filed a claim yesterday and need to confirm status and whether rental coverage is included."
@@ -78,6 +83,9 @@ export default function PersonalProjectDetailPage() {
   const cardBg = darkMode ? "#2a2a2a" : "#fff";
   const cardBorder = darkMode ? "1px solid #444" : "1px solid #e3f0ff";
   const liveDemoUrl = project.liveDemo;
+  const liveDemoLabel = project.liveDemoLabel || "Open Live App";
+  const embedUrl = project.embedUrl || liveDemoUrl;
+  const showEmbed = Boolean(embedUrl) && !project.hideEmbed;
 
   return (
     <Box
@@ -136,7 +144,7 @@ export default function PersonalProjectDetailPage() {
                 variant="outlined"
                 sx={{ textTransform: "none", fontWeight: 600 }}
               >
-                Open Live App
+                {liveDemoLabel}
               </Button>
             )}
             <Chip
@@ -204,6 +212,92 @@ export default function PersonalProjectDetailPage() {
                 </Box>
               ))}
             </Paper>
+          </>
+        )}
+
+        {project.datasetStory && (
+          <>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+              Dataset Upgrade Path
+            </Typography>
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 2, mb: 5 }}>
+              <Paper elevation={2} sx={{ p: 2.5, borderRadius: 3, background: cardBg, border: cardBorder }}>
+                <Typography variant="caption" sx={{ color: accent, fontWeight: 700, letterSpacing: 0.2 }}>
+                  Current Dataset
+                </Typography>
+                <Typography variant="subtitle1" sx={{ mt: 0.6, fontWeight: 800, color: darkMode ? "#f1f5f9" : "#0f172a" }}>
+                  {project.datasetStory.current.name}
+                </Typography>
+                <Typography variant="body2" sx={{ mt: 0.8, color: darkMode ? "#cbd5e1" : "#475569", lineHeight: 1.55 }}>
+                  {project.datasetStory.current.why}
+                </Typography>
+                {project.datasetStory.current.url && (
+                  <Button
+                    href={project.datasetStory.current.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="small"
+                    sx={{ mt: 1.4, textTransform: "none", fontWeight: 700 }}
+                  >
+                    View Source
+                  </Button>
+                )}
+              </Paper>
+              <Paper elevation={2} sx={{ p: 2.5, borderRadius: 3, background: cardBg, border: cardBorder }}>
+                <Typography variant="caption" sx={{ color: accent, fontWeight: 700, letterSpacing: 0.2 }}>
+                  Next Dataset Challenge
+                </Typography>
+                <Typography variant="subtitle1" sx={{ mt: 0.6, fontWeight: 800, color: darkMode ? "#f1f5f9" : "#0f172a" }}>
+                  {project.datasetStory.next.name}
+                </Typography>
+                <Typography variant="body2" sx={{ mt: 0.8, color: darkMode ? "#cbd5e1" : "#475569", lineHeight: 1.55 }}>
+                  {project.datasetStory.next.why}
+                </Typography>
+                {project.datasetStory.next.url && (
+                  <Button
+                    href={project.datasetStory.next.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    size="small"
+                    sx={{ mt: 1.4, textTransform: "none", fontWeight: 700 }}
+                  >
+                    View Source
+                  </Button>
+                )}
+              </Paper>
+            </Box>
+          </>
+        )}
+
+        {project.outcomeCards && (
+          <>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+              Outcome Snapshot
+            </Typography>
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "repeat(3, 1fr)" }, gap: 2, mb: 5 }}>
+              {project.outcomeCards.map((card) => (
+                <Paper
+                  key={card.title}
+                  elevation={2}
+                  sx={{
+                    p: 2.2,
+                    borderRadius: 3,
+                    background: cardBg,
+                    border: cardBorder,
+                  }}
+                >
+                  <Typography variant="caption" sx={{ color: accent, fontWeight: 700, letterSpacing: 0.2 }}>
+                    {card.title}
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ mt: 0.6, fontWeight: 800, color: darkMode ? "#f1f5f9" : "#0f172a" }}>
+                    {card.value}
+                  </Typography>
+                  <Typography variant="body2" sx={{ mt: 0.8, color: darkMode ? "#cbd5e1" : "#475569", lineHeight: 1.55 }}>
+                    {card.detail}
+                  </Typography>
+                </Paper>
+              ))}
+            </Box>
           </>
         )}
 
@@ -287,6 +381,152 @@ export default function PersonalProjectDetailPage() {
           </>
         )}
 
+        {project.apiEndpoints && (
+          <>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+              Live API Surface
+            </Typography>
+            <Paper elevation={2} sx={{ p: 3, borderRadius: 3, background: cardBg, border: cardBorder, mb: 5 }}>
+              <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#475569", mb: 2, lineHeight: 1.6 }}>
+                This project is a deployed inference API rather than a Streamlit dashboard, so the most useful on-page preview is the endpoint surface and sample request shape.
+              </Typography>
+              {project.apiEndpoints.map((item) => (
+                <Box key={item.path} sx={{ display: "flex", alignItems: "flex-start", gap: 1.5, mb: 1.2 }}>
+                  <Typography variant="body2" sx={{ color: accent, fontWeight: 700, minWidth: 64 }}>
+                    {item.path}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: darkMode ? "#ccc" : "#444", lineHeight: 1.6 }}>
+                    {item.description}
+                  </Typography>
+                </Box>
+              ))}
+              {project.samplePayload && (
+                <Box
+                  component="pre"
+                  sx={{
+                    mt: 2.5,
+                    mb: 0,
+                    p: 2,
+                    overflowX: "auto",
+                    borderRadius: 2,
+                    fontSize: 13,
+                    lineHeight: 1.6,
+                    bgcolor: darkMode ? "rgba(15,23,42,0.72)" : "rgba(248,250,252,0.96)",
+                    color: darkMode ? "#e2e8f0" : "#1e293b",
+                    border: darkMode ? "1px solid #334155" : "1px solid #dbeafe",
+                  }}
+                >
+                  {JSON.stringify(project.samplePayload, null, 2)}
+                </Box>
+              )}
+            </Paper>
+          </>
+        )}
+
+        {project.predictEndpoint && project.samplePayload && (
+          <>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+              Live Prediction Demo
+            </Typography>
+            <Paper elevation={2} sx={{ p: 3, borderRadius: 3, background: cardBg, border: cardBorder, mb: 5 }}>
+              <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#475569", mb: 3, lineHeight: 1.6 }}>
+                Adjust the feature values below and click <strong>Run Prediction</strong> to call the live inference API and see a real-time churn prediction.
+              </Typography>
+              <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" }, gap: 2, mb: 3 }}>
+                {Object.keys(project.samplePayload).map((key) => (
+                  <TextField
+                    key={key}
+                    label={key.replace(/_/g, " ")}
+                    type="number"
+                    size="small"
+                    value={predInputs[key] ?? ""}
+                    onChange={(e) => setPredInputs((prev) => ({ ...prev, [key]: e.target.value === "" ? "" : Number(e.target.value) }))}
+                    inputProps={{ step: key === "discount_ratio" ? 0.01 : 1 }}
+                    sx={{
+                      "& .MuiInputBase-root": { bgcolor: darkMode ? "rgba(15,23,42,0.5)" : "#f8fafc" },
+                      "& .MuiInputLabel-root": { textTransform: "capitalize" },
+                    }}
+                  />
+                ))}
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2, flexWrap: "wrap" }}>
+                <Button
+                  variant="contained"
+                  disabled={predLoading}
+                  sx={{ textTransform: "none", fontWeight: 700 }}
+                  onClick={async () => {
+                    setPredLoading(true);
+                    setPredResult(null);
+                    setPredError(null);
+                    try {
+                      const apiBaseUrl = project.apiBaseUrl || project.liveDemo;
+                      const res = await fetch(`${apiBaseUrl}${project.predictEndpoint}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(predInputs),
+                      });
+                      const data = await res.json();
+                      if (!res.ok) {
+                        const detail = Array.isArray(data?.detail)
+                          ? data.detail.map((item) => item.msg).join("; ")
+                          : data?.detail || `HTTP ${res.status}`;
+                        throw new Error(detail);
+                      }
+                      setPredResult(data);
+                    } catch (err) {
+                      setPredError(err?.message || "Prediction request failed.");
+                    } finally {
+                      setPredLoading(false);
+                    }
+                  }}
+                >
+                  {predLoading ? "Running…" : "Run Prediction"}
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  sx={{ textTransform: "none" }}
+                  onClick={() => { setPredInputs({ ...project.samplePayload }); setPredResult(null); setPredError(null); }}
+                >
+                  Reset to Sample
+                </Button>
+              </Box>
+              {predError && (
+                <Typography variant="body2" sx={{ mt: 2, color: "#ef4444", fontWeight: 600 }}>
+                  Error: {predError}
+                </Typography>
+              )}
+              {predResult && (
+                <Box sx={{ mt: 3 }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 2, flexWrap: "wrap", mb: 2 }}>
+                    <Chip
+                      label={predResult.prediction === 1 || predResult.prediction === true ? "Churn: Yes" : "Churn: No"}
+                      color={predResult.prediction === 1 || predResult.prediction === true ? "error" : "success"}
+                      sx={{ fontWeight: 700, fontSize: 14, px: 1 }}
+                    />
+                    {predResult.probability !== undefined && (
+                      <Typography variant="body2" sx={{ color: darkMode ? "#94a3b8" : "#64748b" }}>
+                        Confidence: <strong>{(predResult.probability * 100).toFixed(1)}%</strong>
+                      </Typography>
+                    )}
+                  </Box>
+                  <Box
+                    component="pre"
+                    sx={{
+                      p: 2, borderRadius: 2, overflowX: "auto", fontSize: 13, lineHeight: 1.6, m: 0,
+                      bgcolor: darkMode ? "rgba(15,23,42,0.72)" : "rgba(248,250,252,0.96)",
+                      color: darkMode ? "#e2e8f0" : "#1e293b",
+                      border: darkMode ? "1px solid #334155" : "1px solid #dbeafe",
+                    }}
+                  >
+                    {JSON.stringify(predResult, null, 2)}
+                  </Box>
+                </Box>
+              )}
+            </Paper>
+          </>
+        )}
+
         {isAgenticCopilotProject && (
           <>
             <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
@@ -356,23 +596,16 @@ export default function PersonalProjectDetailPage() {
           </>
         )}
 
-        {liveDemoUrl && (
+        {showEmbed && (
           <>
             <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
               Live Dashboard
             </Typography>
             <Paper elevation={2} sx={{ p: 1.5, borderRadius: 3, background: cardBg, border: cardBorder, mb: 5 }}>
-              <Box
-                component="iframe"
+              <EmbeddedAppFrame
                 title={`${project.title} Live Dashboard`}
-                src={`${liveDemoUrl}${liveDemoUrl.includes("?") ? "&" : "?"}embed=true`}
-                sx={{
-                  width: "100%",
-                  height: { xs: 500, md: 700 },
-                  border: 0,
-                  borderRadius: 2,
-                  background: darkMode ? "#111" : "#fff",
-                }}
+                src={`${embedUrl}${embedUrl.includes("?") ? "&" : "?"}embed=true`}
+                darkMode={darkMode}
               />
             </Paper>
           </>

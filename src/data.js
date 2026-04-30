@@ -460,6 +460,18 @@ export const personalProjects = [
     category: "data-science",
     github: "https://github.com/HaveACigar/arie_react_portfolio_website",
     route: "/personal-projects/rag-ops-platform",
+    datasetStory: {
+      current: {
+        name: "NYC 311 + SEC CompanyFacts + Chicago Crime Public Data",
+        why: "Multi-source retrieval with different schemas and semantics demonstrates realistic grounding and routing complexity.",
+        url: "https://catalog.data.gov/dataset/311-service-requests-from-2010-to-present",
+      },
+      next: {
+        name: "USASpending Contract + Grant Awards with Agency Metadata",
+        why: "Adds denormalized procurement and funding tables that are harder to join, summarize, and cite reliably across domains.",
+        url: "https://www.usaspending.gov/download_center/award_data_archive",
+      },
+    },
     highlights: [
       "Source-aware routing shows leadership exactly which data domain drove each answer, making governance and audit conversations concrete instead of theoretical.",
       "Evaluation scorecards expose where grounded-answer quality drops by source, so roadmap investment can be prioritized by business risk rather than anecdotal feedback.",
@@ -491,6 +503,18 @@ export const personalProjects = [
     liveDemo: "https://eda-visualization-dashboard-v7z4vnunqa-uc.a.run.app",
     // Route within the portfolio website for the detailed project page
     route: "/personal-projects/eda-visualization-dashboard",
+    datasetStory: {
+      current: {
+        name: "World Bank Health and Economic Indicators",
+        why: "Global indicator coverage and missingness patterns create realistic cleaning, harmonization, and comparability challenges.",
+        url: "https://data.worldbank.org",
+      },
+      next: {
+        name: "WHO Global Health Observatory + World Bank WDI Merge",
+        why: "Cross-source entity reconciliation and indicator-definition mismatches raise the wrangling complexity materially.",
+        url: "https://www.who.int/data/gho",
+      },
+    },
     highlights: [
       "Cross-country benchmarking shows outcome gaps are concentrated in a small set of income-tier and infrastructure combinations, helping stakeholders target interventions instead of spreading budgets evenly.",
       "Trend decomposition reveals multiple regions with GDP growth but weaker health-outcome movement, signaling execution and policy-delivery gaps rather than pure funding gaps.",
@@ -530,6 +554,18 @@ export const personalProjects = [
     github: "https://github.com/HaveACigar/arie_react_portfolio_website/tree/main/projects/snowflake_finance_ai_command_center",
     liveDemo: "https://snowflake-finance-ai-command-center-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/snowflake-finance-ai-command-center",
+    datasetStory: {
+      current: {
+        name: "Synthetic Subscription Finance Event Data",
+        why: "Purpose-built event generation supports end-to-end KPI marts, variance bridges, and risk scoring in a controlled setting.",
+        url: "https://github.com/HaveACigar/arie_react_portfolio_website/tree/main/projects/snowflake_finance_ai_command_center",
+      },
+      next: {
+        name: "SEC XBRL CompanyFacts + Macroeconomic Rate Series",
+        why: "Combining public filings with macro drivers enables harder normalization and scenario modeling for finance storytelling.",
+        url: "https://www.sec.gov/edgar/sec-api-documentation",
+      },
+    },
     architectureFlow: [
       {
         stage: "Bronze",
@@ -590,6 +626,18 @@ export const personalProjects = [
     category: "data-science",
     github: "https://github.com/HaveACigar/arie_react_portfolio_website",
     route: "/personal-projects/agentic-claims-communication-copilot",
+    datasetStory: {
+      current: {
+        name: "Synthetic Claims-Style Conversation and Workflow Logs",
+        why: "Controlled scenarios make it easier to benchmark triage, drafting quality, and escalation logic across known cases.",
+        url: "https://github.com/HaveACigar/arie_react_portfolio_website",
+      },
+      next: {
+        name: "CMS Medicare Claims Public Use Files",
+        why: "High-volume, high-dimensional healthcare claims data introduces serious coding, quality, and interpretation complexity.",
+        url: "https://www.cms.gov/data-research/statistics-trends-and-reports/medicare-fee-service-public-use-files",
+      },
+    },
     architectureFlow: [
       {
         stage: "Intake",
@@ -645,6 +693,18 @@ export const personalProjects = [
     github: "https://github.com/HaveACigar/supervised-ml-pipeline",
     liveDemo: "https://supervised-ml-pipeline-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/supervised-ml-pipeline",
+    datasetStory: {
+      current: {
+        name: "IBM Telco Customer Churn",
+        why: "A clean benchmark dataset that is effective for demonstrating robust pipeline design, model comparison, and explainability.",
+        url: "https://www.kaggle.com/datasets/blastchar/telco-customer-churn",
+      },
+      next: {
+        name: "KKBox Churn Prediction Challenge",
+        why: "Much larger, noisier subscription behavior data with temporal leakage risk and stronger class-imbalance dynamics.",
+        url: "https://www.kaggle.com/competitions/kkbox-churn-prediction-challenge/data",
+      },
+    },
     highlights: [
       "Risk segmentation shows churn is concentrated in low-tenure customers with repeated support interaction, giving retention teams a concrete intervention cohort.",
       "Explainability outputs show engagement and service-friction signals dominate demographics, helping leadership prioritize product and service actions over broad discounting.",
@@ -676,6 +736,18 @@ export const personalProjects = [
     github: "https://github.com/HaveACigar/nlp-text-analytics",
     liveDemo: "https://nlp-text-analytics-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/nlp-text-analytics",
+    datasetStory: {
+      current: {
+        name: "Rotten Tomatoes Critic Reviews",
+        why: "Balanced sentiment and rich review text are useful for demonstrating end-to-end cleaning, topic modeling, and semantic retrieval.",
+        url: "https://www.kaggle.com/datasets/stefanoleone992/rotten-tomatoes-movies-and-critic-reviews-dataset",
+      },
+      next: {
+        name: "Financial PhraseBank + SEC 10-K Risk Factors",
+        why: "Domain-specific financial language is harder to classify and summarize, creating a more realistic enterprise NLP challenge.",
+        url: "https://huggingface.co/datasets/financial_phrasebank",
+      },
+    },
     highlights: [
       "Topic modeling separates criticism themes into distinct operational buckets (for example, writing quality vs execution quality), enabling clearer ownership for action planning.",
       "Sentiment and confidence views expose where public perception is most polarized, helping stakeholders distinguish niche backlash from broad-market risk.",
@@ -706,6 +778,18 @@ export const personalProjects = [
     github: "https://github.com/HaveACigar/deep-learning-image-classifier",
     liveDemo: "https://deep-learning-image-classifier-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/deep-learning-image-classifier",
+    datasetStory: {
+      current: {
+        name: "CIFAR-10",
+        why: "A standardized computer-vision benchmark ideal for transfer-learning walkthroughs and confusion-matrix diagnostics.",
+        url: "https://www.cs.toronto.edu/~kriz/cifar.html",
+      },
+      next: {
+        name: "Open Images V7 Subset",
+        why: "Larger and noisier real-world imagery introduces label noise, long-tail classes, and more challenging deployment behavior.",
+        url: "https://storage.googleapis.com/openimages/web/index.html",
+      },
+    },
     highlights: [
       "Confusion-matrix diagnostics reveal which visually similar classes create most misclassification cost, guiding targeted data-collection strategy.",
       "Top-5 probability spread highlights low-confidence predictions suitable for human review, improving trust and risk control in operational use.",
@@ -735,6 +819,18 @@ export const personalProjects = [
     github: "https://github.com/HaveACigar/time-series-forecasting",
     liveDemo: "https://time-series-forecasting-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/time-series-forecasting",
+    datasetStory: {
+      current: {
+        name: "Atmospheric CO2 Time Series",
+        why: "Clear trend and seasonality make it strong for teaching walk-forward evaluation and model benchmarking.",
+        url: "https://gml.noaa.gov/ccgg/trends/",
+      },
+      next: {
+        name: "M5 Retail Demand Forecasting",
+        why: "Hierarchical product-store demand data is much harder to model and better reflects real forecasting operations.",
+        url: "https://www.kaggle.com/competitions/m5-forecasting-accuracy/data",
+      },
+    },
     highlights: [
       "Backtesting shows where simple seasonal baselines remain competitive, helping leadership avoid unnecessary model complexity when business conditions are stable.",
       "Error spikes align with regime-shift windows, signaling when retraining or scenario overrides are operationally necessary.",
@@ -764,6 +860,18 @@ export const personalProjects = [
     github: "https://github.com/HaveACigar/recommendation-system",
     liveDemo: "https://recommendation-system-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/recommendation-system",
+    datasetStory: {
+      current: {
+        name: "MovieLens Latest-Small",
+        why: "A classic, interpretable recommendation benchmark for popularity, content, and collaborative pipelines.",
+        url: "https://grouplens.org/datasets/movielens/",
+      },
+      next: {
+        name: "H and M Personalized Fashion Recommendations",
+        why: "Massive sparse interaction data with catalog dynamics is significantly harder and closer to production retail recommenders.",
+        url: "https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/data",
+      },
+    },
     highlights: [
       "Bayesian ranking prevents sparse-rating titles from distorting leaderboard decisions, creating a more defensible top-content strategy.",
       "Collaborative recommendations improve personalization depth but expose cold-start catalog risk, clarifying where editorial fallback logic is required.",
@@ -793,6 +901,18 @@ export const personalProjects = [
     github: "https://github.com/HaveACigar/ab-testing-statistical-inference",
     liveDemo: "https://ab-testing-statistical-inference-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/ab-testing-statistical-inference",
+    datasetStory: {
+      current: {
+        name: "Direct Marketing Campaign Response Data",
+        why: "Customer-level binary outcomes are well-suited for lift estimation, power checks, and segmented treatment effects.",
+        url: "https://archive.ics.uci.edu/dataset/222/bank+marketing",
+      },
+      next: {
+        name: "Olist E-commerce with Synthetic Treatment Assignment",
+        why: "Combining transaction data with treatment simulation enables harder experiment design and heterogeneous effect analysis.",
+        url: "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+      },
+    },
     highlights: [
       "Lift dashboards separate statistical significance from business significance, preventing rollouts that are mathematically significant but financially weak.",
       "Power curves show how under-sized tests can create false confidence, giving product and finance teams a clear readiness gate before launch decisions.",
@@ -822,6 +942,18 @@ export const personalProjects = [
     github: "https://github.com/HaveACigar/sql-data-engineering-pipeline",
     liveDemo: "https://sql-data-engineering-pipeline-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/sql-data-engineering-pipeline",
+    datasetStory: {
+      current: {
+        name: "Olist Brazilian E-commerce",
+        why: "Relational order, customer, and product entities are ideal for warehouse layering and data-quality controls.",
+        url: "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+      },
+      next: {
+        name: "NYC TLC Trips + NOAA Weather + Holiday Calendar",
+        why: "A multi-source join problem with temporal alignment challenges that better simulates enterprise analytics engineering.",
+        url: "https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page",
+      },
+    },
     highlights: [
       "Data-quality remediation materially shifts KPI baselines, demonstrating how governance decisions directly affect executive reporting outcomes.",
       "Mart-level revenue and customer views identify which cohorts drive volatility, improving where leadership focuses pricing and retention levers.",
@@ -885,6 +1017,18 @@ export const personalProjects = [
       },
     ],
     route: "/personal-projects/ml-model-deployment",
+    datasetStory: {
+      current: {
+        name: "UCI Adult Income",
+        why: "A stable tabular benchmark for demonstrating model serving, schema validation, and lightweight drift checks.",
+        url: "https://archive.ics.uci.edu/dataset/2/adult",
+      },
+      next: {
+        name: "LendingClub Loan Performance",
+        why: "Higher dimensionality, temporal drift, and real risk outcomes make production monitoring and thresholding materially harder.",
+        url: "https://www.kaggle.com/datasets/wordsforthewise/lending-club",
+      },
+    },
     highlights: [
       "Drift-monitoring views provide early warning when live input behavior diverges from training assumptions, enabling action before model quality degrades.",
       "Batch scoring exposes concentrated high-risk segments, helping operations prioritize interventions where impact is highest.",
@@ -913,6 +1057,18 @@ export const personalProjects = [
     github: "https://github.com/HaveACigar/big-data-cloud-analytics",
     liveDemo: "https://big-data-cloud-analytics-v7z4vnunqa-uc.a.run.app",
     route: "/personal-projects/big-data-cloud-analytics",
+    datasetStory: {
+      current: {
+        name: "NYC Taxi Trip Records",
+        why: "High-volume geotemporal events are strong for partitioned storage, KPI marts, and scalable dashboard queries.",
+        url: "https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page",
+      },
+      next: {
+        name: "Chicago TNP Trips + ACS Census Enrichment",
+        why: "Combining mobility events with socioeconomic context introduces difficult geospatial joins and richer stakeholder narratives.",
+        url: "https://data.cityofchicago.org/Transportation/Transportation-Network-Providers-Trips/m6dm-c72p",
+      },
+    },
     highlights: [
       "Geo-temporal demand concentration analysis shows a small set of zones and hours drive disproportionate trip volume, informing capacity and pricing strategy.",
       "Trip-value and distance mix trends reveal where operational load is growing faster than unit economics, highlighting margin pressure risks.",

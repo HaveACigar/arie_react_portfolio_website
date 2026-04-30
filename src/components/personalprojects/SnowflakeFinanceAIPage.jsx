@@ -13,6 +13,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { ThemeContext } from "../../context";
 import { personalProjects } from "../../data";
+import EmbeddedAppFrame from "./EmbeddedAppFrame";
 import "./personalProjects.scss";
 
 const STAGES = [
@@ -138,17 +139,11 @@ export default function SnowflakeFinanceAIPage() {
         </Typography>
         <Paper elevation={2} sx={{ p: 2, borderRadius: 3, background: cardBg, border: cardBorder, mb: 5 }}>
           {liveDemoUrl ? (
-            <Box
-              component="iframe"
+            <EmbeddedAppFrame
               title="Snowflake Finance AI Command Center Live App"
               src={`${liveDemoUrl}${liveDemoUrl.includes("?") ? "&" : "?"}embed=true`}
-              sx={{
-                width: "100%",
-                height: { xs: 560, md: 760 },
-                border: 0,
-                borderRadius: 2,
-                background: darkMode ? "#111" : "#fff",
-              }}
+              darkMode={darkMode}
+              height={{ xs: 560, md: 760 }}
             />
           ) : (
             <Typography variant="body2" sx={{ color: darkMode ? "#cbd5e1" : "#475569", lineHeight: 1.7 }}>
@@ -228,6 +223,44 @@ export default function SnowflakeFinanceAIPage() {
             </Box>
           ))}
         </Paper>
+
+        {project.datasetStory && (
+          <>
+            <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
+              Dataset Upgrade Path
+            </Typography>
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" }, gap: 2, mb: 5 }}>
+              <Paper elevation={2} sx={{ p: 2.5, borderRadius: 3, background: cardBg, border: cardBorder }}>
+                <Typography variant="caption" sx={{ color: accent, fontWeight: 700, letterSpacing: 0.2 }}>
+                  Current Dataset
+                </Typography>
+                <Typography variant="subtitle1" sx={{ mt: 0.6, fontWeight: 800, color: darkMode ? "#f1f5f9" : "#0f172a" }}>
+                  {project.datasetStory.current.name}
+                </Typography>
+                <Typography variant="body2" sx={{ mt: 0.8, color: darkMode ? "#cbd5e1" : "#475569", lineHeight: 1.55 }}>
+                  {project.datasetStory.current.why}
+                </Typography>
+                <Button href={project.datasetStory.current.url} target="_blank" rel="noopener noreferrer" size="small" sx={{ mt: 1.4, textTransform: "none", fontWeight: 700 }}>
+                  View Source
+                </Button>
+              </Paper>
+              <Paper elevation={2} sx={{ p: 2.5, borderRadius: 3, background: cardBg, border: cardBorder }}>
+                <Typography variant="caption" sx={{ color: accent, fontWeight: 700, letterSpacing: 0.2 }}>
+                  Next Dataset Challenge
+                </Typography>
+                <Typography variant="subtitle1" sx={{ mt: 0.6, fontWeight: 800, color: darkMode ? "#f1f5f9" : "#0f172a" }}>
+                  {project.datasetStory.next.name}
+                </Typography>
+                <Typography variant="body2" sx={{ mt: 0.8, color: darkMode ? "#cbd5e1" : "#475569", lineHeight: 1.55 }}>
+                  {project.datasetStory.next.why}
+                </Typography>
+                <Button href={project.datasetStory.next.url} target="_blank" rel="noopener noreferrer" size="small" sx={{ mt: 1.4, textTransform: "none", fontWeight: 700 }}>
+                  View Source
+                </Button>
+              </Paper>
+            </Box>
+          </>
+        )}
 
         <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
           Tech Stack
