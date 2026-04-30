@@ -17,10 +17,10 @@ export default function Intro() {
       backDelay: 1500,
       backSpeed: 60,
       strings: [
-        "Senior Data Analyst",
-        "Applied ML Scientist",
+        "Intermediate Data Analyst",
+        "ML Practitioner",
         "Full Stack Engineer",
-        "AI Systems Builder",
+        "Problem Solver",
       ],
     });
   }, []);
