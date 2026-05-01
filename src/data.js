@@ -625,16 +625,16 @@ export const personalProjects = [
     title: "Supervised ML: Churn Prediction Pipeline",
     subtitle: "End-to-End Classification — sklearn Pipelines, XGBoost & SHAP Explainability",
     description:
-      "End-to-end supervised ML project on the Bank Customer Attrition dataset (10,127 customers, " +
-      "19 features after cleaning). Demonstrates a complete production-quality workflow: raw data " +
-      "cleaning (dropping a leaked ID column, two pre-calculated Naive Bayes columns, and encoding " +
-      "the attrition flag to binary), sklearn ColumnTransformer preprocessing pipelines, 5-fold " +
+      "End-to-end supervised ML project on a large UCI bank campaign dataset (45,211 contacts, " +
+      "16 core features). Demonstrates a complete production-quality workflow: raw data " +
+      "cleaning (decoding anonymized V1-V16 fields into business-readable labels and encoding " +
+      "the campaign response target to binary churn risk), sklearn ColumnTransformer preprocessing pipelines, 5-fold " +
       "stratified cross-validation across 4 models, SHAP TreeExplainer for feature explainability, " +
       "and a live interactive Streamlit dashboard with ROC curves, confusion matrices, and a " +
       "real-time churn probability predictor.",
     tech: [
       "Python", "Scikit-learn", "XGBoost", "SHAP", "Pandas",
-      "Plotly", "Streamlit", "Docker", "GCP Cloud Run", "GitHub Actions",
+      "Plotly", "Streamlit", "Excel VBA", "Docker", "GCP Cloud Run", "GitHub Actions",
     ],
     skillsShowcased: [
       "Supervised ML (Classification)",
@@ -649,6 +649,7 @@ export const personalProjects = [
     route: "/personal-projects/supervised-ml-pipeline",
     highlights: [
       "Risk segmentation shows churn is concentrated in low-tenure customers with repeated support interaction, giving retention teams a concrete intervention cohort.",
+      "Built a VBA-assisted executive workbook that mirrors model scoring outputs into planning-ready retention scenarios, so business users can test intervention policies without opening Python notebooks.",
       "Explainability outputs show engagement and service-friction signals dominate demographics, helping leadership prioritize product and service actions over broad discounting.",
       "Threshold analysis in the app clarifies the precision-recall tradeoff, enabling executives to set intervention policy based on budget and capacity constraints.",
     ],
