@@ -24,6 +24,7 @@ import CloudOffIcon from "@mui/icons-material/CloudOff";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { ThemeContext } from "../../context";
 import { personalProjects } from "../../data";
+import StorytellingGuide from "./StorytellingGuide";
 import "./personalProjects.scss";
 
 const RAG_API_BASE_URL = process.env.REACT_APP_RAG_OPS_API_URL?.trim() || "";
@@ -670,6 +671,15 @@ export default function RagOpsPlatformPage() {
             </Box>
           ))}
         </Paper>
+
+        <StorytellingGuide
+          insights={project.highlights}
+          darkMode={darkMode}
+          accent={accent}
+          cardBg={cardBg}
+          cardBorder={cardBorder}
+          sectionTitle="How To Read These Insights"
+        />
 
       </Box>
     </Box>

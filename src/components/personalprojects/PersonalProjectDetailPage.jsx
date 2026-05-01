@@ -10,6 +10,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import { ThemeContext } from "../../context";
 import { personalProjects } from "../../data";
 import EmbeddedAppFrame from "./EmbeddedAppFrame";
+import StorytellingGuide from "./StorytellingGuide";
 import "./personalProjects.scss";
 
 export default function PersonalProjectDetailPage() {
@@ -212,6 +213,15 @@ export default function PersonalProjectDetailPage() {
                 </Box>
               ))}
             </Paper>
+
+            <StorytellingGuide
+              insights={project.highlights}
+              darkMode={darkMode}
+              accent={accent}
+              cardBg={cardBg}
+              cardBorder={cardBorder}
+              sectionTitle="How To Read These Insights"
+            />
           </>
         )}
 

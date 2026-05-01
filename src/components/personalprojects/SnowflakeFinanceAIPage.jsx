@@ -14,6 +14,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { ThemeContext } from "../../context";
 import { personalProjects } from "../../data";
 import EmbeddedAppFrame from "./EmbeddedAppFrame";
+import StorytellingGuide from "./StorytellingGuide";
 import "./personalProjects.scss";
 
 const STAGES = [
@@ -223,6 +224,15 @@ export default function SnowflakeFinanceAIPage() {
             </Box>
           ))}
         </Paper>
+
+        <StorytellingGuide
+          insights={project.highlights}
+          darkMode={darkMode}
+          accent={accent}
+          cardBg={cardBg}
+          cardBorder={cardBorder}
+          sectionTitle="How To Read These Insights"
+        />
 
         <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
           Tech Stack

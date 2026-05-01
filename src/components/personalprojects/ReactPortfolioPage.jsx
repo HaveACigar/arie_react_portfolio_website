@@ -11,6 +11,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MapIcon from "@mui/icons-material/Map";
 import { ThemeContext } from "../../context";
 import { personalProjects } from "../../data";
+import StorytellingGuide from "./StorytellingGuide";
 import "./personalProjects.scss";
 
 /**
@@ -155,6 +156,15 @@ export default function ReactPortfolioPage() {
             </Box>
           ))}
         </Paper>
+
+        <StorytellingGuide
+          insights={project.highlights}
+          darkMode={darkMode}
+          accent={accent}
+          cardBg={cardBg}
+          cardBorder={cardBorder}
+          sectionTitle="How To Read These Highlights"
+        />
 
         {/* Page Makeup / Site Map */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>

@@ -10,6 +10,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { ThemeContext } from "../../context";
 import { personalProjects } from "../../data";
 import EmbeddedAppFrame from "./EmbeddedAppFrame";
+import StorytellingGuide from "./StorytellingGuide";
 import "./personalProjects.scss";
 
 /**
@@ -168,6 +169,15 @@ export default function ChurnPredictionPage() {
             </Box>
           ))}
         </Paper>
+
+        <StorytellingGuide
+          insights={project.highlights}
+          darkMode={darkMode}
+          accent={accent}
+          cardBg={cardBg}
+          cardBorder={cardBorder}
+          sectionTitle="How To Read These Insights"
+        />
 
         {/* ── Preprocessing Pipeline ── */}
         <Typography variant="h5" sx={{ fontWeight: 700, color: accent, mb: 2 }}>
