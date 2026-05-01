@@ -4,6 +4,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 import { ThemeContext } from "../../context";
+import EmbeddedAppFrame from "./EmbeddedAppFrame";
 
 const FITNESS_LOG_URL = "https://arieai-chat-log--fitness-app-4a84c.us-central1.hosted.app/";
 
@@ -59,17 +60,17 @@ export default function FitnessLogRoutePage() {
           maxWidth: 1200,
           mx: "auto",
           borderRadius: 4,
-          overflow: "hidden",
           border: darkMode ? "1px solid rgba(148,163,184,0.24)" : "1px solid rgba(148,163,184,0.22)",
           bgcolor: darkMode ? "rgba(15,23,42,0.68)" : "#fff",
           boxShadow: darkMode ? "0 18px 34px rgba(2,6,23,0.42)" : "0 14px 30px rgba(15,23,42,0.14)",
+          p: 1,
         }}
       >
-        <iframe
+        <EmbeddedAppFrame
           title="Fitness Log"
           src={FITNESS_LOG_URL}
-          style={{ width: "100%", height: "78vh", border: "none", display: "block", background: "transparent" }}
-          loading="lazy"
+          darkMode={darkMode}
+          height={{ xs: "70vh", md: "78vh" }}
         />
       </Box>
     </Box>
