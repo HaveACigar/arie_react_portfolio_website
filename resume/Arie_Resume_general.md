@@ -5,7 +5,7 @@
 Data and analytics professional with a Master's specialization in Data Science and 5+ years of experience building AI-assisted analytics workflows, Python/SQL pipelines, and production applications for business stakeholders. Experienced in converting complex KPI questions into automated tooling and executive-ready insights.
 
 ## SKILLS
-**Programming:** Python (NumPy, Pandas, Plotly), SQL, R, JavaScript, VBA (Excel Automation)
+**Programming:** Python (NumPy, Pandas, Plotly), SQL, R, JavaScript
 **SQL & Analytics Engineering:** CTEs, Window Functions, Incremental Pipeline Patterns, KPI Reporting Models
 **AI Workflow Development:** AI-Assisted Dev, Prompt Engineering, Workflow Automation, LLM Eval
 **AI & Machine Learning:** Scikit-learn, TensorFlow, Deep Learning, NLP, Generative AI, A/B Testing, DOE
@@ -23,8 +23,8 @@ Data and analytics professional with a Master's specialization in Data Science a
 - Led the implementation of A/B testing and Design of Experiments (DOE) methodologies for key product features, providing strategic, data-driven recommendations to senior business and finance-adjacent partners.
 
 **Software Engineer — Loyalty Team, Rewards Platform** | **Ford Motor Company, USA** | Sep 2019 – Jul 2023
-- Engineered RESTful APIs for FordPass & LincolnWay, handling 20M+ monthly requests with 99.999% uptime.
-- Optimized streaming data pipelines using Apache Kafka for high-volume, real-time data services.
+- Engineered RESTful APIs for Ford Pass & LincolnWay, managing 20M+ monthly requests with 99.999% uptime.
+- Developed real-time monitoring and alerting that successfully identified error spikes for a specific endpoint; collaborated with the engineering team to diagnose the root cause, resulting in a rapid resolution and stabilized system performance.
 - Built robust CI/CD pipelines in Jenkins to accelerate feature deployment and ensure high-quality production code.
 
 ## EDUCATION
@@ -39,7 +39,7 @@ Data and analytics professional with a Master's specialization in Data Science a
 
 **Supervised ML: Churn Prediction Pipeline**
 - Risk segmentation shows churn is concentrated in low-tenure customers with repeated support interaction, giving retention teams a concrete intervention cohort.
-- Built a VBA-assisted executive workbook that mirrors model scoring outputs into planning-ready retention scenarios, so business users can test intervention policies...
+- Explainability outputs show engagement and service-friction signals dominate demographics, helping leadership prioritize product and service actions over broad discounting.
 - Tech: Python, Scikit-learn, XGBoost, SHAP, Pandas, Plotly, Streamlit
 
 **Agentic Claims Communication Copilot**

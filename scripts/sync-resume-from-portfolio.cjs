@@ -7,7 +7,6 @@ const { execSync } = require("child_process");
 const repoRoot = path.resolve(__dirname, "..");
 const dataPath = path.join(repoRoot, "src", "data.js");
 const resumeMdPath = path.join(repoRoot, "resume", "Arie_Resume_general.md");
-const resumePdfPath = path.join(repoRoot, "public", "Arie_Resume_general.pdf");
 
 const STOP_WORDS = new Set([
   "the", "and", "for", "with", "from", "that", "this", "your", "their", "into", "across", "through",
@@ -21,6 +20,7 @@ const TECH_SIGNAL_WORDS = [
   "evaluation", "monitoring", "mlops", "deep learning", "scikit", "xgboost", "vector", "embeddings",
   "window functions", "pipeline", "data model", "docker", "cloud run", "ci/cd", "kafka", "terraform",
   "bigquery", "snowflake", "plotly", "pandas", "numpy", "governance", "reliability", "observability",
+  "vba", "excel", "macro", "power query", "power pivot",
 ];
 
 function parsePortfolioData(filePath) {
@@ -193,30 +193,14 @@ function syncResumeMarkdown() {
   return topProjects;
 }
 
-function regeneratePdf() {
-  try {
-    execSync(`pandoc "${resumeMdPath}" -o "${resumePdfPath}"`, { stdio: "ignore" });
-    return true;
-  } catch (_error) {
-    return false;
-  }
-}
-
 function main() {
   const topProjects = syncResumeMarkdown();
-  const pdfOk = regeneratePdf();
 
   console.log("Synced resume PROJECTS section from portfolio data.");
   console.log("Top projects selected:");
   topProjects.forEach((project, idx) => {
     console.log(`${idx + 1}. ${project.title}`);
   });
-
-  if (pdfOk) {
-    console.log("Regenerated public/Arie_Resume_general.pdf");
-  } else {
-    console.log("Skipped PDF generation (pandoc not available).");
-  }
 }
 
 main();
