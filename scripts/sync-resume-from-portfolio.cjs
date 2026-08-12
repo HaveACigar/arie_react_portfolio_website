@@ -193,6 +193,19 @@ function syncResumeMarkdown() {
   return topProjects;
 }
 
+function ensureCanonicalResumePdf() {
+  const publicDir = path.join(repoRoot, "public");
+  const generatedPdf = path.join(publicDir, "Arie_Resume_general.pdf");
+  const canonicalPdf = path.join(publicDir, "Arie_Resume.pdf");
+
+  if (!fs.existsSync(generatedPdf)) {
+    return;
+  }
+
+  fs.copyFileSync(generatedPdf, canonicalPdf);
+  console.log(`Synced canonical resume PDF to ${path.relative(repoRoot, canonicalPdf)}.`);
+}
+
 function main() {
   const topProjects = syncResumeMarkdown();
 
@@ -201,6 +214,8 @@ function main() {
   topProjects.forEach((project, idx) => {
     console.log(`${idx + 1}. ${project.title}`);
   });
+
+  ensureCanonicalResumePdf();
 }
 
 main();

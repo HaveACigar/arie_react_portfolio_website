@@ -39,12 +39,12 @@ Data and analytics professional with a Master's specialization in Data Science a
 
 **Supervised ML: Churn Prediction Pipeline**
 - Risk segmentation shows churn is concentrated in low-tenure customers with repeated support interaction, giving retention teams a concrete intervention cohort.
-- Explainability outputs show engagement and service-friction signals dominate demographics, helping leadership prioritize product and service actions over broad discounting.
+- Explainability outputs show engagement and service-friction signals dominate demographics, helping leadership prioritize product and service actions over broad disc...
 - Tech: Python, Scikit-learn, XGBoost, SHAP, Pandas, Plotly, Streamlit
 
-**Agentic Claims Communication Copilot**
-- Intent-mix analysis shows a limited set of request types drives most escalations, giving operations a focused path to automate the highest-friction work first.
-- Quality scorecards expose where unsupported assertions cluster by scenario, enabling governance teams to harden prompts and rules where customer risk is highest.
-- Tech: Python, SQL, Streamlit, Pandas, Plotly, LLM API Patterns, Workflow Orchestration
+**SQL & Data Engineering Pipeline**
+- Data-quality remediation materially shifts KPI baselines, demonstrating how governance decisions directly affect executive reporting outcomes.
+- Mart-level revenue and customer views identify which cohorts drive volatility, improving where leadership focuses pricing and retention levers.
+- Tech: SQL, Python, DuckDB, Pandas, PyArrow, Plotly, Streamlit
 
 

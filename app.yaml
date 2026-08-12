@@ -4,6 +4,20 @@ automatic_scaling:
   max_instances: 2
 
 handlers:
+  # Keep canonical resume fresh after deploys (avoid stale CDN/browser caching)
+  - url: /Arie_Resume\.pdf
+    static_files: build/Arie_Resume.pdf
+    upload: build/Arie_Resume\.pdf
+    secure: always
+    expiration: 0s
+
+  # Backward-compatible alias for generated resume PDFs that may use the general name during syncs
+  - url: /Arie_Resume_general\.pdf
+    static_files: build/Arie_Resume.pdf
+    upload: build/Arie_Resume\.pdf
+    secure: always
+    expiration: 0s
+
   # Serve all static files with url ending with a file extension
   - url: /(.*\..+)$
     static_files: build/\1

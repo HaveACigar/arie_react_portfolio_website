@@ -253,7 +253,7 @@ export default function Intro() {
             variant="outlined"
             color="primary"
             startIcon={<DownloadIcon />}
-            href="/Arie_Resume_general.pdf"
+            href={process.env.PUBLIC_URL ? `${process.env.PUBLIC_URL}/Arie_Resume.pdf` : "/Arie_Resume.pdf"}
             download
             sx={{ fontWeight: 600, px: 3, py: 1.2, borderRadius: 2 }}
           >
